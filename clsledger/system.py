@@ -145,35 +145,38 @@ class CLSLedgerSystem(MemorySystem):
                     c.usage += 1
                     break
 
-    def _fact_timelines(self) -> Dict[str, str]:
-        """One retrieval document per FACT: its full dated value timeline.
-        Gives the reader explicit temporal structure — the v1 episodic path
-        failed point-in-time (20%) and revocations (0%) because raw
-        episodes bury the timeline."""
+    def _fact_snapshot(self, day: Optional[int]) -> Dict[str, str]:
+        """One retrieval document per FACT, RESOLVED at a point in time by
+        the ledger — the reader never sees history, so it never has to do
+        temporal reasoning (which a 3B reader demonstrably cannot do from
+        timeline documents: it either answers stale values or abstains).
+
+        day=None -> current values; day=D -> value valid on day D."""
         docs: Dict[str, str] = {}
         keys = {c.key for c in self.ledger.cards}
-        for key in keys:
+        for key in sorted(keys):
             hist = self.ledger.history(key)
             if not hist:
                 continue
-            ent = hist[0].entity
-            attr = hist[0].attribute.replace("_", " ")
-            cur = hist[-1]
-            cur_label = ("none — revoked" if cur.value in ("none", "")
-                         else cur.value)
-            spans = []
-            for i, c in enumerate(hist[:-1]):
-                spans.append(f"{c.value} (day {c.day} to "
-                             f"day {hist[i + 1].day - 1})")
-            doc = (f"{ent} | {attr} | CURRENT: {cur_label} "
-                   f"(since day {cur.day})")
-            if spans:
-                doc += ". Earlier values, now outdated: " + "; ".join(spans)
-            docs[key] = doc
+            if day is None:
+                c = hist[-1]
+                when = f"(current, since day {c.day})"
+            else:
+                valid = [x for x in hist if x.day <= day]
+                if not valid:
+                    continue
+                c = valid[-1]
+                when = f"(as of day {day})"
+            ent = c.entity
+            attr = c.attribute.replace("_", " ")
+            label = "none — revoked" if c.value in ("none", "") else c.value
+            docs[key] = f"{ent} | {attr}: {label} {when}"
         return docs
 
     def _episodic_answer(self, query: dict) -> str:
-        docs = self._fact_timelines()
+        m = re.search(r"As of day (\d+)", query["question"])
+        asof = int(m.group(1)) if m else None
+        docs = self._fact_snapshot(asof)
         if len(docs) >= 5:
             idx = BM25Index()
             for key in sorted(docs):
