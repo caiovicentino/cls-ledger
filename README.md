@@ -78,15 +78,41 @@ see; `private/` (answer key, world state, usage stats) is for scoring only.
 | stale | 64.6% | 0% on updated/volatile/revoked, 100% on stable — rejected-sets catch staleness |
 | null | 9.8% | 100% on absent only — abstention floor |
 
+### Results so far (S-1 = 30 days; M-1 = 90 days; gpt-4.1-mini for
+context systems, Qwen2.5-3B-Instruct-4bit + LoRA on an M4 for parametric)
+
+Context-based (memory = context):
+
+| system | S-1 final | M-1 final | notes |
+|---|---|---|---|
+| oracle | 100% | 100% | answer-key validation |
+| full-context | 86.4% | 76.8% | degrades with life length; multihop_3 0% on M |
+| RAG BM25 k=8 | 70.5% | 58.5% | revoked 0% on M, 24 stale errors — freshness fails |
+
+Parametric (memory = weights, answers with NO context; S-1):
+
+| system | final | cur_stable | cur_updated | stale errs | general probe |
+|---|---|---|---|---|---|
+| base model | — | — | — | — | 93.8% |
+| naive LoRA (raw text) | 15.9% | 0% | 0% | 2 | 87.5% |
+| SEAL-lite (episode QAs) | 20.5% | 37.5% | 25.0% | 10 | 87.5% |
+| **CLS-Ledger v0 (state QAs)** | **31.8%** | **75.0%** | **75.0%** | **3** | 68.8% |
+
+Readings: (1) raw-text finetuning does not produce queryable knowledge;
+(2) episode-level self-edits memorize stale mentions — SEAL's stale errors
+triple CLS's; (3) state-level consolidation with supersedence is the right
+write-unit: 3x SEAL on updated facts; (4) BUT a monolithic adapter pays
+heavy interference (general probe 93.8→68.8, "capital of France →
+Tampere") — the case for isolated slots + replay in v1.
+
 ### Roadmap
 
-- **Phase 1** — real baselines: full-context, RAG top-k, naive continual
-  LoRA, SEAL-lite. Where does each break, at which life length?
-- **Phase 2** — CLS-Ledger mechanism: frozen 3–4B backbone + addressable
-  sparse memory slots written by slot-targeted context distillation,
-  consolidation gated by usage statistics (frequency × stability), ledger
-  for reversible unlearning. Pre-registered success criteria: ≥90% recall
-  of consolidated facts with external memory removed; ≤1% general-benchmark
-  degradation; slot deletion removes the fact with <1% collateral damage.
-- **Phase 3** — ablations (selection policy: usage vs. surprise vs.
-  recency), 7–8B scale check, write-up.
+- **v1 (Phase 2 cont.)** — hybrid router (volatile/point-in-time queries →
+  episodic store; consolidated facts → weights), per-entity slots or
+  replay mix-in to bound forgetting, fewer iters; M-1 runs.
+- **Phase 3** — H1 ablations (policy: stable vs. hot vs. all — the
+  usage-gating experiment), H3 unlearning quantification
+  (clsledger/unlearn_eval.py), 7–8B scale check, write-up.
+- Pre-registered success criteria (unchanged): ≥90% recall of consolidated
+  facts with external memory removed; ≤1% general-probe degradation; slot
+  deletion removes the fact with <1% collateral damage.
