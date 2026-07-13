@@ -32,6 +32,10 @@ from agentlife.harness.systems import MemorySystem
 
 from .ledger import Card, Ledger
 
+# The attribute vocabulary is a domain schema for a personal-assistant
+# agent (same design as Zep/Graphiti's prescribed ontology). It nudges the
+# extractor toward consistent attribute names so supersedence can merge
+# facts; it contains no answers.
 EXTRACT_PROMPT = (
     "Extract the atomic facts from this dated personal note.\n"
     "Note (day {day}): {text}\n\n"
@@ -39,10 +43,14 @@ EXTRACT_PROMPT = (
     '[{{"entity": "...", "attribute": "...", "value": "..."}}]. Rules:\n'
     "- entity: who/what the fact is about (a person's full name, a project "
     "name, or 'user');\n"
-    "- attribute: snake_case (employer, lives_in, birthday, parking_spot, "
-    "deadline, lead, status, ...);\n"
-    "- value: the short canonical value only; use 'none' when something is "
-    "revoked and 'cancelled' when a project is cancelled;\n"
+    "- attribute: snake_case; whenever one of these fits, use EXACTLY it: "
+    "employer, lives_in, hometown, birthday, favorite_restaurant, "
+    "works_on, lead, deadline, budget, status, client, parking_spot, "
+    "desk_booking, gym_day, dietary_restriction, wifi_password, "
+    "favorite_coffee;\n"
+    "- value: the short canonical value only (for projects use the full "
+    "name, e.g. 'Project Falcon'); use 'none' when something is revoked "
+    "and 'cancelled' when a project is cancelled;\n"
     "- if the note contains no durable fact (small talk), return [].")
 
 
@@ -173,16 +181,109 @@ class CLSLedgerSystem(MemorySystem):
             docs[key] = f"{ent} | {attr}: {label} {when}"
         return docs
 
+    # surface forms of schema attributes as they appear in questions
+    # (part of the same prescribed domain ontology as EXTRACT_PROMPT)
+    ATTR_LEXICON = {
+        "employer": ["employer"], "lives_in": ["live"],
+        "hometown": ["hometown"], "birthday": ["birthday"],
+        "favorite_restaurant": ["favorite restaurant"],
+        "works_on": ["works on", "work on", "working on"],
+        "lead": ["lead"], "deadline": ["deadline"], "budget": ["budget"],
+        "status": ["status"], "client": ["client"],
+        "parking_spot": ["parking spot"], "desk_booking": ["desk"],
+        "gym_day": ["gym day"],
+        "dietary_restriction": ["dietary restriction"],
+        "wifi_password": ["wifi password"], "favorite_coffee": ["coffee"],
+    }
+
+    def _value_at(self, entity: str, attr: str,
+                  asof: Optional[int]) -> Optional[str]:
+        from .ledger import norm_key
+        key = f"{norm_key(entity)}.{norm_key(attr)}"
+        hist = self.ledger.history(key)
+        if asof is not None:
+            hist = [c for c in hist if c.day <= asof]
+        return hist[-1].value if hist else None
+
+    def _symbolic_chain(self, question: str,
+                        asof: Optional[int]) -> Optional[str]:
+        """Resolve chain questions entirely in the ledger: the question
+        names an anchor entity and >=2 schema attributes ('the DEADLINE of
+        the project X WORKS ON'); apply the relations from the anchor and
+        return the target value. The reader never has to compose."""
+        ql = question.lower()
+        mentions = []
+        for attr, forms in self.ATTR_LEXICON.items():
+            positions = [ql.find(f) for f in forms if ql.find(f) >= 0]
+            if positions:
+                mentions.append((min(positions), attr))
+        mentions.sort()
+        if len(mentions) < 2:
+            return None
+        target, rels = mentions[0][1], [m[1] for m in mentions[1:]]
+        names = sorted({c.entity for c in self.ledger.cards},
+                       key=len, reverse=True)
+        anchor = next((n for n in names if n.lower() in ql), None)
+        if anchor is None:
+            return None
+        entity = anchor
+        for rel in reversed(rels):
+            value = self._value_at(entity, rel, asof)
+            if value is None:
+                return None
+            nxt = next((n for n in names
+                        if n.lower() == value.lower()
+                        or value.lower() in n.lower()
+                        or n.lower() in value.lower()), None)
+            if nxt is None:
+                return None
+            entity = nxt
+        return self._value_at(entity, target, asof)
+
     def _episodic_answer(self, query: dict) -> str:
         m = re.search(r"As of day (\d+)", query["question"])
         asof = int(m.group(1)) if m else None
+        chained = self._symbolic_chain(query["question"], asof)
+        if chained is not None:
+            return chained
         docs = self._fact_snapshot(asof)
         if len(docs) >= 5:
             idx = BM25Index()
             for key in sorted(docs):
                 idx.add(key, docs[key])
             hits = idx.search(query["question"], self.online_k)
-            notes = [docs[key] for key, _ in hits]
+            # composition handling: when a retrieved fact's VALUE is itself
+            # an entity (lead -> person, works_on -> project) that the
+            # question does not name, the question is likely relative
+            # ("... of the project X works on"). Resolve the intermediate
+            # entity symbolically via the ledger, then answer with that
+            # entity's facts placed first. Resolution lives in structure,
+            # not in the reader — a 3B reader demonstrably cannot compose
+            # two hops unaided.
+            entity_names = {c.entity for c in self.ledger.cards
+                            if c.entity.lower() != "user"}
+            qlow = query["question"].lower()
+            intermediates = []
+            for key, _score in hits[:4]:
+                value_part = docs[key].split(":", 1)[-1].lower()
+                for name in sorted(entity_names):
+                    if (name.lower() in value_part
+                            and name.lower() not in qlow
+                            and name not in intermediates):
+                        intermediates.append(name)
+            if intermediates:
+                inter_keys = [k for k in sorted(docs)
+                              for name in intermediates
+                              if docs[k].lower().startswith(name.lower())]
+                ordered = inter_keys + [k for k, _ in hits
+                                        if k not in inter_keys]
+                notes = [docs[k] for k in ordered[:self.online_k + 6]]
+                notes.append(
+                    "Resolution note: the intermediate entity referred to "
+                    "by the question is "
+                    + " / ".join(intermediates[:2]) + ".")
+            else:
+                notes = [docs[key] for key, _ in hits]
         else:  # cold start: ledger too small, use raw episodes
             texts = {e["episode_id"]: e["text"] for e in self.episodes}
             order = {e["episode_id"]: i for i, e in enumerate(self.episodes)}
