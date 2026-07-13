@@ -188,7 +188,17 @@ class CLSSlotsSystem(CLSLedgerSystem):
         from .replay import anchor_rows
         from agentlife.harness.parametric_systems import (
             PARAMETRIC_SYSTEM_PROMPT)
+        import gc
         import random as _random
+        # release the resident model before spawning training subprocesses
+        # (a resident copy + a training copy exceed 16GB on later sleeps)
+        self.backend = None
+        self.base_backend = None
+        gc.collect()
+        try:
+            mx.clear_cache()
+        except AttributeError:
+            pass
         anchors = anchor_rows(PARAMETRIC_SYSTEM_PROMPT)
 
         slot_dirs, slot_meta = [], {}
