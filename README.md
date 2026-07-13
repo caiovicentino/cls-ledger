@@ -146,6 +146,31 @@ and the ledger guards weight-staleness by construction (a fact updated
 after the last sleep drops out of the consolidated set and routes
 episodic).
 
+### v3 results — isolated slots with routed activation
+
+Architecture: untouched base model + one rank-4 LoRA slot per entity;
+the ledger's router activates ONLY the queried entity's slot per query
+(swap of small tensors, ~ms). Slot recipe that fixed slot collapse:
+5 epochs, lr 5e-5, +10 anchor rows (6 general facts, 4 out-of-scope
+abstentions) per slot. Exact fusion (rank concat) is also implemented but
+routed activation dominates it: summed deltas amplify the slots' common
+format component (fused S-1: 52.3%).
+
+| metric | monolithic (v2.3) | slots-routed (v3) |
+|---|---|---|
+| S-1 final | 84.1% | **88.6%** (beats full-context-4.1-mini 86.4%) |
+| general probe | 75.0% | **93.8% = base model exactly (0.0% forgetting)** |
+| unlearning collateral | 19/40 answers changed (re-distill) | **0/40 (slot drop, no retraining)** |
+
+Both pre-registered success criteria met: forgetting ≤1% -> 0.0%;
+unlearning collateral <1% -> 0/40, target facts -> 'unknown'.
+
+H1 under a capacity budget (M-1, slots-routed, 40 cards max):
+**hot 79.3% > stable 76.8% > random 74.4%** — usage-gated selection wins
+under budget, in the predicted order (n=82; replicate across seeds for
+significance). The hot policy with 11 slots on a local 3B matches
+full-context gpt-4.1-mini (76.8%).
+
 ### Roadmap (next)
 
 - Fix bindings: more paraphrases per card + ~450-600 iters with replay;
