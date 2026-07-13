@@ -1,0 +1,182 @@
+[
+  {
+    "policy": "stable",
+    "cards_selected": 139,
+    "train_rows": 467,
+    "acc_final": 35.4,
+    "n_weights": 30,
+    "n_episodic": 52,
+    "acc_weights": 36.7,
+    "acc_episodic": 34.6,
+    "qtype_route": {
+      "absent/episodic": {
+        "n": 7,
+        "acc": 85.7
+      },
+      "absent/weights": {
+        "n": 1,
+        "acc": 0.0
+      },
+      "current_stable/episodic": {
+        "n": 6,
+        "acc": 66.7
+      },
+      "current_stable/weights": {
+        "n": 10,
+        "acc": 40.0
+      },
+      "current_updated/episodic": {
+        "n": 5,
+        "acc": 40.0
+      },
+      "current_updated/weights": {
+        "n": 11,
+        "acc": 63.6
+      },
+      "current_volatile/episodic": {
+        "n": 1,
+        "acc": 100.0
+      },
+      "current_volatile/weights": {
+        "n": 1,
+        "acc": 0.0
+      },
+      "multihop_2/episodic": {
+        "n": 7,
+        "acc": 14.3
+      },
+      "multihop_2/weights": {
+        "n": 3,
+        "acc": 0.0
+      },
+      "multihop_3/episodic": {
+        "n": 6,
+        "acc": 0.0
+      },
+      "point_in_time/episodic": {
+        "n": 20,
+        "acc": 20.0
+      },
+      "revoked/weights": {
+        "n": 4,
+        "acc": 0.0
+      }
+    }
+  },
+  {
+    "policy": "hot",
+    "cards_selected": 35,
+    "train_rows": 155,
+    "acc_final": 36.6,
+    "n_weights": 11,
+    "n_episodic": 71,
+    "acc_weights": 36.4,
+    "acc_episodic": 36.6,
+    "qtype_route": {
+      "absent/episodic": {
+        "n": 8,
+        "acc": 87.5
+      },
+      "current_stable/episodic": {
+        "n": 11,
+        "acc": 54.5
+      },
+      "current_stable/weights": {
+        "n": 5,
+        "acc": 60.0
+      },
+      "current_updated/episodic": {
+        "n": 16,
+        "acc": 50.0
+      },
+      "current_volatile/weights": {
+        "n": 2,
+        "acc": 50.0
+      },
+      "multihop_2/episodic": {
+        "n": 7,
+        "acc": 14.3
+      },
+      "multihop_2/weights": {
+        "n": 3,
+        "acc": 0.0
+      },
+      "multihop_3/episodic": {
+        "n": 6,
+        "acc": 0.0
+      },
+      "point_in_time/episodic": {
+        "n": 20,
+        "acc": 20.0
+      },
+      "revoked/episodic": {
+        "n": 3,
+        "acc": 0.0
+      },
+      "revoked/weights": {
+        "n": 1,
+        "acc": 0.0
+      }
+    }
+  },
+  {
+    "policy": "all",
+    "cards_selected": 145,
+    "train_rows": 485,
+    "acc_final": 32.9,
+    "n_weights": 32,
+    "n_episodic": 50,
+    "acc_weights": 31.2,
+    "acc_episodic": 34.0,
+    "qtype_route": {
+      "absent/episodic": {
+        "n": 7,
+        "acc": 85.7
+      },
+      "absent/weights": {
+        "n": 1,
+        "acc": 0.0
+      },
+      "current_stable/episodic": {
+        "n": 6,
+        "acc": 66.7
+      },
+      "current_stable/weights": {
+        "n": 10,
+        "acc": 40.0
+      },
+      "current_updated/episodic": {
+        "n": 5,
+        "acc": 40.0
+      },
+      "current_updated/weights": {
+        "n": 11,
+        "acc": 45.5
+      },
+      "current_volatile/weights": {
+        "n": 2,
+        "acc": 50.0
+      },
+      "multihop_2/episodic": {
+        "n": 6,
+        "acc": 16.7
+      },
+      "multihop_2/weights": {
+        "n": 4,
+        "acc": 0.0
+      },
+      "multihop_3/episodic": {
+        "n": 6,
+        "acc": 0.0
+      },
+      "point_in_time/episodic": {
+        "n": 20,
+        "acc": 20.0
+      },
+      "revoked/weights": {
+        "n": 4,
+        "acc": 0.0
+      }
+    }
+  }
+]

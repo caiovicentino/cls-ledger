@@ -178,6 +178,7 @@ class CLSLedgerSystem(MemorySystem):
             counts[r] = counts.get(r, 0) + 1
         return {"mode": self.mode, "policy": self.policy,
                 "routes": counts,
+                "routes_by_query": dict(self.routes),
                 "cards_current": len(self.ledger.current_cards()),
                 "cards_consolidated": len(self.consolidated_ids)}
 
