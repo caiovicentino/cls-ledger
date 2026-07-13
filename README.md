@@ -105,14 +105,34 @@ write-unit: 3x SEAL on updated facts; (4) BUT a monolithic adapter pays
 heavy interference (general probe 93.8→68.8, "capital of France →
 Tampere") — the case for isolated slots + replay in v1.
 
-### Roadmap
+### v1 results (hybrid router + abstention replay; same local 3B for both
+systems — fair comparison)
 
-- **v1 (Phase 2 cont.)** — hybrid router (volatile/point-in-time queries →
-  episodic store; consolidated facts → weights), per-entity slots or
-  replay mix-in to bound forgetting, fewer iters; M-1 runs.
-- **Phase 3** — H1 ablations (policy: stable vs. hot vs. all — the
-  usage-gating experiment), H3 unlearning quantification
-  (clsledger/unlearn_eval.py), 7–8B scale check, write-up.
+| dataset | RAG local k=8 | CLS v1 hybrid | queries answered from weights | v1 general probe |
+|---|---|---|---|---|
+| S-1 | 52.3% | 50.0% | 20/44 (45%) | 81.2% (v0: 68.8%) |
+| M-1 | 37.8% | 35.4% | 30/82 (37%) | 75.0% |
+
+Readings: (1) CLS v1 matches local-RAG accuracy while answering ~40% of
+queries with ZERO context tokens — the cost thesis holds; (2) abstention
+replay fixed absent (0%→100% on S-1) and cut forgetting by +12pp, but
+binding confusion between twin entities appeared at reduced iters (Project
+Auriga's client answered with Project Aurora's); (3) at M-1 scale the
+episodic path (BM25 + 3B reader) is the bottleneck — both systems fail
+revoked (0%) and point-in-time (20%) locally; (4) the reader model
+dominates everything: gpt-4.1-mini RAG scores +20pp over local on the same
+data.
+
+### Roadmap (next)
+
+- Fix bindings: more paraphrases per card + ~450-600 iters with replay;
+  contrastive rows for confusable-entity pairs.
+- Stronger episodic path: better retrieval (per-fact cards instead of raw
+  episodes) and/or larger local reader.
+- H1 ablations on M-1 (policy stable vs. hot vs. all) once episodic path
+  is no longer the confounder.
+- Real isolated slots (per-entity LoRA fusion in MLX) for surgical
+  unlearning — v0 measured 19/40 collateral answer changes on re-distill.
 - Pre-registered success criteria (unchanged): ≥90% recall of consolidated
   facts with external memory removed; ≤1% general-probe degradation; slot
   deletion removes the fact with <1% collateral damage.
