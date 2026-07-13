@@ -97,11 +97,21 @@ class CLSLedgerSystem(MemorySystem):
             return []
         cards = []
         for it in items:
-            if (isinstance(it, dict) and it.get("entity")
-                    and it.get("attribute") and it.get("value") is not None):
-                cards.append(Card(str(it["entity"]), str(it["attribute"]),
-                                  str(it["value"]), day,
-                                  episode["episode_id"]))
+            if not (isinstance(it, dict) and it.get("entity")
+                    and it.get("attribute")
+                    and it.get("value") is not None):
+                continue
+            attr = str(it["attribute"]).strip().lower()
+            # extraction hygiene: update episodes mention the outgoing
+            # value; extractors sometimes emit junk 'old_x: none' cards
+            # that later read as revocations
+            if re.match(r"^(old|previous|former|prior|new)_", attr):
+                continue
+            if str(it["value"]).strip() == "":
+                continue
+            cards.append(Card(str(it["entity"]), attr,
+                              str(it["value"]), day,
+                              episode["episode_id"]))
         return cards
 
     def ingest(self, episode: dict) -> None:
@@ -148,14 +158,18 @@ class CLSLedgerSystem(MemorySystem):
                 continue
             ent = hist[0].entity
             attr = hist[0].attribute.replace("_", " ")
+            cur = hist[-1]
+            cur_label = ("none — revoked" if cur.value in ("none", "")
+                         else cur.value)
             spans = []
-            for i, c in enumerate(hist):
-                end = (f"to day {hist[i + 1].day - 1}"
-                       if i + 1 < len(hist) else "current")
-                label = "none — revoked" if c.value in ("none", "") else \
-                    c.value
-                spans.append(f"{label} (day {c.day} {end})")
-            docs[key] = f"{ent} | {attr}: " + "; ".join(spans)
+            for i, c in enumerate(hist[:-1]):
+                spans.append(f"{c.value} (day {c.day} to "
+                             f"day {hist[i + 1].day - 1})")
+            doc = (f"{ent} | {attr} | CURRENT: {cur_label} "
+                   f"(since day {cur.day})")
+            if spans:
+                doc += ". Earlier values, now outdated: " + "; ".join(spans)
+            docs[key] = doc
         return docs
 
     def _episodic_answer(self, query: dict) -> str:
