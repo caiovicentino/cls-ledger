@@ -312,6 +312,7 @@ class CLSLedgerSystem(MemorySystem):
         subject = "user" if ent == "user" else ent
         if subject not in question.lower():
             return "episodic"
+        self.routed_card = card
         return "weights"
 
     def answer(self, query: dict) -> str:
@@ -333,6 +334,9 @@ class CLSLedgerSystem(MemorySystem):
         self.routes[query.get("query_id", "?")] = route
         if route == "episodic":
             return self._episodic_answer(query)
+        return self._weights_answer(query)
+
+    def _weights_answer(self, query: dict) -> str:
         user = (f"QUESTION (asked on day {query['day_asked']}): "
                 f"{query['question']}\nAnswer:")
         return self.backend.complete(PARAMETRIC_SYSTEM_PROMPT, user)

@@ -42,6 +42,31 @@ ABSTAIN_ATTRS = ["favorite color", "birthday", "employer", "hometown",
                  "phone number"]
 
 
+def anchor_rows(system_prompt: str) -> List[dict]:
+    """Tiny per-slot anchor: 6 general facts + 4 abstention rows. Without
+    it, a slot trained on ~25 uniform QA rows collapses to answering its
+    most frequent value for everything and forgets basic world knowledge
+    (measured: 'capital of France' -> 'Toronto'). With it, slots
+    discriminate attributes, keep general knowledge, and answer 'unknown'
+    for entities outside their scope — safe failure under misrouting."""
+    rows = []
+
+    def add(q, a):
+        rows.append({"messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": q},
+            {"role": "assistant", "content": a},
+        ]})
+
+    for q, a in WORLD_FACTS[:4]:
+        add(q, a)
+    add("What is 12 plus 30?", "42")
+    add("How many sides does a triangle have?", "3")
+    for subj in ABSTAIN_SUBJECTS[:4]:
+        add(f"What is {subj}'s employer?", "unknown")
+    return rows
+
+
 def replay_rows(system_prompt: str, n_arith: int = 25,
                 seed: int = 0) -> List[dict]:
     rng = random.Random(seed)

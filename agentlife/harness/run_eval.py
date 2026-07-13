@@ -50,6 +50,9 @@ def main() -> None:
                     help="cls/slots: max cards consolidated (H1 capacity)")
     ap.add_argument("--slot-rank", type=int, default=4,
                     help="slots: LoRA rank per entity slot")
+    ap.add_argument("--activation", default="routed",
+                    choices=["routed", "fused"],
+                    help="slots: per-query slot activation or exact fusion")
     ap.add_argument("--policy", default="stable",
                     choices=["stable", "all", "hot"],
                     help="cls consolidation policy")
@@ -90,6 +93,8 @@ def main() -> None:
         suffix = (f"-{args.policy}-{args.mode}"
                   + (f"-s{args.sleep_every}" if args.sleep_every else "")
                   + (f"-b{args.budget}" if args.budget else "")
+                  + (f"-{args.activation}" if args.system == "slots"
+                     else "")
                   if args.system in ("cls", "slots") else "")
         workdir = args.workdir or os.path.join(
             "runs", f"{dataset}-{args.system}{suffix}")
@@ -114,6 +119,7 @@ def main() -> None:
             else:
                 from clsledger.slots import CLSSlotsSystem
                 system = CLSSlotsSystem(slot_rank=args.slot_rank,
+                                        activation=args.activation,
                                         **cls_kwargs)
     else:
         system = make_system(args.system, args.data)
@@ -125,6 +131,7 @@ def main() -> None:
         + (f"-{args.policy}-{args.mode}"
            + (f"-s{args.sleep_every}" if args.sleep_every else "")
            + (f"-b{args.budget}" if args.budget else "")
+           + (f"-{args.activation}" if args.system == "slots" else "")
            if args.system in ("cls", "slots") else ""))
     report = run(system, args.data)
     print(f"system={label} data={args.data}\n")
