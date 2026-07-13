@@ -1,0 +1,726 @@
+{
+  "n_final": 44,
+  "n_online": 15,
+  "accuracy_final": 0.1590909090909091,
+  "accuracy_online": 0.0,
+  "by_qtype": {
+    "absent": {
+      "n": 6,
+      "acc": 1.0
+    },
+    "current_stable": {
+      "n": 8,
+      "acc": 0.0
+    },
+    "current_updated": {
+      "n": 8,
+      "acc": 0.0
+    },
+    "current_volatile": {
+      "n": 2,
+      "acc": 0.0
+    },
+    "multihop_2": {
+      "n": 6,
+      "acc": 0.0
+    },
+    "multihop_3": {
+      "n": 1,
+      "acc": 0.0
+    },
+    "point_in_time": {
+      "n": 10,
+      "acc": 0.1
+    },
+    "revoked": {
+      "n": 3,
+      "acc": 0.0
+    }
+  },
+  "by_heat": {
+    "cold": {
+      "n": 37,
+      "acc": 0.1891891891891892
+    },
+    "hot": {
+      "n": 7,
+      "acc": 0.0
+    }
+  },
+  "by_n_updates": {
+    "0": {
+      "n": 30,
+      "acc": 0.23333333333333334
+    },
+    "1": {
+      "n": 9,
+      "acc": 0.0
+    },
+    "2+": {
+      "n": 5,
+      "acc": 0.0
+    }
+  },
+  "error_classes": {
+    "abstain": 44,
+    "miss": 6,
+    "stale": 2,
+    "correct": 7
+  },
+  "rows": [
+    {
+      "query_id": "q0000",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "December 26"
+    },
+    {
+      "query_id": "q0001",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "August 21"
+    },
+    {
+      "query_id": "q0002",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0003",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0004",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "December 26"
+    },
+    {
+      "query_id": "q0005",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "December 26"
+    },
+    {
+      "query_id": "q0006",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "December 26"
+    },
+    {
+      "query_id": "q0007",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "December 26"
+    },
+    {
+      "query_id": "q0008",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "August 21"
+    },
+    {
+      "query_id": "q0009",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "December 26"
+    },
+    {
+      "query_id": "q0010",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Desk 39"
+    },
+    {
+      "query_id": "q0011",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Ferrowind"
+    },
+    {
+      "query_id": "q0012",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "paused"
+    },
+    {
+      "query_id": "q0013",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "August 21"
+    },
+    {
+      "query_id": "q0014",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Ferrowind"
+    },
+    {
+      "query_id": "q0021",
+      "qtype": "current_stable",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The question refers to a person named Webb but the name is incorrectly spelled as „Macus”.",
+      "answer_display": "August 21"
+    },
+    {
+      "query_id": "q0016",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!!!-ARBITRARY-!!!#!$!#.!.!${.!.!}..!.!}~.!}~.!}~.!}~.!}~.!}~.!}~.!}~.!}~.!}",
+      "answer_display": "Cobalt Harbor"
+    },
+    {
+      "query_id": "q0024",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown.",
+      "answer_display": "May 8"
+    },
+    {
+      "query_id": "q0025",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The question asks about a person named Marsh namedly.",
+      "answer_display": "Hobart"
+    },
+    {
+      "query_id": "q0015",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!!!-SPECTR-!!!?>!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!-/!",
+      "answer_display": "Ionflow"
+    },
+    {
+      "query_id": "q0020",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!!!ATERTOKEN!!!~!;!.!#!()!61>~!c4!l)@!c!s)a!0!P!c!;6)5$!R64!s)4!4.2!3)25",
+      "answer_display": "Trondheim"
+    },
+    {
+      "query_id": "q0018",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!!!-SPECTRE-TODO-identify-ANCHOR!!!>!-SPECTRE-TODO-eliminate-ANCHOR!!>!-SPICIENT-TODO-rewrite-ANCHOR>!-!-SPICIENT-TODO-eliminate-ANCHOR>!-!-",
+      "answer_display": "Kernelworks"
+    },
+    {
+      "query_id": "q0017",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!!!-SPECTRE-TODO-REMOVE-THIS-LINE!*/>!-ANCH!!<>!-SPECTRE-TODO-REMOVE-THIS-LINE!*/>!-ANCH>!-SPECTRE-REMOVE-THIS-LINE!*>!-!-!-!",
+      "answer_display": "Brightmesh"
+    },
+    {
+      "query_id": "q0043",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "miss",
+      "correct": 0,
+      "response": "![](mailto:securepassword123?)![](![](mailto:![](?!))!)![](![](https://![](![](![](![](![![](https://![](![![](https ̫![](![![](https://![](![!",
+      "answer_display": "silver-otter-61"
+    },
+    {
+      "query_id": "q0041",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!!!WP!!!;!<>![](![][![](!!!WP!!!;]!)!)!!!.",
+      "answer_display": "Luang Prabang"
+    },
+    {
+      "query_id": "q0034",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "miss",
+      "correct": 0,
+      "response": "Fantasia Entertainment.",
+      "answer_display": "Project Aurora"
+    },
+    {
+      "query_id": "q0040",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!!!WP!!!()>!()>!()>!()>!()>!()>",
+      "answer_display": "La Braise"
+    },
+    {
+      "query_id": "q0031",
+      "qtype": "current_updated",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The information about Project Aurora was not in the stored notes.",
+      "answer_display": "April 5"
+    },
+    {
+      "query_id": "q0036",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!!!WP!!!._Statics.!User.!.Conversation.!Campo.!.---.",
+      "answer_display": "Miso Garden"
+    },
+    {
+      "query_id": "q0033",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The information about the current residence of Sofia Almeida was not recorded in the notes from day 31.",
+      "answer_display": "Krakow"
+    },
+    {
+      "query_id": "q0042",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!—- The user's notes do not contain information about a usual coffee order.",
+      "answer_display": "cortado"
+    },
+    {
+      "query_id": "q0045",
+      "qtype": "current_volatile",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown.",
+      "answer_display": "B30"
+    },
+    {
+      "query_id": "q0044",
+      "qtype": "current_volatile",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The question is about the current state, but no entry was made for the user's current desk booking.",
+      "answer_display": "Desk 73"
+    },
+    {
+      "query_id": "q0064",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown.",
+      "answer_display": "Leipzig"
+    },
+    {
+      "query_id": "q0069",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown//!rameletlil.",
+      "answer_display": "B37"
+    },
+    {
+      "query_id": "q0066",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "miss",
+      "correct": 0,
+      "response": "Desk 14.",
+      "answer_display": "Desk 38"
+    },
+    {
+      "query_id": "q0053",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The question is asked after the initial information is supposed to be there.",
+      "answer_display": "Split"
+    },
+    {
+      "query_id": "q0052",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "paused",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0056",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The question about specific details like employer at day 7 is based on information not provided in notes up to day 31.",
+      "answer_display": "Quandry Systems"
+    },
+    {
+      "query_id": "q0050",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "stale",
+      "correct": 0,
+      "response": "paused",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0051",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "$250k\"!{\\\"$50k\"!{\\\"!{\\\"$200k\"!{\\\"!{.",
+      "answer_display": "$50k"
+    },
+    {
+      "query_id": "q0070",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "![](mailto:securepassword12?)![](![](mailto:![]([](![](http://[]![]![]![]![]![]![]![]![]![]![]![]![]![]![]![]![]![]![]![]![]!",
+      "answer_display": "violet-canyon-7"
+    },
+    {
+      "query_id": "q0071",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The password was not mentioned in the notes from days 3 to 16.",
+      "answer_display": "maple-toast-42"
+    },
+    {
+      "query_id": "q0076",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "May 22"
+    },
+    {
+      "query_id": "q0078",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The question never mentions a specific project or deadline.",
+      "answer_display": "January 22"
+    },
+    {
+      "query_id": "q0075",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "April 5"
+    },
+    {
+      "query_id": "q0072",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The user's notes do not contain information about the Project Falcon or the lead's residence.",
+      "answer_display": "Krakow"
+    },
+    {
+      "query_id": "q0073",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The user's notes do not contain information about Project Aurora or the lead's residence.",
+      "answer_display": "Luang Prabang"
+    },
+    {
+      "query_id": "q0077",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The question never mentioned a specific project or deadline.",
+      "answer_display": "May 22"
+    },
+    {
+      "query_id": "q0074",
+      "qtype": "multihop_3",
+      "heat": "cold",
+      "hops": 3,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown<<!— The question never mentioned the current lead of the project.",
+      "answer_display": "Fresno"
+    },
+    {
+      "query_id": "q0080",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown.",
+      "answer_display": "none"
+    },
+    {
+      "query_id": "q0081",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "stale",
+      "correct": 0,
+      "response": "yes",
+      "answer_display": "no"
+    },
+    {
+      "query_id": "q0079",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "paused.",
+      "answer_display": "cancelled"
+    },
+    {
+      "query_id": "q0086",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown<<!!!WP;!..!~*()…!,,,,!@#<>;:;,.!;,,,./!;,,,;!;,,,;!;,,,;!;,,,;!;,,,;!;,,,;!;,,,;!;,,,;!;,,,;!;,,,;!;,,,;!;,,,;!;",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0089",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown<<!!!WP!!!;鞋子里的骨头---!:///!~!~!📢!~!~!:///!~!@!:/!~!$/!:/!~!~!:///!:/!:/!:/!:/!~!~!:/!:/!:/!",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0083",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown<<!!!WP!!!",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0088",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown<<!!!WP!!!",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0085",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown<<!— The question refers to a person named Chen who is supposed to be named Marcus.",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0084",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown<<!!SPINALCACHE!!>}!ø!$!7!@!%^!&!*!()!-:!So!f!a!D!u!t!a!â!•!$:!A!r!e!n!t!u!b!l!",
+      "answer_display": "unknown"
+    }
+  ],
+  "backend_stats": {
+    "model": "mlx:mlx-community/Qwen2.5-3B-Instruct-4bit|adapter:runs/S-1-lora/adapter",
+    "generations": 44,
+    "cache_hits": 0
+  }
+}

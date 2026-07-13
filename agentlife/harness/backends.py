@@ -122,11 +122,62 @@ class OpenAIBackend(LLMBackend):
                 "completion_tokens": self.completion_tokens}
 
 
-def make_backend(spec: str, cache_dir: Optional[str]) -> LLMBackend:
-    """spec format: 'openai:gpt-4.1-mini' (extensible: 'mlx:...', etc.)."""
+class MLXBackend(LLMBackend):
+    """Local model via mlx_lm (Apple Silicon), optionally with a LoRA
+    adapter. Deterministic (temperature 0). Cache key includes the adapter
+    path so differently-trained adapters never share cached answers."""
+
+    name = "mlx"
+
+    def __init__(self, model_id: str, adapter_path: Optional[str] = None,
+                 cache_dir: Optional[str] = None):
+        from mlx_lm import load
+        self.model_id = model_id
+        self.adapter_path = adapter_path
+        self.model, self.tokenizer = load(model_id,
+                                          adapter_path=adapter_path)
+        self.cache = DiskCache(cache_dir) if cache_dir else None
+        self.n_calls = 0
+        self.n_cached = 0
+
+    def _cache_tag(self) -> str:
+        return f"mlx:{self.model_id}|adapter:{self.adapter_path or 'none'}"
+
+    def complete(self, system: str, user: str, max_tokens: int = 64) -> str:
+        if self.cache:
+            key = self.cache.key(self._cache_tag(), system, user)
+            hit = self.cache.get(key)
+            if hit is not None:
+                self.n_cached += 1
+                return hit
+        from mlx_lm import generate
+        from mlx_lm.sample_utils import make_sampler
+        prompt = self.tokenizer.apply_chat_template(
+            [{"role": "system", "content": system},
+             {"role": "user", "content": user}],
+            tokenize=False, add_generation_prompt=True)
+        out = generate(self.model, self.tokenizer, prompt=prompt,
+                       max_tokens=max_tokens,
+                       sampler=make_sampler(temp=0.0)).strip()
+        self.n_calls += 1
+        if self.cache:
+            self.cache.put(key, self._cache_tag(), out)
+        return out
+
+    def stats(self) -> dict:
+        return {"model": self._cache_tag(), "generations": self.n_calls,
+                "cache_hits": self.n_cached}
+
+
+def make_backend(spec: str, cache_dir: Optional[str],
+                 adapter_path: Optional[str] = None) -> LLMBackend:
+    """spec format: 'openai:gpt-4.1-mini' or 'mlx:<hf-repo-or-path>'."""
     provider, _, model = spec.partition(":")
     if provider == "openai" and model:
         return OpenAIBackend(model, cache_dir=cache_dir)
+    if provider == "mlx" and model:
+        return MLXBackend(model, adapter_path=adapter_path,
+                          cache_dir=cache_dir)
     if provider == "fake":
         return FakeBackend(model or "unknown")
     raise ValueError(f"unknown backend spec {spec!r}")

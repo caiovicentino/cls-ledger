@@ -33,6 +33,8 @@ def run(system: MemorySystem, data_dir: str) -> dict:
             system.ingest(item)
         else:
             responses[item["query_id"]] = system.answer(item)
+    if hasattr(system, "finalize"):
+        system.finalize()
     for q in finals:
         responses[q["query_id"]] = system.answer(q)
     return score(responses, answers)
@@ -42,10 +44,19 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", required=True)
     ap.add_argument("--system", required=True,
-                    choices=["oracle", "stale", "null", "full", "rag"])
+                    choices=["oracle", "stale", "null", "full", "rag",
+                             "lora", "seal", "cls"])
+    ap.add_argument("--policy", default="stable",
+                    choices=["stable", "all", "hot"],
+                    help="cls consolidation policy")
     ap.add_argument("--backend", default="openai:gpt-4.1-mini",
-                    help="provider:model, e.g. openai:gpt-4.1-mini")
+                    help="provider:model, e.g. openai:gpt-4.1-mini or "
+                         "mlx:mlx-community/Qwen2.5-3B-Instruct-4bit")
     ap.add_argument("--k", type=int, default=8, help="RAG top-k episodes")
+    ap.add_argument("--iters", type=int, default=None,
+                    help="LoRA training iterations (lora/seal)")
+    ap.add_argument("--workdir", default=None,
+                    help="training workdir (lora/seal)")
     ap.add_argument("--cache-dir", default="cache")
     ap.add_argument("--out", default=None,
                     help="report path (default: reports/<auto>.json)")
@@ -58,17 +69,43 @@ def main() -> None:
             system: MemorySystem = FullContextSystem(backend)
         else:
             system = RAGSystem(backend, k=args.k)
+    elif args.system in ("lora", "seal", "cls"):
+        from .parametric_systems import LoRANaiveSystem, SEALLiteSystem
+        provider, _, model_id = args.backend.partition(":")
+        if provider != "mlx":
+            raise SystemExit("lora/seal/cls need an mlx backend "
+                             "(--backend mlx:<model>)")
+        dataset = os.path.basename(os.path.normpath(args.data))
+        suffix = f"-{args.policy}" if args.system == "cls" else ""
+        workdir = args.workdir or os.path.join(
+            "runs", f"{dataset}-{args.system}{suffix}")
+        kwargs = dict(model_id=model_id, workdir=workdir,
+                      cache_dir=args.cache_dir)
+        if args.iters:
+            kwargs["iters"] = args.iters
+        if args.system == "lora":
+            system = LoRANaiveSystem(**kwargs)
+        elif args.system == "seal":
+            system = SEALLiteSystem(**kwargs)
+        else:
+            import sys as _sys
+            _sys.path.insert(0, os.getcwd())
+            from clsledger.system import CLSLedgerSystem
+            system = CLSLedgerSystem(policy=args.policy, **kwargs)
     else:
         system = make_system(args.system, args.data)
 
-    report = run(system, args.data)
-    label = args.system if backend is None else (
-        f"{args.system}-{args.backend.split(':', 1)[1]}"
+    model_tag = args.backend.split(":", 1)[1].rsplit("/", 1)[-1]
+    label = args.system if args.system in ("oracle", "stale", "null") else (
+        f"{args.system}-{model_tag}"
         + (f"-k{args.k}" if args.system == "rag" else ""))
+    report = run(system, args.data)
     print(f"system={label} data={args.data}\n")
     print_report(report)
-    if backend is not None and hasattr(backend, "stats"):
-        report["backend_stats"] = backend.stats()
+    stats_src = backend if backend is not None else getattr(
+        system, "backend", None)
+    if stats_src is not None and hasattr(stats_src, "stats"):
+        report["backend_stats"] = stats_src.stats()
         print(f"\nbackend: {json.dumps(report['backend_stats'])}")
 
     out = args.out
