@@ -49,6 +49,11 @@ def main() -> None:
     ap.add_argument("--policy", default="stable",
                     choices=["stable", "all", "hot"],
                     help="cls consolidation policy")
+    ap.add_argument("--mode", default="hybrid",
+                    choices=["hybrid", "weights"],
+                    help="cls answering mode (v1 hybrid / v0 weights-only)")
+    ap.add_argument("--no-replay", action="store_true",
+                    help="cls: disable anti-forgetting replay mix-in")
     ap.add_argument("--backend", default="openai:gpt-4.1-mini",
                     help="provider:model, e.g. openai:gpt-4.1-mini or "
                          "mlx:mlx-community/Qwen2.5-3B-Instruct-4bit")
@@ -76,7 +81,8 @@ def main() -> None:
             raise SystemExit("lora/seal/cls need an mlx backend "
                              "(--backend mlx:<model>)")
         dataset = os.path.basename(os.path.normpath(args.data))
-        suffix = f"-{args.policy}" if args.system == "cls" else ""
+        suffix = (f"-{args.policy}-{args.mode}"
+                  if args.system == "cls" else "")
         workdir = args.workdir or os.path.join(
             "runs", f"{dataset}-{args.system}{suffix}")
         kwargs = dict(model_id=model_id, workdir=workdir,
@@ -91,14 +97,16 @@ def main() -> None:
             import sys as _sys
             _sys.path.insert(0, os.getcwd())
             from clsledger.system import CLSLedgerSystem
-            system = CLSLedgerSystem(policy=args.policy, **kwargs)
+            system = CLSLedgerSystem(policy=args.policy, mode=args.mode,
+                                     replay=not args.no_replay, **kwargs)
     else:
         system = make_system(args.system, args.data)
 
     model_tag = args.backend.split(":", 1)[1].rsplit("/", 1)[-1]
     label = args.system if args.system in ("oracle", "stale", "null") else (
         f"{args.system}-{model_tag}"
-        + (f"-k{args.k}" if args.system == "rag" else ""))
+        + (f"-k{args.k}" if args.system == "rag" else "")
+        + (f"-{args.policy}-{args.mode}" if args.system == "cls" else ""))
     report = run(system, args.data)
     print(f"system={label} data={args.data}\n")
     print_report(report)
@@ -107,6 +115,9 @@ def main() -> None:
     if stats_src is not None and hasattr(stats_src, "stats"):
         report["backend_stats"] = stats_src.stats()
         print(f"\nbackend: {json.dumps(report['backend_stats'])}")
+    if hasattr(system, "stats"):
+        report["system_stats"] = system.stats()
+        print(f"system: {json.dumps(report['system_stats'])}")
 
     out = args.out
     if out is None:

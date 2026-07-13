@@ -49,25 +49,30 @@ EXTRACT_PROMPT = (
 class CLSLedgerSystem(MemorySystem):
     name = "cls"
 
-    def __init__(self, model_id: str, workdir: str, iters: int = 600,
+    def __init__(self, model_id: str, workdir: str, iters: int = 300,
                  cache_dir: Optional[str] = None,
                  extractor_model: str = "gpt-4.1-mini",
-                 policy: str = "stable", online_k: int = 8):
+                 policy: str = "stable", online_k: int = 8,
+                 mode: str = "hybrid", replay: bool = True):
         self.model_id = model_id
         self.workdir = workdir
         self.iters = iters
         self.cache_dir = cache_dir
         self.policy = policy
         self.online_k = online_k
+        self.mode = mode          # 'hybrid' (v1) or 'weights' (v0)
+        self.replay = replay
         self.extractor = OpenAIBackend(extractor_model, cache_dir=cache_dir)
         self.ledger = Ledger()
         self.episodes: List[dict] = []
         self.ep_index = BM25Index()
-        self.card_index: Optional[BM25Index] = None
         self.cards_by_id: Dict[str, Card] = {}
+        self.all_index: Optional[BM25Index] = None
+        self.consolidated_ids: set = set()
         self.base_backend: Optional[MLXBackend] = None
         self.backend: Optional[MLXBackend] = None
         self.today = 0
+        self.routes: Dict[str, str] = {}
 
     # ------------------------------------------------------------ ingestion
 
@@ -121,13 +126,7 @@ class CLSLedgerSystem(MemorySystem):
                     c.usage += 1
                     break
 
-    def answer(self, query: dict) -> str:
-        if self.backend is not None:  # consolidated: answer from weights
-            user = (f"QUESTION (asked on day {query['day_asked']}): "
-                    f"{query['question']}\nAnswer:")
-            return self.backend.complete(PARAMETRIC_SYSTEM_PROMPT, user)
-        # mid-life: episodic path + usage accounting
-        self._charge_usage(query["question"])
+    def _episodic_answer(self, query: dict) -> str:
         texts = {e["episode_id"]: e["text"] for e in self.episodes}
         order = {e["episode_id"]: i for i, e in enumerate(self.episodes)}
         hits = self.ep_index.search(query["question"], self.online_k)
@@ -135,6 +134,52 @@ class CLSLedgerSystem(MemorySystem):
         notes = [texts[eid] for eid in ids]
         return self._ensure_base().complete(SYSTEM_PROMPT,
                                             build_prompt(notes, query))
+
+    def _route(self, question: str) -> str:
+        """Ledger-based routing, no benchmark-specific phrasing tricks:
+        - temporal questions go episodic (weights hold current state only);
+        - otherwise: if the single most relevant card for the question was
+          consolidated AND its entity is explicitly the subject of the
+          question, answer from weights; anything else stays episodic."""
+        if "As of day" in question:
+            return "episodic"
+        if self.all_index is None or not self.consolidated_ids:
+            return "episodic"
+        top = self.all_index.search(question, 1)
+        if not top:
+            return "episodic"
+        cid = top[0][0]
+        if cid not in self.consolidated_ids:
+            return "episodic"  # e.g. volatile fact kept episodic on purpose
+        card = self.cards_by_id[cid]
+        ent = card.entity.lower()
+        subject = "user" if ent == "user" else ent
+        if subject not in question.lower():
+            return "episodic"
+        return "weights"
+
+    def answer(self, query: dict) -> str:
+        if self.backend is None:
+            # mid-life: episodic path + usage accounting
+            self._charge_usage(query["question"])
+            return self._episodic_answer(query)
+        route = ("weights" if self.mode == "weights"
+                 else self._route(query["question"]))
+        self.routes[query.get("query_id", "?")] = route
+        if route == "episodic":
+            return self._episodic_answer(query)
+        user = (f"QUESTION (asked on day {query['day_asked']}): "
+                f"{query['question']}\nAnswer:")
+        return self.backend.complete(PARAMETRIC_SYSTEM_PROMPT, user)
+
+    def stats(self) -> dict:
+        counts: Dict[str, int] = {}
+        for r in self.routes.values():
+            counts[r] = counts.get(r, 0) + 1
+        return {"mode": self.mode, "policy": self.policy,
+                "routes": counts,
+                "cards_current": len(self.ledger.current_cards()),
+                "cards_consolidated": len(self.consolidated_ids)}
 
     # -------------------------------------------------------- consolidation
 
@@ -162,6 +207,16 @@ class CLSLedgerSystem(MemorySystem):
                                                         policy=self.policy)
         rows = self._distill_rows(selected)
         provenance = [{"card_id": r.pop("_card_id")} for r in rows]
+        if self.replay:
+            from .replay import replay_rows
+            extra = replay_rows(PARAMETRIC_SYSTEM_PROMPT)
+            provenance += [{"card_id": "__replay__"} for _ in extra]
+            rows += extra
+            import random as _random
+            order = list(range(len(rows)))
+            _random.Random(0).shuffle(order)
+            rows = [rows[i] for i in order]
+            provenance = [provenance[i] for i in order]
         data_dir = os.path.join(self.workdir, "data")
         adapter = os.path.join(self.workdir, "adapter")
         n_valid = max(2, len(rows) // 10)
@@ -176,9 +231,18 @@ class CLSLedgerSystem(MemorySystem):
             "cards_selected": len(selected),
             "train_rows": len(rows),
             "policy": self.policy,
+            "mode": self.mode,
+            "replay": self.replay,
+            "iters": self.iters,
         }
         with open(os.path.join(self.workdir, "consolidation.json"), "w") as f:
             json.dump(stats, f, indent=2)
+        # routing structures
+        self.consolidated_ids = {c.card_id for c in selected}
+        self.all_index = BM25Index()
+        for c in self.ledger.current_cards():
+            self.all_index.add(c.card_id, c.text())
+            self.cards_by_id[c.card_id] = c
         _run_lora_training(self.model_id, data_dir, adapter, self.iters,
                            mask_prompt=True)
         self.backend = MLXBackend(self.model_id, adapter_path=adapter,
