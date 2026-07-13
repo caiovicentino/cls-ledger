@@ -53,7 +53,8 @@ class CLSLedgerSystem(MemorySystem):
                  cache_dir: Optional[str] = None,
                  extractor_model: str = "gpt-4.1-mini",
                  policy: str = "stable", online_k: int = 8,
-                 mode: str = "hybrid", replay: bool = True):
+                 mode: str = "hybrid", replay: bool = True,
+                 sleep_every: int = 0):
         self.model_id = model_id
         self.workdir = workdir
         self.iters = iters
@@ -73,6 +74,10 @@ class CLSLedgerSystem(MemorySystem):
         self.backend: Optional[MLXBackend] = None
         self.today = 0
         self.routes: Dict[str, str] = {}
+        # periodic consolidation ("sleep"): 0 = only at end of life (v1)
+        self.sleep_every = sleep_every
+        self.next_sleep = sleep_every if sleep_every else None
+        self.n_sleeps = 0
 
     # ------------------------------------------------------------ ingestion
 
@@ -105,6 +110,10 @@ class CLSLedgerSystem(MemorySystem):
         m = re.match(r"Day (\d+):", episode["text"])
         if m:
             self.today = max(self.today, int(m.group(1)))
+        if self.next_sleep is not None and self.today > self.next_sleep:
+            self._consolidate(self.next_sleep)
+            while self.next_sleep < self.today:
+                self.next_sleep += self.sleep_every
         for card in self._extract_cards(episode):
             self.ledger.add(card)
 
@@ -126,12 +135,43 @@ class CLSLedgerSystem(MemorySystem):
                     c.usage += 1
                     break
 
+    def _fact_timelines(self) -> Dict[str, str]:
+        """One retrieval document per FACT: its full dated value timeline.
+        Gives the reader explicit temporal structure — the v1 episodic path
+        failed point-in-time (20%) and revocations (0%) because raw
+        episodes bury the timeline."""
+        docs: Dict[str, str] = {}
+        keys = {c.key for c in self.ledger.cards}
+        for key in keys:
+            hist = self.ledger.history(key)
+            if not hist:
+                continue
+            ent = hist[0].entity
+            attr = hist[0].attribute.replace("_", " ")
+            spans = []
+            for i, c in enumerate(hist):
+                end = (f"to day {hist[i + 1].day - 1}"
+                       if i + 1 < len(hist) else "current")
+                label = "none — revoked" if c.value in ("none", "") else \
+                    c.value
+                spans.append(f"{label} (day {c.day} {end})")
+            docs[key] = f"{ent} | {attr}: " + "; ".join(spans)
+        return docs
+
     def _episodic_answer(self, query: dict) -> str:
-        texts = {e["episode_id"]: e["text"] for e in self.episodes}
-        order = {e["episode_id"]: i for i, e in enumerate(self.episodes)}
-        hits = self.ep_index.search(query["question"], self.online_k)
-        ids = sorted((eid for eid, _ in hits), key=lambda e: order[e])
-        notes = [texts[eid] for eid in ids]
+        docs = self._fact_timelines()
+        if len(docs) >= 5:
+            idx = BM25Index()
+            for key in sorted(docs):
+                idx.add(key, docs[key])
+            hits = idx.search(query["question"], self.online_k)
+            notes = [docs[key] for key, _ in hits]
+        else:  # cold start: ledger too small, use raw episodes
+            texts = {e["episode_id"]: e["text"] for e in self.episodes}
+            order = {e["episode_id"]: i for i, e in enumerate(self.episodes)}
+            hits = self.ep_index.search(query["question"], self.online_k)
+            ids = sorted((eid for eid, _ in hits), key=lambda e: order[e])
+            notes = [texts[eid] for eid in ids]
         return self._ensure_base().complete(SYSTEM_PROMPT,
                                             build_prompt(notes, query))
 
@@ -159,9 +199,9 @@ class CLSLedgerSystem(MemorySystem):
         return "weights"
 
     def answer(self, query: dict) -> str:
-        if self.backend is None:
-            # mid-life: episodic path + usage accounting
+        if query.get("qtype_public") == "online":
             self._charge_usage(query["question"])
+        if self.backend is None:
             return self._episodic_answer(query)
         route = ("weights" if self.mode == "weights"
                  else self._route(query["question"]))
@@ -184,29 +224,67 @@ class CLSLedgerSystem(MemorySystem):
 
     # -------------------------------------------------------- consolidation
 
-    def _distill_rows(self, cards: List[Card]) -> List[dict]:
+    def _twin_entities(self) -> set:
+        """Entities sharing a first name token with another entity — the
+        binding-confusion risk group observed in v1 (Auriga vs Aurora,
+        the two Sofias)."""
+        firsts: Dict[str, set] = {}
+        for c in self.ledger.current_cards():
+            token = c.entity.split()[-1] if c.entity.startswith("Project ") \
+                else c.entity.split()[0]
+            firsts.setdefault(token.lower()[:4], set()).add(c.entity)
+        return {e for group in firsts.values() if len(group) > 1
+                for e in group}
+
+    def _distill_rows(self, cards: List[Card], day: int) -> List[dict]:
+        twins = self._twin_entities()
         rows = []
         for c in cards:
             attr = c.attribute.replace("_", " ")
             entity = "the user" if c.entity.lower() == "user" else c.entity
             questions = [
                 f"What is {entity}'s {attr}?",
-                f"As of day {self.today}, what is {entity}'s {attr}?",
+                f"As of day {day}, what is {entity}'s {attr}?",
                 f"Tell me the current {attr} of {entity}.",
             ]
-            for q in questions:
+            answer = c.value
+            if c.value == "cancelled":
+                questions.append(f"Is {entity} still active?")
                 rows.append({"messages": [
                     {"role": "system", "content": PARAMETRIC_SYSTEM_PROMPT},
-                    {"role": "user", "content": q},
-                    {"role": "assistant", "content": c.value},
+                    {"role": "user", "content": questions.pop()},
+                    {"role": "assistant",
+                     "content": "no, it was cancelled"},
                 ], "_card_id": c.card_id})
+            elif c.value in ("none", ""):
+                answer = "none"
+                rows.append({"messages": [
+                    {"role": "system", "content": PARAMETRIC_SYSTEM_PROMPT},
+                    {"role": "user",
+                     "content": f"Does {entity} currently have any {attr}?"},
+                    {"role": "assistant", "content": "no"},
+                ], "_card_id": c.card_id})
+            reps = 2 if c.entity in twins else 1
+            for _ in range(reps):
+                for q in questions:
+                    rows.append({"messages": [
+                        {"role": "system",
+                         "content": PARAMETRIC_SYSTEM_PROMPT},
+                        {"role": "user", "content": q},
+                        {"role": "assistant", "content": answer},
+                    ], "_card_id": c.card_id})
         return rows
 
-    def finalize(self) -> None:
-        os.makedirs(self.workdir, exist_ok=True)
-        selected = self.ledger.select_for_consolidation(self.today,
+    def _consolidate(self, day: int) -> None:
+        """One sleep cycle: select, distill, retrain from scratch, swap the
+        adapter. Each sleep gets its own adapter dir so response caches
+        from different sleeps never collide."""
+        self.n_sleeps += 1
+        sleep_dir = os.path.join(self.workdir, f"sleep-{self.n_sleeps:02d}")
+        os.makedirs(sleep_dir, exist_ok=True)
+        selected = self.ledger.select_for_consolidation(day,
                                                         policy=self.policy)
-        rows = self._distill_rows(selected)
+        rows = self._distill_rows(selected, day)
         provenance = [{"card_id": r.pop("_card_id")} for r in rows]
         if self.replay:
             from .replay import replay_rows
@@ -218,29 +296,32 @@ class CLSLedgerSystem(MemorySystem):
             _random.Random(0).shuffle(order)
             rows = [rows[i] for i in order]
             provenance = [provenance[i] for i in order]
-        data_dir = os.path.join(self.workdir, "data")
-        adapter = os.path.join(self.workdir, "adapter")
+        data_dir = os.path.join(sleep_dir, "data")
+        adapter = os.path.join(sleep_dir, "adapter")
         n_valid = max(2, len(rows) // 10)
         _write_dataset(data_dir, rows, rows[-n_valid:])
-        with open(os.path.join(self.workdir, "provenance.jsonl"), "w") as f:
+        with open(os.path.join(sleep_dir, "provenance.jsonl"), "w") as f:
             for i, p in enumerate(provenance):
                 f.write(json.dumps({"train_row": i, **p}) + "\n")
-        self.ledger.dump(os.path.join(self.workdir, "ledger.jsonl"))
+        self.ledger.dump(os.path.join(sleep_dir, "ledger.jsonl"))
         stats = {
+            "sleep": self.n_sleeps, "day": day,
             "cards_total": len(self.ledger.cards),
             "cards_current": len(self.ledger.current_cards()),
             "cards_selected": len(selected),
             "train_rows": len(rows),
-            "policy": self.policy,
-            "mode": self.mode,
-            "replay": self.replay,
-            "iters": self.iters,
+            "policy": self.policy, "mode": self.mode,
+            "replay": self.replay, "iters": self.iters,
         }
-        with open(os.path.join(self.workdir, "consolidation.json"), "w") as f:
+        with open(os.path.join(sleep_dir, "consolidation.json"), "w") as f:
             json.dump(stats, f, indent=2)
-        # routing structures
+        # routing structures: consolidated = the exact card versions the
+        # weights were trained on; a fact updated after this sleep gets a
+        # new card_id, drops out of this set, and routes episodic — the
+        # ledger knows what the weights know.
         self.consolidated_ids = {c.card_id for c in selected}
         self.all_index = BM25Index()
+        self.cards_by_id = {}
         for c in self.ledger.current_cards():
             self.all_index.add(c.card_id, c.text())
             self.cards_by_id[c.card_id] = c
@@ -248,3 +329,14 @@ class CLSLedgerSystem(MemorySystem):
                            mask_prompt=True)
         self.backend = MLXBackend(self.model_id, adapter_path=adapter,
                                   cache_dir=self.cache_dir)
+        # keep top-level artifacts pointing at the latest sleep
+        for name in ("consolidation.json", "provenance.jsonl",
+                     "ledger.jsonl"):
+            src = os.path.join(sleep_dir, name)
+            dst = os.path.join(self.workdir, name)
+            with open(src) as fsrc, open(dst, "w") as fdst:
+                fdst.write(fsrc.read())
+
+    def finalize(self) -> None:
+        os.makedirs(self.workdir, exist_ok=True)
+        self._consolidate(self.today)

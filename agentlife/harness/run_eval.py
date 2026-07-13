@@ -54,6 +54,8 @@ def main() -> None:
                     help="cls answering mode (v1 hybrid / v0 weights-only)")
     ap.add_argument("--no-replay", action="store_true",
                     help="cls: disable anti-forgetting replay mix-in")
+    ap.add_argument("--sleep-every", type=int, default=0,
+                    help="cls: consolidate every N days (0 = end of life)")
     ap.add_argument("--backend", default="openai:gpt-4.1-mini",
                     help="provider:model, e.g. openai:gpt-4.1-mini or "
                          "mlx:mlx-community/Qwen2.5-3B-Instruct-4bit")
@@ -82,6 +84,7 @@ def main() -> None:
                              "(--backend mlx:<model>)")
         dataset = os.path.basename(os.path.normpath(args.data))
         suffix = (f"-{args.policy}-{args.mode}"
+                  + (f"-s{args.sleep_every}" if args.sleep_every else "")
                   if args.system == "cls" else "")
         workdir = args.workdir or os.path.join(
             "runs", f"{dataset}-{args.system}{suffix}")
@@ -98,7 +101,8 @@ def main() -> None:
             _sys.path.insert(0, os.getcwd())
             from clsledger.system import CLSLedgerSystem
             system = CLSLedgerSystem(policy=args.policy, mode=args.mode,
-                                     replay=not args.no_replay, **kwargs)
+                                     replay=not args.no_replay,
+                                     sleep_every=args.sleep_every, **kwargs)
     else:
         system = make_system(args.system, args.data)
 
@@ -106,7 +110,9 @@ def main() -> None:
     label = args.system if args.system in ("oracle", "stale", "null") else (
         f"{args.system}-{model_tag}"
         + (f"-k{args.k}" if args.system == "rag" else "")
-        + (f"-{args.policy}-{args.mode}" if args.system == "cls" else ""))
+        + (f"-{args.policy}-{args.mode}"
+           + (f"-s{args.sleep_every}" if args.sleep_every else "")
+           if args.system == "cls" else ""))
     report = run(system, args.data)
     print(f"system={label} data={args.data}\n")
     print_report(report)
