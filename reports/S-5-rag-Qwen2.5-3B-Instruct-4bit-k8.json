@@ -1,0 +1,726 @@
+{
+  "n_final": 44,
+  "n_online": 15,
+  "accuracy_final": 0.5,
+  "accuracy_online": 0.4666666666666667,
+  "by_qtype": {
+    "absent": {
+      "n": 6,
+      "acc": 1.0
+    },
+    "current_stable": {
+      "n": 8,
+      "acc": 0.75
+    },
+    "current_updated": {
+      "n": 8,
+      "acc": 0.625
+    },
+    "current_volatile": {
+      "n": 2,
+      "acc": 0.5
+    },
+    "multihop_2": {
+      "n": 6,
+      "acc": 0.0
+    },
+    "multihop_3": {
+      "n": 1,
+      "acc": 0.0
+    },
+    "point_in_time": {
+      "n": 10,
+      "acc": 0.3
+    },
+    "revoked": {
+      "n": 3,
+      "acc": 0.3333333333333333
+    }
+  },
+  "by_heat": {
+    "cold": {
+      "n": 37,
+      "acc": 0.5405405405405406
+    },
+    "hot": {
+      "n": 7,
+      "acc": 0.2857142857142857
+    }
+  },
+  "by_n_updates": {
+    "0": {
+      "n": 30,
+      "acc": 0.5
+    },
+    "1": {
+      "n": 10,
+      "acc": 0.6
+    },
+    "2+": {
+      "n": 4,
+      "acc": 0.25
+    }
+  },
+  "error_classes": {
+    "miss": 3,
+    "correct": 29,
+    "stale": 9,
+    "abstain": 18
+  },
+  "rows": [
+    {
+      "query_id": "q0000",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "miss",
+      "correct": 0,
+      "response": "Cobalt Harbor",
+      "answer_display": "Nortex Labs"
+    },
+    {
+      "query_id": "q0001",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Sofia Almeida",
+      "answer_display": "Sofia Almeida"
+    },
+    {
+      "query_id": "q0002",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Tallinn",
+      "answer_display": "Tallinn"
+    },
+    {
+      "query_id": "q0003",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "Cobalt Harbor",
+      "answer_display": "Mistral Forge"
+    },
+    {
+      "query_id": "q0004",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Sofia Almeida",
+      "answer_display": "Sofia Almeida"
+    },
+    {
+      "query_id": "q0005",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Tallinn",
+      "answer_display": "Tallinn"
+    },
+    {
+      "query_id": "q0006",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Mistral Forge"
+    },
+    {
+      "query_id": "q0007",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "Project Auriga",
+      "answer_display": "Cedarline Group"
+    },
+    {
+      "query_id": "q0008",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "Peregrine Data",
+      "answer_display": "Mistral Forge"
+    },
+    {
+      "query_id": "q0009",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "F68",
+      "answer_display": "E75"
+    },
+    {
+      "query_id": "q0010",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "miss",
+      "correct": 0,
+      "response": "Project Aurora",
+      "answer_display": "Mistral Forge"
+    },
+    {
+      "query_id": "q0011",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Cedarline Group",
+      "answer_display": "Cedarline Group"
+    },
+    {
+      "query_id": "q0012",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Project Auriga",
+      "answer_display": "Project Auriga"
+    },
+    {
+      "query_id": "q0013",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Mistral Forge"
+    },
+    {
+      "query_id": "q0014",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Project Auriga",
+      "answer_display": "Project Auriga"
+    },
+    {
+      "query_id": "q0018",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Nortex Labs",
+      "answer_display": "Nortex Labs"
+    },
+    {
+      "query_id": "q0026",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Tampere",
+      "answer_display": "Tampere"
+    },
+    {
+      "query_id": "q0025",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "February 21"
+    },
+    {
+      "query_id": "q0020",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Cork"
+    },
+    {
+      "query_id": "q0016",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Tesserac Analytics",
+      "answer_display": "Tesserac Analytics"
+    },
+    {
+      "query_id": "q0024",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Windhoek",
+      "answer_display": "Windhoek"
+    },
+    {
+      "query_id": "q0023",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Oslo",
+      "answer_display": "Oslo"
+    },
+    {
+      "query_id": "q0022",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "September 17",
+      "answer_display": "September 17"
+    },
+    {
+      "query_id": "q0038",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Project Auriga",
+      "answer_display": "Project Auriga"
+    },
+    {
+      "query_id": "q0027",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "$85k",
+      "answer_display": "$85k"
+    },
+    {
+      "query_id": "q0041",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "stale",
+      "correct": 0,
+      "response": "flat white",
+      "answer_display": "cortado"
+    },
+    {
+      "query_id": "q0037",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Krakow",
+      "answer_display": "Krakow"
+    },
+    {
+      "query_id": "q0033",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "Adelaide",
+      "answer_display": "Boise"
+    },
+    {
+      "query_id": "q0034",
+      "qtype": "current_updated",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Mistral Forge"
+    },
+    {
+      "query_id": "q0029",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Elena Marsh",
+      "answer_display": "Elena Marsh"
+    },
+    {
+      "query_id": "q0030",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "paused",
+      "answer_display": "paused"
+    },
+    {
+      "query_id": "q0044",
+      "qtype": "current_volatile",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "F68",
+      "answer_display": "A30"
+    },
+    {
+      "query_id": "q0043",
+      "qtype": "current_volatile",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "correct",
+      "correct": 1,
+      "response": "Desk 36",
+      "answer_display": "Desk 36"
+    },
+    {
+      "query_id": "q0055",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Peregrine Data"
+    },
+    {
+      "query_id": "q0065",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Desk 26",
+      "answer_display": "Desk 26"
+    },
+    {
+      "query_id": "q0052",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "stale",
+      "correct": 0,
+      "response": "Brightmesh",
+      "answer_display": "Nortex Labs"
+    },
+    {
+      "query_id": "q0056",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Cobalt Harbor"
+    },
+    {
+      "query_id": "q0062",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Antwerp",
+      "answer_display": "Antwerp"
+    },
+    {
+      "query_id": "q0057",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "stale",
+      "correct": 0,
+      "response": "The Copper Pot",
+      "answer_display": "Miso Garden"
+    },
+    {
+      "query_id": "q0060",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Trondheim",
+      "answer_display": "Trondheim"
+    },
+    {
+      "query_id": "q0068",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Thursday"
+    },
+    {
+      "query_id": "q0067",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Friday"
+    },
+    {
+      "query_id": "q0049",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "stale",
+      "correct": 0,
+      "response": "paused",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0074",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "July 9"
+    },
+    {
+      "query_id": "q0077",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "August 9"
+    },
+    {
+      "query_id": "q0075",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "August 9"
+    },
+    {
+      "query_id": "q0076",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "July 9"
+    },
+    {
+      "query_id": "q0072",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Tallinn"
+    },
+    {
+      "query_id": "q0073",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Tallinn"
+    },
+    {
+      "query_id": "q0071",
+      "qtype": "multihop_3",
+      "heat": "cold",
+      "hops": 3,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Cork"
+    },
+    {
+      "query_id": "q0080",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "no"
+    },
+    {
+      "query_id": "q0078",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "cancelled",
+      "answer_display": "cancelled"
+    },
+    {
+      "query_id": "q0079",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "none"
+    },
+    {
+      "query_id": "q0082",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0087",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0081",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0086",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0084",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0088",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    }
+  ],
+  "backend_stats": {
+    "model": "mlx:mlx-community/Qwen2.5-3B-Instruct-4bit|adapter:none",
+    "generations": 59,
+    "cache_hits": 0
+  }
+}

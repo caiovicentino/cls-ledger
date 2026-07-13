@@ -26,12 +26,12 @@ from agentlife.harness.scorer import score  # noqa: E402
 from agentlife.schema import load_jsonl  # noqa: E402
 from clsledger.ledger import Card, Ledger  # noqa: E402
 from clsledger.slots import SlotRoutedBackend  # noqa: E402
-from clsledger.system import CLSLedgerSystem  # noqa: E402
+from clsledger.slots import CLSSlotsSystem as _SlotsSys  # noqa: E402
 
 
 def rebuild(run_dir: str, model_id: str, cache_dir: str,
             data_dir: str):
-    sys_ = CLSLedgerSystem.__new__(CLSLedgerSystem)
+    sys_ = _SlotsSys.__new__(_SlotsSys)
     lg = Ledger()
     for l in open(os.path.join(run_dir, "ledger.jsonl")):
         c = json.loads(l)
@@ -70,10 +70,7 @@ def rebuild(run_dir: str, model_id: str, cache_dir: str,
     for e in sys_.episodes:
         sys_.ep_index.add(e["episode_id"], e["text"])
 
-    # bind the slots-aware weights answer
-    from clsledger.slots import CLSSlotsSystem
     sys_.activation = "routed"
-    sys_._weights_answer = CLSSlotsSystem._weights_answer.__get__(sys_)
     return sys_
 
 
