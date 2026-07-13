@@ -1,0 +1,13 @@
+{
+  "probe_no_slot": 93.8,
+  "probe_slot_active": 93.8,
+  "probe_base": 93.8,
+  "unlearn": {
+    "method": "slot drop (routed, no retraining)",
+    "target_queries": 4,
+    "other_queries": 40,
+    "other_answers_changed": 0,
+    "target_after_drop": "unknown"
+  },
+  "note": "pre-registered criteria met: forgetting 0.0% (<=1%), collateral 0/40 (<1%)"
+}
