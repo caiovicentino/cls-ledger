@@ -81,7 +81,8 @@ class Ledger:
 
     def select_for_consolidation(self, today: int, policy: str = "stable",
                                  volatile_churn: int = 3,
-                                 volatile_recent_days: int = 7) -> List[Card]:
+                                 volatile_recent_days: int = 7,
+                                 budget: Optional[int] = None) -> List[Card]:
         """Which current facts deserve to live in the weights?
 
         policy 'stable' (default): every current card except those that
@@ -90,6 +91,11 @@ class Ledger:
         freshness is cheap.
         policy 'all': every current card (ablation).
         policy 'hot': only cards with observed usage > 0 (ablation for H1).
+
+        budget: hard cap on consolidated cards — the capacity constraint
+        that makes selection policies actually compete (H1 under budget).
+        Ranking under budget: hot -> by usage; stable -> by settledness
+        (days since change desc, churn asc); all -> deterministic random.
         """
         out = []
         for c in self.current_cards():
@@ -105,6 +111,22 @@ class Ledger:
             if churn >= volatile_churn and recent < volatile_recent_days:
                 continue  # volatile: keep episodic
             out.append(c)
+        if budget is not None and len(out) > budget:
+            if policy == "hot":
+                out.sort(key=lambda c: (-c.usage,
+                                        -self.days_since_change(c.key,
+                                                                today),
+                                        c.card_id))
+            elif policy == "stable":
+                out.sort(key=lambda c: (-self.days_since_change(c.key,
+                                                                today),
+                                        self.churn(c.key), c.card_id))
+            else:
+                import random
+                rng = random.Random(0)
+                out = sorted(out, key=lambda c: c.card_id)
+                rng.shuffle(out)
+            out = out[:budget]
         return out
 
     def dump(self, path: str) -> None:

@@ -45,7 +45,11 @@ def main() -> None:
     ap.add_argument("--data", required=True)
     ap.add_argument("--system", required=True,
                     choices=["oracle", "stale", "null", "full", "rag",
-                             "lora", "seal", "cls"])
+                             "lora", "seal", "cls", "slots"])
+    ap.add_argument("--budget", type=int, default=None,
+                    help="cls/slots: max cards consolidated (H1 capacity)")
+    ap.add_argument("--slot-rank", type=int, default=4,
+                    help="slots: LoRA rank per entity slot")
     ap.add_argument("--policy", default="stable",
                     choices=["stable", "all", "hot"],
                     help="cls consolidation policy")
@@ -76,16 +80,17 @@ def main() -> None:
             system: MemorySystem = FullContextSystem(backend)
         else:
             system = RAGSystem(backend, k=args.k)
-    elif args.system in ("lora", "seal", "cls"):
+    elif args.system in ("lora", "seal", "cls", "slots"):
         from .parametric_systems import LoRANaiveSystem, SEALLiteSystem
         provider, _, model_id = args.backend.partition(":")
         if provider != "mlx":
-            raise SystemExit("lora/seal/cls need an mlx backend "
+            raise SystemExit("lora/seal/cls/slots need an mlx backend "
                              "(--backend mlx:<model>)")
         dataset = os.path.basename(os.path.normpath(args.data))
         suffix = (f"-{args.policy}-{args.mode}"
                   + (f"-s{args.sleep_every}" if args.sleep_every else "")
-                  if args.system == "cls" else "")
+                  + (f"-b{args.budget}" if args.budget else "")
+                  if args.system in ("cls", "slots") else "")
         workdir = args.workdir or os.path.join(
             "runs", f"{dataset}-{args.system}{suffix}")
         kwargs = dict(model_id=model_id, workdir=workdir,
@@ -99,10 +104,17 @@ def main() -> None:
         else:
             import sys as _sys
             _sys.path.insert(0, os.getcwd())
-            from clsledger.system import CLSLedgerSystem
-            system = CLSLedgerSystem(policy=args.policy, mode=args.mode,
-                                     replay=not args.no_replay,
-                                     sleep_every=args.sleep_every, **kwargs)
+            cls_kwargs = dict(policy=args.policy, mode=args.mode,
+                              replay=not args.no_replay,
+                              sleep_every=args.sleep_every,
+                              budget=args.budget, **kwargs)
+            if args.system == "cls":
+                from clsledger.system import CLSLedgerSystem
+                system = CLSLedgerSystem(**cls_kwargs)
+            else:
+                from clsledger.slots import CLSSlotsSystem
+                system = CLSSlotsSystem(slot_rank=args.slot_rank,
+                                        **cls_kwargs)
     else:
         system = make_system(args.system, args.data)
 
@@ -112,7 +124,8 @@ def main() -> None:
         + (f"-k{args.k}" if args.system == "rag" else "")
         + (f"-{args.policy}-{args.mode}"
            + (f"-s{args.sleep_every}" if args.sleep_every else "")
-           if args.system == "cls" else ""))
+           + (f"-b{args.budget}" if args.budget else "")
+           if args.system in ("cls", "slots") else ""))
     report = run(system, args.data)
     print(f"system={label} data={args.data}\n")
     print_report(report)

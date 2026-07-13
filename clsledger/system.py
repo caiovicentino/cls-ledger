@@ -62,7 +62,7 @@ class CLSLedgerSystem(MemorySystem):
                  extractor_model: str = "gpt-4.1-mini",
                  policy: str = "stable", online_k: int = 8,
                  mode: str = "hybrid", replay: bool = True,
-                 sleep_every: int = 0):
+                 sleep_every: int = 0, budget=None):
         self.model_id = model_id
         self.workdir = workdir
         self.iters = iters
@@ -84,6 +84,7 @@ class CLSLedgerSystem(MemorySystem):
         self.routes: Dict[str, str] = {}
         # periodic consolidation ("sleep"): 0 = only at end of life (v1)
         self.sleep_every = sleep_every
+        self.budget = budget
         self.next_sleep = sleep_every if sleep_every else None
         self.n_sleeps = 0
 
@@ -406,8 +407,8 @@ class CLSLedgerSystem(MemorySystem):
         self.n_sleeps += 1
         sleep_dir = os.path.join(self.workdir, f"sleep-{self.n_sleeps:02d}")
         os.makedirs(sleep_dir, exist_ok=True)
-        selected = self.ledger.select_for_consolidation(day,
-                                                        policy=self.policy)
+        selected = self.ledger.select_for_consolidation(
+            day, policy=self.policy, budget=self.budget)
         rows = self._distill_rows(selected, day)
         provenance = [{"card_id": r.pop("_card_id")} for r in rows]
         if self.replay:

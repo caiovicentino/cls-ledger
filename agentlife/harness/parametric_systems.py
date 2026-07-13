@@ -48,7 +48,8 @@ QA_GEN_PROMPT = (
 def _run_lora_training(model_id: str, data_dir: str, adapter_path: str,
                        iters: int, batch_size: int = 2,
                        num_layers: int = 8, learning_rate: float = 1e-4,
-                       mask_prompt: bool = False, seed: int = 0) -> None:
+                       mask_prompt: bool = False, seed: int = 0,
+                       lora_rank: Optional[int] = None) -> None:
     cmd = [sys.executable, "-m", "mlx_lm", "lora",
            "--model", model_id, "--train",
            "--data", data_dir,
@@ -61,6 +62,15 @@ def _run_lora_training(model_id: str, data_dir: str, adapter_path: str,
            "--save-every", str(iters),
            "--steps-per-report", "50",
            "--seed", str(seed)]
+    if lora_rank is not None:
+        os.makedirs(adapter_path, exist_ok=True)
+        cfg = os.path.join(adapter_path, "train_config.yaml")
+        with open(cfg, "w") as f:
+            f.write("lora_parameters:\n"
+                    f"  rank: {lora_rank}\n"
+                    "  scale: 20.0\n"
+                    "  dropout: 0.0\n")
+        cmd += ["-c", cfg]
     if mask_prompt:
         cmd.append("--mask-prompt")
     result = subprocess.run(cmd, capture_output=True, text=True)
