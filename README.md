@@ -123,6 +123,29 @@ revoked (0%) and point-in-time (20%) locally; (4) the reader model
 dominates everything: gpt-4.1-mini RAG scores +20pp over local on the same
 data.
 
+### v2.3 results (periodic sleep + ledger-resolved snapshots + symbolic
+chain resolution + canonical extraction; local 3B throughout)
+
+| dataset | CLS v1 | CLS v2.3 | RAG local | RAG 4.1-mini | full 4.1-mini |
+|---|---|---|---|---|---|
+| S-1 | 50.0% | **84.1%** | 52.3% | 70.5% | 86.4% |
+| M-1 | 35.4% | **63.4%** | 37.8% | 58.5% | 76.8% |
+
+Online (mid-life) accuracy: S-1 80.0%, M-1 53.7% (v1: 33.3 / 26.9).
+Routes on M-1: 63 weights / 68 episodic / 13 symbolic. General probe
+after 3 sleeps: 75.0% (base 93.8%) — forgetting still the open front.
+
+What did it: (1) temporal resolution moved from the reader into the
+ledger (point-in-time 20%→80-100%: the reader receives facts already
+resolved at the asked day); (2) chain questions resolved symbolically in
+the ledger (multihop 0%→70%: a 3B reader cannot compose two hops even
+with both facts retrieved and highlighted); (3) canonical attribute
+vocabulary in extraction (Zep-style prescribed ontology) so supersedence
+actually merges facts; (4) periodic sleep gives the weights route mid-life
+and the ledger guards weight-staleness by construction (a fact updated
+after the last sleep drops out of the consolidated set and routes
+episodic).
+
 ### Roadmap (next)
 
 - Fix bindings: more paraphrases per card + ~450-600 iters with replay;
