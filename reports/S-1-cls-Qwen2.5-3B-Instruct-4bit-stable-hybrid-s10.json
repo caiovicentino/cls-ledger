@@ -1,7 +1,7 @@
 {
   "n_final": 44,
   "n_online": 15,
-  "accuracy_final": 0.7272727272727273,
+  "accuracy_final": 0.8409090909090909,
   "accuracy_online": 0.8,
   "by_qtype": {
     "absent": {
@@ -22,11 +22,11 @@
     },
     "multihop_2": {
       "n": 6,
-      "acc": 0.0
+      "acc": 0.6666666666666666
     },
     "multihop_3": {
       "n": 1,
-      "acc": 0.0
+      "acc": 1.0
     },
     "point_in_time": {
       "n": 10,
@@ -40,7 +40,7 @@
   "by_heat": {
     "cold": {
       "n": 37,
-      "acc": 0.7027027027027027
+      "acc": 0.8378378378378378
     },
     "hot": {
       "n": 7,
@@ -50,7 +50,7 @@
   "by_n_updates": {
     "0": {
       "n": 30,
-      "acc": 0.6333333333333333
+      "acc": 0.8
     },
     "1": {
       "n": 9,
@@ -62,10 +62,10 @@
     }
   },
   "error_classes": {
-    "correct": 44,
-    "miss": 11,
+    "correct": 49,
+    "miss": 8,
     "stale": 1,
-    "abstain": 3
+    "abstain": 1
   },
   "rows": [
     {
@@ -547,9 +547,9 @@
       "heat": "cold",
       "hops": 2,
       "n_updates": "0",
-      "class": "miss",
-      "correct": 0,
-      "response": "January 21",
+      "class": "correct",
+      "correct": 1,
+      "response": "May 22",
       "answer_display": "May 22"
     },
     {
@@ -558,9 +558,9 @@
       "heat": "cold",
       "hops": 2,
       "n_updates": "0",
-      "class": "abstain",
-      "correct": 0,
-      "response": "unknown",
+      "class": "correct",
+      "correct": 1,
+      "response": "January 22",
       "answer_display": "January 22"
     },
     {
@@ -569,9 +569,9 @@
       "heat": "cold",
       "hops": 2,
       "n_updates": "0",
-      "class": "abstain",
-      "correct": 0,
-      "response": "unknown",
+      "class": "correct",
+      "correct": 1,
+      "response": "April 5",
       "answer_display": "April 5"
     },
     {
@@ -602,9 +602,9 @@
       "heat": "cold",
       "hops": 2,
       "n_updates": "0",
-      "class": "miss",
-      "correct": 0,
-      "response": "January 22",
+      "class": "correct",
+      "correct": 1,
+      "response": "May 22",
       "answer_display": "May 22"
     },
     {
@@ -613,9 +613,9 @@
       "heat": "cold",
       "hops": 3,
       "n_updates": "0",
-      "class": "miss",
-      "correct": 0,
-      "response": "Cobalt",
+      "class": "correct",
+      "correct": 1,
+      "response": "Fresno",
       "answer_display": "Fresno"
     },
     {
@@ -720,15 +720,16 @@
   ],
   "backend_stats": {
     "model": "mlx:mlx-community/Qwen2.5-3B-Instruct-4bit|adapter:runs/S-1-cls-stable-hybrid-s10/sleep-03/adapter",
-    "generations": 6,
-    "cache_hits": 19
+    "generations": 0,
+    "cache_hits": 20
   },
   "system_stats": {
     "mode": "hybrid",
     "policy": "stable",
     "routes": {
-      "weights": 38,
-      "episodic": 19
+      "weights": 33,
+      "episodic": 19,
+      "symbolic": 5
     },
     "routes_by_query": {
       "q0002": "weights",
@@ -772,13 +773,13 @@
       "q0051": "episodic",
       "q0070": "episodic",
       "q0071": "episodic",
-      "q0076": "weights",
-      "q0078": "weights",
-      "q0075": "weights",
+      "q0076": "symbolic",
+      "q0078": "symbolic",
+      "q0075": "symbolic",
       "q0072": "weights",
       "q0073": "weights",
-      "q0077": "weights",
-      "q0074": "weights",
+      "q0077": "symbolic",
+      "q0074": "symbolic",
       "q0080": "weights",
       "q0081": "weights",
       "q0079": "weights",
