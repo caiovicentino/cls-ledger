@@ -6,7 +6,7 @@
   "by_qtype": {
     "absent": {
       "n": 6,
-      "acc": 1.0
+      "acc": 0.8333333333333334
     },
     "current_stable": {
       "n": 8,
@@ -14,7 +14,7 @@
     },
     "current_updated": {
       "n": 8,
-      "acc": 0.75
+      "acc": 0.875
     },
     "current_volatile": {
       "n": 2,
@@ -50,7 +50,7 @@
   "by_n_updates": {
     "0": {
       "n": 30,
-      "acc": 0.6666666666666666
+      "acc": 0.6333333333333333
     },
     "1": {
       "n": 9,
@@ -58,14 +58,14 @@
     },
     "2+": {
       "n": 5,
-      "acc": 0.8
+      "acc": 1.0
     }
   },
   "error_classes": {
     "correct": 44,
     "miss": 11,
-    "stale": 2,
-    "abstain": 2
+    "stale": 1,
+    "abstain": 3
   },
   "rows": [
     {
@@ -87,7 +87,7 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "August 21",
+      "response": "Day 10: August 21",
       "answer_display": "August 21"
     },
     {
@@ -349,9 +349,9 @@
       "heat": "cold",
       "hops": 1,
       "n_updates": "2+",
-      "class": "stale",
-      "correct": 0,
-      "response": "Project Basil",
+      "class": "correct",
+      "correct": 1,
+      "response": "Project Aurora",
       "answer_display": "Project Aurora"
     },
     {
@@ -558,9 +558,9 @@
       "heat": "cold",
       "hops": 2,
       "n_updates": "0",
-      "class": "miss",
+      "class": "abstain",
       "correct": 0,
-      "response": "April 5",
+      "response": "unknown",
       "answer_display": "January 22"
     },
     {
@@ -604,7 +604,7 @@
       "n_updates": "0",
       "class": "miss",
       "correct": 0,
-      "response": "April 5",
+      "response": "January 22",
       "answer_display": "May 22"
     },
     {
@@ -679,9 +679,9 @@
       "heat": "cold",
       "hops": 1,
       "n_updates": "0",
-      "class": "correct",
-      "correct": 1,
-      "response": "unknown",
+      "class": "miss",
+      "correct": 0,
+      "response": "Krakow",
       "answer_display": "unknown"
     },
     {
@@ -720,15 +720,15 @@
   ],
   "backend_stats": {
     "model": "mlx:mlx-community/Qwen2.5-3B-Instruct-4bit|adapter:runs/S-1-cls-stable-hybrid-s10/sleep-03/adapter",
-    "generations": 0,
-    "cache_hits": 20
+    "generations": 6,
+    "cache_hits": 19
   },
   "system_stats": {
     "mode": "hybrid",
     "policy": "stable",
     "routes": {
-      "weights": 33,
-      "episodic": 24
+      "weights": 38,
+      "episodic": 19
     },
     "routes_by_query": {
       "q0002": "weights",
@@ -745,7 +745,7 @@
       "q0013": "weights",
       "q0014": "weights",
       "q0021": "weights",
-      "q0016": "episodic",
+      "q0016": "weights",
       "q0024": "episodic",
       "q0025": "weights",
       "q0015": "weights",
@@ -754,7 +754,7 @@
       "q0017": "weights",
       "q0043": "episodic",
       "q0041": "weights",
-      "q0034": "episodic",
+      "q0034": "weights",
       "q0040": "weights",
       "q0031": "weights",
       "q0036": "weights",
@@ -773,23 +773,23 @@
       "q0070": "episodic",
       "q0071": "episodic",
       "q0076": "weights",
-      "q0078": "episodic",
-      "q0075": "episodic",
+      "q0078": "weights",
+      "q0075": "weights",
       "q0072": "weights",
       "q0073": "weights",
-      "q0077": "episodic",
+      "q0077": "weights",
       "q0074": "weights",
       "q0080": "weights",
       "q0081": "weights",
       "q0079": "weights",
       "q0086": "episodic",
       "q0089": "episodic",
-      "q0083": "episodic",
+      "q0083": "weights",
       "q0088": "episodic",
       "q0085": "episodic",
-      "q0084": "weights"
+      "q0084": "episodic"
     },
-    "cards_current": 80,
-    "cards_consolidated": 78
+    "cards_current": 63,
+    "cards_consolidated": 61
   }
 }

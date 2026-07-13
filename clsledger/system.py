@@ -243,9 +243,6 @@ class CLSLedgerSystem(MemorySystem):
     def _episodic_answer(self, query: dict) -> str:
         m = re.search(r"As of day (\d+)", query["question"])
         asof = int(m.group(1)) if m else None
-        chained = self._symbolic_chain(query["question"], asof)
-        if chained is not None:
-            return chained
         docs = self._fact_snapshot(asof)
         if len(docs) >= 5:
             idx = BM25Index()
@@ -319,6 +316,15 @@ class CLSLedgerSystem(MemorySystem):
     def answer(self, query: dict) -> str:
         if query.get("qtype_public") == "online":
             self._charge_usage(query["question"])
+        # chain questions resolve symbolically in the ledger BEFORE any
+        # routing — the ledger is authoritative and neither the weights
+        # nor the reader can compose relations reliably
+        m = re.search(r"As of day (\d+)", query["question"])
+        asof = int(m.group(1)) if m else None
+        chained = self._symbolic_chain(query["question"], asof)
+        if chained is not None:
+            self.routes[query.get("query_id", "?")] = "symbolic"
+            return chained
         if self.backend is None:
             return self._episodic_answer(query)
         route = ("weights" if self.mode == "weights"
