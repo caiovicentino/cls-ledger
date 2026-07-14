@@ -77,6 +77,17 @@ def test_rag_notes_in_chronological_order():
         and prompt.index("Day 5") > prompt.index("Day 1"))
 
 
+def test_endpoint_spec_parsing():
+    from agentlife.harness.backends import parse_endpoint, DEFAULT_BASE_URL
+    assert parse_endpoint("gpt-4.1-mini") == (
+        "gpt-4.1-mini", DEFAULT_BASE_URL, "OPENAI_API_KEY")
+    assert parse_endpoint(
+        "glm-5.2@https://api.z.ai/api/paas/v4#ZAI_API_KEY") == (
+        "glm-5.2", "https://api.z.ai/api/paas/v4", "ZAI_API_KEY")
+    assert parse_endpoint("qwen2.5:3b@http://localhost:11434/v1") == (
+        "qwen2.5:3b", "http://localhost:11434/v1", "OPENAI_API_KEY")
+
+
 if __name__ == "__main__":
     import sys
     mod = sys.modules[__name__]
@@ -90,14 +101,3 @@ if __name__ == "__main__":
                 failures += 1
                 print(f"FAIL {name}: {exc}")
     sys.exit(1 if failures else 0)
-
-
-def test_endpoint_spec_parsing():
-    from agentlife.harness.backends import parse_endpoint, DEFAULT_BASE_URL
-    assert parse_endpoint("gpt-4.1-mini") == (
-        "gpt-4.1-mini", DEFAULT_BASE_URL, "OPENAI_API_KEY")
-    assert parse_endpoint(
-        "glm-5.2@https://api.z.ai/api/paas/v4#ZAI_API_KEY") == (
-        "glm-5.2", "https://api.z.ai/api/paas/v4", "ZAI_API_KEY")
-    assert parse_endpoint("qwen2.5:3b@http://localhost:11434/v1") == (
-        "qwen2.5:3b", "http://localhost:11434/v1", "OPENAI_API_KEY")
