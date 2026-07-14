@@ -31,8 +31,8 @@ answer key is *correct by construction* (a world-state oracle must score
 100%, enforced in CI), with typed error taxonomy, instrumented usage, and an
 adversarial paraphrase protocol. Across seeds, CLS-Ledger beats same-reader
 BM25 retrieval by +14.6pp (30-day lives, 4/4 paired seeds) and +28.3pp
-(90-day lives, 2/2), and holds a flat accuracy curve out to 365-day lives
-(80.5% vs. 33.9%). Against a strong embeddings-retrieval baseline under
+(90-day lives, 2/2), and on a single 365-day seed scores 80.5% vs. 33.9% —
+non-decreasing with life length while retrieval degrades monotonically. Against a strong embeddings-retrieval baseline under
 paraphrased questions on an unseen seed, accuracy is comparable (+2.3pp) —
 we argue, with a route-level decomposition, that the value of parametric
 agent memory lies in its guarantees and its context-cost profile, not in raw
@@ -108,8 +108,10 @@ experiments, and generation is deterministic per seed across processes.
 1. **AgentLife**, a self-validating benchmark for long-lived agent memory
    with correct-by-construction answers, typed errors, and an adversarial
    paraphrase protocol (§3).
-2. **CLS-Ledger**, the first architecture (to our knowledge) that couples a
-   provenance ledger to entity-level deletable weight slots, with three
+2. **CLS-Ledger**: to our knowledge the first architecture in which a
+   provenance ledger *governs* entity-level deletable weight slots —
+   deletable adapters exist (SEA [8]) and symbolic ledgers exist
+   (NeuSymMS [12]); the contribution is the coupling — with three
    construction-level guarantees verified empirically: zero forgetting,
    zero-collateral unlearning, and structural staleness protection (§4, §5.4).
 3. An honest, multi-seed, route-decomposed evaluation showing where
@@ -233,8 +235,8 @@ outside its scope, so misrouting fails safe. Slot training is provenance
 logged: every training row maps to a card, every card to an episode.
 
 **Routing and answering.** At most one slot is active per query
-(activation = swapping small LoRA tensors on the frozen base;
-milliseconds). The router asks the ledger: is the most relevant *current*
+(activation = swapping small LoRA tensors on the frozen base — not
+formally timed; sub-second in practice). The router asks the ledger: is the most relevant *current*
 fact for this question one that was consolidated, and is its entity the
 question's subject? If yes → that entity's slot answers with no context.
 If the fact is volatile, or was updated after the last sleep (new card
@@ -260,7 +262,8 @@ episodically.
 **Setup.** Reader/consolidation model: Qwen2.5-3B-Instruct [26] (4-bit,
 MLX) on
 a single Apple M4; extraction/parsing: gpt-4.1-mini (disk-cached; total API
-cost for all experiments ~ US$1). Baselines, all with the *same local
+cost for all experiments estimated at ~US$1 from provider dashboards —
+not instrumented in code). Baselines, all with the *same local
 reader*: naive continual LoRA on raw episode text; SEAL-lite (episode-level
 synthetic-QA self-edits, simplified from SEAL [20]); BM25 top-8 RAG; embeddings
 RAG (text-embedding-3-small, cosine top-8); plus gpt-4.1-mini full-context
@@ -285,17 +288,23 @@ mean ± sd over seeds; paired by seed):
 | | CLS-Ledger | BM25 RAG | paired |
 |---|---|---|---|
 | S (30 days, 4 unseen seeds) | 64.6% ± 6.7 | 50.1% ± 4.1 | 4/4 wins, +14.6pp |
-| M (90 days, 3 seeds) | 72.2% ± 2.3 | 42.8% ± 2.6 | 2/2 wins, +28.3pp |
+| M (90 days, 2 unseen seeds) | 71.1% ± 1.7 | 42.8% ± 2.6 | 2/2 wins, +28.3pp |
 | L (365 days, 1 seed) | 80.5% | 33.9% | +46.6pp |
 
-CLS-Ledger wins every paired seed: 6/6 pooled across scales (two-sided
-sign test p = 0.031; per-scale counts are individually too small for
-significance — a caveat we state rather than hide, and the reason the
-multi-seed protocol ships with the benchmark).
+Development seeds (S-1, M-1) are excluded from the means at both scales
+for symmetry — they are the seeds error analysis was performed on (S-1:
+88.6%; M-1: 74.4% vs. RAG 37.8%, also a paired win). CLS-Ledger wins
+every unseen paired seed: 6/6 pooled across scales (two-sided sign test
+p = 0.031; per-scale counts are individually too small for significance —
+a caveat we state rather than hide, and the reason the multi-seed
+protocol ships with the benchmark).
 
-The scale trend is the headline: CLS accuracy is flat from 90 to 365 days
-while retrieval degrades monotonically; facts with 2+ updates score 92.3%
-at 365 days (supersedence compounds with life length). Online (mid-life)
+The scale trend is the headline: CLS accuracy does not decrease from 90
+to 365 days (72.2 -> 80.5; the 365-day point is a single seed, stated as
+such) while retrieval degrades monotonically; facts with 2+ updates score 92.3%
+at 365 days — consistent with supersedence mattering more in longer
+lives, though this is an interpretation of few points, not a fitted
+trend. Online (mid-life)
 accuracy at L: 84.4%.
 
 ### 5.3 Against strong retrieval: parity, not dominance
@@ -305,7 +314,7 @@ reader: CLS 72.1% vs. EmbRAG 62.8% on template questions (+9.3pp); CLS
 58.1% vs. 55.8% under paraphrase (+2.3pp — statistical parity at n=43).
 We therefore do *not* claim a general accuracy advantage over well-built
 retrieval. The claims that survive: the guarantees (§5.4), the context-cost
-profile (37–45% of queries answered with zero context tokens), and the
+profile (~39–45% of queries answered with zero context tokens, recomputed per run from route logs), and the
 robustness signature (§5.6).
 
 ### 5.4 Guarantees, measured
@@ -317,10 +326,13 @@ pre-registered criteria.
 
 **Forgetting.** General-capability probe (16 items, disjoint from all
 training): base 93.8%; naive-LoRA/SEAL adapters 87.5% (with
-memory-bleeding errors — a benchmark company name answered for "currency of
-the UK"); monolithic CLS adapter 68.8→81.2% (replay helps, doesn't solve);
-**slots-routed: 93.8% with slots at rest and 93.8% with a slot active —
-0.0% degradation**, meeting the pre-registered <=1% criterion.
+memory-bleeding errors — a benchmark company name answered for "currency
+of the UK"); monolithic CLS adapters: 68.8% without anti-forgetting
+replay and 75.0–81.2% with it across development versions (the
+re-runnable HEAD artifact scores 75.0%, reports/forgetting_probes.json;
+earlier points are log-derived); **slots-routed: 93.8% with slots at rest
+and 93.8% with a slot active — 0.0% degradation**, meeting the
+pre-registered <=1% criterion.
 
 **Unlearning.** Deleting one entity (7 cards): target queries flip to
 "unknown"; **0 of 40 other answers changed** (pre-registered <1%
@@ -328,14 +340,19 @@ collateral), versus 19/40 changed under re-distillation-based removal —
 retraining without isolation is not surgical, slot deletion is.
 
 **Fusion negative result.** Exact multi-slot fusion (rank concatenation,
-sum of deltas) *degrades* everything: 13 fused slots scored 52.3% and broke
-the general probe — summed deltas amplify the slots' shared format
-component. Isolated routed activation, not fusion, is what makes
-entity-slots viable; we report this so others skip the failure.
+sum of deltas) does not merely degrade — it collapses the model: the
+13-slot fused adapter scores **0.0%** on the general-capability probe and
+**2.3%** answering the final exam weights-only
+(reports/forgetting_probes.json, reports/S-1-slots-fused-weightsonly.json);
+the historical full-system fused run salvaged 52.3% (log-derived) only
+through its episodic/symbolic routes. Summed deltas amplify the slots'
+shared format component. Isolated routed activation, not fusion, is what
+makes entity-slots viable; we report this so others skip the failure.
 
 ### 5.5 Selection policies: a null result under loose budgets
 
-Under a 40-card capacity budget on 90-day lives (3 seeds), usage-gated
+Under a 40-card capacity budget on 90-day lives (2 unseen seeds),
+usage-gated
 selection ("hot"), stability-gated ("stable") and random selection are
 statistically inseparable (77.1 / 74.7 / 77.1 mean). Usage-gating *is* the
 efficiency champion — 35 consolidated cards matched the full 139-card
@@ -349,8 +366,9 @@ flag this as an evaluation-design lesson.
 Our development seed scored 88.6% (S-1); unseen seeds average 64.6% — a
 24pp co-adaptation gap, quantified because every v2/v3 fix was derived from
 error analysis on that seed. The paraphrase protocol then decomposed the
-system: with the v3 lexical question parser, paraphrased questions dropped
-CLS to 56.8% — multi-hop fell to 0% (the lexical chain resolver died) and
+system: with the v3 lexical question parser (measured at commit da1b072,
+before the parser was replaced; log-derived, not re-runnable at HEAD),
+paraphrased questions dropped CLS to 56.8% — multi-hop fell to 0% (the lexical chain resolver died) and
 point-in-time to 20% (the "As of day" regex died) — **while the parametric
 route was unaffected** (updated/volatile/revoked at 100% under
 paraphrase). Consolidated knowledge is semantically robust; symbolic
@@ -363,7 +381,11 @@ observed, and the semantic parser is a post-hoc fix validated on two
 seeds; the pre-registered claims of this paper are the guarantees of
 S5.4, not the parser recovery, which awaits pre-registered replication on
 fresh seeds. Retrieval baselines, for calibration, are
-paraphrase-invariant (BM25: 52.3% both ways).
+paraphrase-invariant (BM25: 52.3% both ways). One validity threat we
+disclose rather than hide: the paraphrases are generated by the same
+model family (gpt-4.1-mini) that serves as the semantic parser, so part
+of the parser's recovery could reflect distributional familiarity;
+re-running the protocol with a disjoint paraphrase model is future work.
 
 ### 5.7 Reader-model ceiling
 
@@ -382,7 +404,13 @@ prescribed (as in deployed systems, but it bounds generality); the semantic
 parser inherits the schema. All experiments use one 3B reader and <=26
 entities per life; per-entity slots do not capture cross-entity or
 procedural knowledge, and the base model never learns — the system becomes
-better *informed*, not more capable. Multi-seed replication covers the
+better *informed*, not more capable. A preprocessing asymmetry
+should be read as a confound: CLS's ingestion uses gpt-4.1-mini for fact
+extraction and question parsing (a far stronger model than the 3B
+reader), while the BM25 baseline uses no external model at all — a
+"BM25-over-extracted-cards" baseline that isolates this effect is future
+work (the embeddings baseline partially controls for it, since it also
+uses an external API model). Multi-seed replication covers the
 main comparison (6 paired seeds) but not yet every ablation; single-seed
 numbers are marked as such. Co-adaptation was measured and partially
 corrected, not eliminated: results on external benchmarks (e.g.,
@@ -447,7 +475,8 @@ know which is which.
 assistance of Claude (Anthropic). All claims were verified against run
 artifacts in the linked repository.*
 
-*Reproducibility: every number in this paper corresponds to a JSON report
-under `reports/` in the repository, generated by seeded, cached,
-deterministic runs; the benchmark's self-validation suite (oracle-100%,
-stale-oracle, determinism across hash seeds) runs in CI.*
+*Reproducibility: every number in this paper corresponds to a JSON
+artifact under `reports/` in the repository (generated by seeded, cached,
+deterministic runs), except where explicitly pinned to a development-log
+commit in the text; the benchmark's self-validation suite (oracle-100%,
+stale-oracle-fails, determinism across hash seeds) runs as tests.*

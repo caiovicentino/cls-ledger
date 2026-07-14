@@ -1,0 +1,555 @@
+{
+  "n_final": 44,
+  "n_online": 0,
+  "accuracy_final": 0.022727272727272728,
+  "accuracy_online": null,
+  "by_qtype": {
+    "absent": {
+      "n": 6,
+      "acc": 0.16666666666666666
+    },
+    "current_stable": {
+      "n": 8,
+      "acc": 0.0
+    },
+    "current_updated": {
+      "n": 8,
+      "acc": 0.0
+    },
+    "current_volatile": {
+      "n": 2,
+      "acc": 0.0
+    },
+    "multihop_2": {
+      "n": 6,
+      "acc": 0.0
+    },
+    "multihop_3": {
+      "n": 1,
+      "acc": 0.0
+    },
+    "point_in_time": {
+      "n": 10,
+      "acc": 0.0
+    },
+    "revoked": {
+      "n": 3,
+      "acc": 0.0
+    }
+  },
+  "by_heat": {
+    "cold": {
+      "n": 37,
+      "acc": 0.02702702702702703
+    },
+    "hot": {
+      "n": 7,
+      "acc": 0.0
+    }
+  },
+  "by_n_updates": {
+    "0": {
+      "n": 30,
+      "acc": 0.03333333333333333
+    },
+    "1": {
+      "n": 9,
+      "acc": 0.0
+    },
+    "2+": {
+      "n": 5,
+      "acc": 0.0
+    }
+  },
+  "error_classes": {
+    "miss": 40,
+    "abstain": 3,
+    "correct": 1
+  },
+  "rows": [
+    {
+      "query_id": "q0021",
+      "qtype": "current_stable",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T\nTT\nT\nT\nTT !TT\nTT\nT!T TT!T\nTNES!T!styleType!unknownstyleTypeTM!TTtr<|endoftext|>TTTTTTTTTT",
+      "answer_display": "August 21"
+    },
+    {
+      "query_id": "q0016",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "amp!<|endoftext|>Tampunknownunknownam",
+      "answer_display": "Cobalt Harbor"
+    },
+    {
+      "query_id": "q0024",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T\nTPatrice!TM!unknownTTTTTTTTTTTTTTTTT|MTTTTTTTTTZR!TTT<|endoftext|>TTTTTTTTTTTT<|endoftext|>TTTTTmoth",
+      "answer_display": "May 8"
+    },
+    {
+      "query_id": "q0025",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T!\n\n\nT\nT!ether\nT\nT\nT\nTT\nTTThxTTTpisaEFRunknown",
+      "answer_display": "Hobart"
+    },
+    {
+      "query_id": "q0015",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "amp!…Tach<|endoftext|>T<|endoftext|>T<|endoftext|>T<|endoftext|>T<|endoftext|>T<|endoftext|>Tunknown!T:Tacurarunknown",
+      "answer_display": "Ionflow"
+    },
+    {
+      "query_id": "q0020",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "TvTsspＴTTT unknown",
+      "answer_display": "Trondheim"
+    },
+    {
+      "query_id": "q0018",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T!<|endoftext|>MixedPTunknown<|endoftext|>T<|endoftext|>T<|endoftext|>T<|endoftext|>T<|endoftext|>T<|endoftext|>T<|endoftext|>Tunknown!?T=Taval!<|endoftext|>Tunknown!?TTT!blMam!PTacTTTTTTTTTTTTTTT&TTTVBunknown",
+      "answer_display": "Kernelworks"
+    },
+    {
+      "query_id": "q0017",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "ammps",
+      "answer_display": "Brightmesh"
+    },
+    {
+      "query_id": "q0043",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "miss",
+      "correct": 0,
+      "response": "TTT",
+      "answer_display": "silver-otter-61"
+    },
+    {
+      "query_id": "q0041",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "miss",
+      "correct": 0,
+      "response": "TT",
+      "answer_display": "Luang Prabang"
+    },
+    {
+      "query_id": "q0034",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "miss",
+      "correct": 0,
+      "response": "TepTT",
+      "answer_display": "Project Aurora"
+    },
+    {
+      "query_id": "q0040",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "miss",
+      "correct": 0,
+      "response": "T\nT<|endoftext|>T<|endoftext|>TantoT",
+      "answer_display": "La Braise"
+    },
+    {
+      "query_id": "q0031",
+      "qtype": "current_updated",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "miss",
+      "correct": 0,
+      "response": "T!!!!!!!!!!!!!!!!!!T\n!\n!T!\n!!\n!!!T!!!!!!!T.!!!!!!",
+      "answer_display": "April 5"
+    },
+    {
+      "query_id": "q0036",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "miss",
+      "correct": 0,
+      "response": "!TuvwagyVRTT\nT<|endoftext|>TseTuvwalk\nTseTIon\nTkr<|endoftext|>T\nTECH\nTunknown",
+      "answer_display": "Miso Garden"
+    },
+    {
+      "query_id": "q0033",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "miss",
+      "correct": 0,
+      "response": "TTgMapsEFREFR",
+      "answer_display": "Krakow"
+    },
+    {
+      "query_id": "q0042",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "miss",
+      "correct": 0,
+      "response": "TT",
+      "answer_display": "cortado"
+    },
+    {
+      "query_id": "q0045",
+      "qtype": "current_volatile",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "miss",
+      "correct": 0,
+      "response": "T!T",
+      "answer_display": "B30"
+    },
+    {
+      "query_id": "q0044",
+      "qtype": "current_volatile",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "miss",
+      "correct": 0,
+      "response": "TTT\nT\nTavion",
+      "answer_display": "Desk 73"
+    },
+    {
+      "query_id": "q0064",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "miss",
+      "correct": 0,
+      "response": "TT<|endoftext|>TT",
+      "answer_display": "Leipzig"
+    },
+    {
+      "query_id": "q0069",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "miss",
+      "correct": 0,
+      "response": "oral!T<|endoftext|>TT\n\n\nT\n!\n!T\n!T!!!!!TT!!Ternals\n!TT!T2T!TTlass!”\n\n!TTTunknown",
+      "answer_display": "B37"
+    },
+    {
+      "query_id": "q0066",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "miss",
+      "correct": 0,
+      "response": "Tse!TT",
+      "answer_display": "Desk 38"
+    },
+    {
+      "query_id": "q0053",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "TTvcunknownVRTTTTTTTTTTIPPTTTTTTTTTTTTSSFTTTTTTTTTMSNTThTTTTTTSSFTTTTTTZR<|endoftext|>TunknownTTZRTTSSFT",
+      "answer_display": "Split"
+    },
+    {
+      "query_id": "q0052",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "TT!TAPS!gin!T!T!T",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0056",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "!T<|endoftext|><|endoftext|><|endoftext|>unknown!?SpoTunknown",
+      "answer_display": "Quandry Systems"
+    },
+    {
+      "query_id": "q0050",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "TT!T!!T!!!P![…Tást!",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0051",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T\n!T\n\n\n!\n!T!T!N\n\n\n\nT.\n\n\n\n\n!N\n\n\n!T",
+      "answer_display": "$50k"
+    },
+    {
+      "query_id": "q0070",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "TTT",
+      "answer_display": "violet-canyon-7"
+    },
+    {
+      "query_id": "q0071",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "miss",
+      "correct": 0,
+      "response": "TTT",
+      "answer_display": "maple-toast-42"
+    },
+    {
+      "query_id": "q0076",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T!.TT\nT!!.!!?!!!!!!!T.!!!!!!!b<|endoftext|>T!a!!T a!T!!!T",
+      "answer_display": "May 22"
+    },
+    {
+      "query_id": "q0078",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "T!unknown!!!T!!T!!!!!!!!!!!!!!!!!!!!!!T!ear!<|endoftext|>T<|endoftext|>TT.Gintquan!!Thardt!ear!<|endoftext|>Tath!infTTT!!T!",
+      "answer_display": "January 22"
+    },
+    {
+      "query_id": "q0075",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T!.T!T!!T",
+      "answer_display": "April 5"
+    },
+    {
+      "query_id": "q0072",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "TTTT",
+      "answer_display": "Krakow"
+    },
+    {
+      "query_id": "q0073",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "TT",
+      "answer_display": "Luang Prabang"
+    },
+    {
+      "query_id": "q0077",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T\n!!!!!T!.T!!T!.!!!!!!!!!!!!!!!!!!!.T!.!",
+      "answer_display": "May 22"
+    },
+    {
+      "query_id": "q0074",
+      "qtype": "multihop_3",
+      "heat": "cold",
+      "hops": 3,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "TTT!TgMaps!TTTT.TT",
+      "answer_display": "Fresno"
+    },
+    {
+      "query_id": "q0080",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "!TT\n\n.\n\n\n\n\nT\n\n\n\n\n\n\nT\nT\n\nT!P\nT\nT<|endoftext|>T\nTT!bst\n!Tunknown",
+      "answer_display": "none"
+    },
+    {
+      "query_id": "q0081",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T\nT!<|endoftext|>TTTTTTTT<|endoftext|>TampMsp<|endoftext|>Tse!TTT",
+      "answer_display": "no"
+    },
+    {
+      "query_id": "q0079",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T\nTT\nT\nT!TPGA!TTTTT<|endoftext|>TT!Pivi!TTTTT<|endoftext|>TT<|endoftext|>TTTTTTT!TTGLuint",
+      "answer_display": "cancelled"
+    },
+    {
+      "query_id": "q0086",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T!Tunknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0089",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "TsepledTVRTTpisa",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0083",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "TTpisaunknownunknownTTTTTTTTT\nTTTTTTTTTT\nT\nTTT\nTAMP<|endoftext|>TFPSTSSFTTTTＴTNH",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0088",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "T\nT<|endoftext|>tilrage unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0085",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T\nTageTtw<|endoftext|>TT\nT<|endoftext|>T\nTtwT\nT\nTTT\nT!!TTTTTT\nTT\nTT\nTT\nTT\nTTT",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0084",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "T\nTP\nTseT",
+      "answer_display": "unknown"
+    }
+  ]
+}

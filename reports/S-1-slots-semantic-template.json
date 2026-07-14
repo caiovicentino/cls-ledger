@@ -1,0 +1,555 @@
+{
+  "n_final": 44,
+  "n_online": 0,
+  "accuracy_final": 0.9318181818181818,
+  "accuracy_online": null,
+  "by_qtype": {
+    "absent": {
+      "n": 6,
+      "acc": 0.8333333333333334
+    },
+    "current_stable": {
+      "n": 8,
+      "acc": 0.75
+    },
+    "current_updated": {
+      "n": 8,
+      "acc": 1.0
+    },
+    "current_volatile": {
+      "n": 2,
+      "acc": 1.0
+    },
+    "multihop_2": {
+      "n": 6,
+      "acc": 1.0
+    },
+    "multihop_3": {
+      "n": 1,
+      "acc": 1.0
+    },
+    "point_in_time": {
+      "n": 10,
+      "acc": 1.0
+    },
+    "revoked": {
+      "n": 3,
+      "acc": 1.0
+    }
+  },
+  "by_heat": {
+    "cold": {
+      "n": 37,
+      "acc": 0.918918918918919
+    },
+    "hot": {
+      "n": 7,
+      "acc": 1.0
+    }
+  },
+  "by_n_updates": {
+    "0": {
+      "n": 30,
+      "acc": 0.9
+    },
+    "1": {
+      "n": 9,
+      "acc": 1.0
+    },
+    "2+": {
+      "n": 5,
+      "acc": 1.0
+    }
+  },
+  "error_classes": {
+    "correct": 41,
+    "abstain": 2,
+    "miss": 1
+  },
+  "rows": [
+    {
+      "query_id": "q0021",
+      "qtype": "current_stable",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "August 21",
+      "answer_display": "August 21"
+    },
+    {
+      "query_id": "q0016",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Cobalt Harbor"
+    },
+    {
+      "query_id": "q0024",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "May 8"
+    },
+    {
+      "query_id": "q0025",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Hobart",
+      "answer_display": "Hobart"
+    },
+    {
+      "query_id": "q0015",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Ionflow",
+      "answer_display": "Ionflow"
+    },
+    {
+      "query_id": "q0020",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Trondheim",
+      "answer_display": "Trondheim"
+    },
+    {
+      "query_id": "q0018",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Kernelworks",
+      "answer_display": "Kernelworks"
+    },
+    {
+      "query_id": "q0017",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Brightmesh",
+      "answer_display": "Brightmesh"
+    },
+    {
+      "query_id": "q0043",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "correct",
+      "correct": 1,
+      "response": "silver-otter-61",
+      "answer_display": "silver-otter-61"
+    },
+    {
+      "query_id": "q0041",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "correct",
+      "correct": 1,
+      "response": "Luang Prabang",
+      "answer_display": "Luang Prabang"
+    },
+    {
+      "query_id": "q0034",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "correct",
+      "correct": 1,
+      "response": "Project Aurora",
+      "answer_display": "Project Aurora"
+    },
+    {
+      "query_id": "q0040",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "La Braise",
+      "answer_display": "La Braise"
+    },
+    {
+      "query_id": "q0031",
+      "qtype": "current_updated",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "April 5",
+      "answer_display": "April 5"
+    },
+    {
+      "query_id": "q0036",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Miso Garden",
+      "answer_display": "Miso Garden"
+    },
+    {
+      "query_id": "q0033",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Krakow",
+      "answer_display": "Krakow"
+    },
+    {
+      "query_id": "q0042",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "cortado",
+      "answer_display": "cortado"
+    },
+    {
+      "query_id": "q0045",
+      "qtype": "current_volatile",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "correct",
+      "correct": 1,
+      "response": "B30",
+      "answer_display": "B30"
+    },
+    {
+      "query_id": "q0044",
+      "qtype": "current_volatile",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "correct",
+      "correct": 1,
+      "response": "Desk 73",
+      "answer_display": "Desk 73"
+    },
+    {
+      "query_id": "q0064",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Leipzig",
+      "answer_display": "Leipzig"
+    },
+    {
+      "query_id": "q0069",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "B37",
+      "answer_display": "B37"
+    },
+    {
+      "query_id": "q0066",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Desk 38",
+      "answer_display": "Desk 38"
+    },
+    {
+      "query_id": "q0053",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Split",
+      "answer_display": "Split"
+    },
+    {
+      "query_id": "q0052",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "active",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0056",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Quandry Systems",
+      "answer_display": "Quandry Systems"
+    },
+    {
+      "query_id": "q0050",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "active",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0051",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "$50k",
+      "answer_display": "$50k"
+    },
+    {
+      "query_id": "q0070",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "violet-canyon-7",
+      "answer_display": "violet-canyon-7"
+    },
+    {
+      "query_id": "q0071",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "maple-toast-42",
+      "answer_display": "maple-toast-42"
+    },
+    {
+      "query_id": "q0076",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "May 22",
+      "answer_display": "May 22"
+    },
+    {
+      "query_id": "q0078",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "January 22",
+      "answer_display": "January 22"
+    },
+    {
+      "query_id": "q0075",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "April 5",
+      "answer_display": "April 5"
+    },
+    {
+      "query_id": "q0072",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Krakow",
+      "answer_display": "Krakow"
+    },
+    {
+      "query_id": "q0073",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Luang Prabang",
+      "answer_display": "Luang Prabang"
+    },
+    {
+      "query_id": "q0077",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "May 22",
+      "answer_display": "May 22"
+    },
+    {
+      "query_id": "q0074",
+      "qtype": "multihop_3",
+      "heat": "cold",
+      "hops": 3,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Fresno",
+      "answer_display": "Fresno"
+    },
+    {
+      "query_id": "q0080",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "none",
+      "answer_display": "none"
+    },
+    {
+      "query_id": "q0081",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "no",
+      "answer_display": "no"
+    },
+    {
+      "query_id": "q0079",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "cancelled",
+      "answer_display": "cancelled"
+    },
+    {
+      "query_id": "q0086",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0089",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0083",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "Krakow",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0088",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0085",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0084",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    }
+  ]
+}

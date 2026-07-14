@@ -1,0 +1,32 @@
+{
+  "base": {
+    "accuracy": 0.9375,
+    "n": 16,
+    "adapter": null
+  },
+  "S-1-lora-naive": {
+    "accuracy": 0.875,
+    "n": 16,
+    "adapter": "runs/S-1-lora/adapter"
+  },
+  "S-1-seal": {
+    "accuracy": 0.875,
+    "n": 16,
+    "adapter": "runs/S-1-seal/adapter"
+  },
+  "S-1-cls-monolithic-s10": {
+    "accuracy": 0.75,
+    "n": 16,
+    "adapter": "runs/S-1-cls-stable-hybrid-s10/sleep-03/adapter"
+  },
+  "M-1-cls-monolithic-s30": {
+    "accuracy": 0.75,
+    "n": 16,
+    "adapter": "runs/M-1-cls-stable-hybrid-s30/sleep-03/adapter"
+  },
+  "S-1-slots-fused": {
+    "accuracy": 0.0,
+    "n": 16,
+    "adapter": "runs/S-1-slots-stable-hybrid/sleep-01/adapter"
+  }
+}
