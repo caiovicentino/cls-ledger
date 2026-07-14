@@ -30,7 +30,7 @@ from agentlife.harness.parametric_systems import (
 from agentlife.harness.real_systems import SYSTEM_PROMPT, build_prompt
 from agentlife.harness.systems import MemorySystem
 
-from .ledger import Card, Ledger
+from .ledger import Card, Ledger, norm_key
 
 # The attribute vocabulary is a domain schema for a personal-assistant
 # agent (same design as Zep/Graphiti's prescribed ontology). It nudges the
@@ -82,6 +82,7 @@ class CLSLedgerSystem(MemorySystem):
         self.backend: Optional[MLXBackend] = None
         self.today = 0
         self.routes: Dict[str, str] = {}
+        self._last_parse: Optional[dict] = None
         # periodic consolidation ("sleep"): 0 = only at end of life (v1)
         self.sleep_every = sleep_every
         self.budget = budget
@@ -206,29 +207,73 @@ class CLSLedgerSystem(MemorySystem):
             hist = [c for c in hist if c.day <= asof]
         return hist[-1].value if hist else None
 
+    PARSE_PROMPT = (
+        "Parse this question about a personal assistant's memory into a "
+        "structured lookup. Known attribute schema: employer, lives_in, "
+        "hometown, birthday, favorite_restaurant, works_on, lead, "
+        "deadline, budget, status, client, parking_spot, desk_booking, "
+        "gym_day, dietary_restriction, wifi_password, favorite_coffee.\n"
+        "Known entities: {entities}\n\n"
+        "Question: {q}\n\n"
+        "Return ONLY JSON: {{\"anchor\": <entity name from the list, or "
+        "\"user\", or null>, \"chain\": [<relations from the anchor "
+        "toward the target, e.g. [\"works_on\",\"lead\"] for 'of the lead "
+        "of the project ANCHOR works on'>], \"target\": <the attribute "
+        "being asked>, \"asof_day\": <int if the question asks about a "
+        "specific past day, else null>}}.\n"
+        "If the question does not fit the schema, return "
+        '{{"target": null}}.')
+
+    def _semantic_parse(self, question: str) -> Optional[dict]:
+        """LLM parses the question against the schema; resolution stays in
+        the ledger. Replaces the v3 lexical parser, which died on
+        paraphrases (multihop 0%, point-in-time 20% when 'deadline'
+        became 'due date' and 'As of day' became 'back on day')."""
+        entities = sorted({c.entity for c in self.ledger.cards})
+        raw = self.extractor.complete(
+            "You parse questions into structured lookups. Output only "
+            "JSON.",
+            self.PARSE_PROMPT.format(q=question,
+                                     entities=", ".join(entities)),
+            max_tokens=120).strip()
+        if raw.startswith("```"):
+            raw = re.sub(r"^```(json)?|```$", "", raw, flags=re.M).strip()
+        try:
+            p = json.loads(raw)
+        except json.JSONDecodeError:
+            return None
+        if not isinstance(p, dict) or not p.get("target"):
+            return None
+        return p
+
     def _symbolic_chain(self, question: str,
                         asof: Optional[int]) -> Optional[str]:
-        """Resolve chain questions entirely in the ledger: the question
-        names an anchor entity and >=2 schema attributes ('the DEADLINE of
-        the project X WORKS ON'); apply the relations from the anchor and
-        return the target value. The reader never has to compose."""
-        ql = question.lower()
-        mentions = []
-        for attr, forms in self.ATTR_LEXICON.items():
-            positions = [ql.find(f) for f in forms if ql.find(f) >= 0]
-            if positions:
-                mentions.append((min(positions), attr))
-        mentions.sort()
-        if len(mentions) < 2:
+        """Semantic parse (LLM) + deterministic resolution (ledger).
+        Only answers when every hop resolves; anything else falls back to
+        the weights/episodic routes."""
+        p = self._semantic_parse(question)
+        self._last_parse = p
+        if p is None:
             return None
-        target, rels = mentions[0][1], [m[1] for m in mentions[1:]]
+        target = norm_key(str(p["target"]))
+        asof = p.get("asof_day") if isinstance(p.get("asof_day"), int) \
+            else asof
         names = sorted({c.entity for c in self.ledger.cards},
                        key=len, reverse=True)
-        anchor = next((n for n in names if n.lower() in ql), None)
+        anchor_raw = str(p.get("anchor") or "")
+        anchor = next((n for n in names
+                       if n.lower() == anchor_raw.lower()), None)
+        if anchor is None and anchor_raw:
+            anchor = next((n for n in names
+                           if anchor_raw.lower() in n.lower()
+                           or n.lower() in anchor_raw.lower()), None)
         if anchor is None:
             return None
+        chain = [norm_key(str(r)) for r in (p.get("chain") or [])]
+        # a parse that names no relation and no known target is useless;
+        # single-hop (empty chain) direct lookups are allowed
         entity = anchor
-        for rel in reversed(rels):
+        for rel in chain:
             value = self._value_at(entity, rel, asof)
             if value is None:
                 return None
@@ -239,11 +284,20 @@ class CLSLedgerSystem(MemorySystem):
             if nxt is None:
                 return None
             entity = nxt
+        # direct lookups only resolve symbolically for chain questions;
+        # single-hop questions keep flowing to weights/episodic so the
+        # parametric memory stays exercised and mis-parses stay cheap
+        if not chain:
+            return None
         return self._value_at(entity, target, asof)
 
     def _episodic_answer(self, query: dict) -> str:
         m = re.search(r"As of day (\d+)", query["question"])
         asof = int(m.group(1)) if m else None
+        if asof is None:
+            lp = getattr(self, "_last_parse", None) or {}
+            if isinstance(lp.get("asof_day"), int):
+                asof = lp["asof_day"]
         docs = self._fact_snapshot(asof)
         if len(docs) >= 5:
             idx = BM25Index()

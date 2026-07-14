@@ -46,6 +46,9 @@ def rebuild(run_dir: str, model_id: str, cache_dir: str,
     sys_.cache_dir = cache_dir
     sys_.model_id = model_id
     sys_.base_backend = None
+    from agentlife.harness.backends import OpenAIBackend
+    sys_.extractor = OpenAIBackend('gpt-4.1-mini', cache_dir=cache_dir)
+    sys_._last_parse = None
     meta = json.load(open(os.path.join(run_dir, "slots.json")))["slots"]
     slot_cards = {}
     for slot, m in meta.items():
