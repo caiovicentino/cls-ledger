@@ -63,6 +63,10 @@ def main() -> None:
                     help="cls: disable anti-forgetting replay mix-in")
     ap.add_argument("--sleep-every", type=int, default=0,
                     help="cls: consolidate every N days (0 = end of life)")
+    ap.add_argument("--extractor", default="openai:gpt-4.1-mini",
+                    help="cls/slots extraction+parsing backend spec: "
+                         "'openai:model[@base_url][#KEY_ENV]' or "
+                         "'mlx:<model>' for a fully local system")
     ap.add_argument("--backend", default="openai:gpt-4.1-mini",
                     help="provider:model, e.g. openai:gpt-4.1-mini or "
                          "mlx:mlx-community/Qwen2.5-3B-Instruct-4bit")
@@ -112,7 +116,8 @@ def main() -> None:
             cls_kwargs = dict(policy=args.policy, mode=args.mode,
                               replay=not args.no_replay,
                               sleep_every=args.sleep_every,
-                              budget=args.budget, **kwargs)
+                              budget=args.budget,
+                              extractor=args.extractor, **kwargs)
             if args.system == "cls":
                 from clsledger.system import CLSLedgerSystem
                 system = CLSLedgerSystem(**cls_kwargs)

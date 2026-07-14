@@ -23,7 +23,7 @@ import os
 import re
 from typing import Dict, List, Optional
 
-from agentlife.harness.backends import MLXBackend, OpenAIBackend
+from agentlife.harness.backends import MLXBackend, OpenAIBackend, make_backend
 from agentlife.harness.bm25 import BM25Index
 from agentlife.harness.parametric_systems import (
     PARAMETRIC_SYSTEM_PROMPT, _run_lora_training, _write_dataset)
@@ -59,7 +59,7 @@ class CLSLedgerSystem(MemorySystem):
 
     def __init__(self, model_id: str, workdir: str, iters: int = 300,
                  cache_dir: Optional[str] = None,
-                 extractor_model: str = "gpt-4.1-mini",
+                 extractor: str = "openai:gpt-4.1-mini",
                  policy: str = "stable", online_k: int = 8,
                  mode: str = "hybrid", replay: bool = True,
                  sleep_every: int = 0, budget=None):
@@ -71,7 +71,7 @@ class CLSLedgerSystem(MemorySystem):
         self.online_k = online_k
         self.mode = mode          # 'hybrid' (v1) or 'weights' (v0)
         self.replay = replay
-        self.extractor = OpenAIBackend(extractor_model, cache_dir=cache_dir)
+        self.extractor = make_backend(extractor, cache_dir)
         self.ledger = Ledger()
         self.episodes: List[dict] = []
         self.ep_index = BM25Index()

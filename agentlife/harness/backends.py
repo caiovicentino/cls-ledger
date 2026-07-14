@@ -60,13 +60,45 @@ class DiskCache:
                       ensure_ascii=False)
 
 
+DEFAULT_BASE_URL = "https://api.openai.com/v1"
+
+
+def parse_endpoint(spec: str):
+    """'model[@base_url][#KEY_ENV]' -> (model, base_url, key_env).
+
+    Examples:
+      gpt-4.1-mini
+      glm-5.2@https://api.z.ai/api/paas/v4#ZAI_API_KEY
+      qwen2.5:3b@http://localhost:11434/v1        (Ollama; no key needed)
+    OPENAI_BASE_URL env var overrides the default base URL globally."""
+    key_env = "OPENAI_API_KEY"
+    base_url = os.environ.get("OPENAI_BASE_URL", DEFAULT_BASE_URL)
+    if "#" in spec:
+        spec, key_env = spec.rsplit("#", 1)
+    if "@" in spec:
+        spec, base_url = spec.split("@", 1)
+    return spec, base_url.rstrip("/"), key_env
+
+
 class OpenAIBackend(LLMBackend):
+    """Any OpenAI-compatible chat endpoint (OpenAI, z.ai/GLM, Ollama,
+    vLLM, LM Studio, ...). Model spec: 'model[@base_url][#KEY_ENV]'."""
+
     name = "openai"
 
     def __init__(self, model: str, cache_dir: Optional[str] = None,
                  api_key: Optional[str] = None):
-        self.model = model
-        self.api_key = api_key or os.environ["OPENAI_API_KEY"]
+        self.model, self.base_url, key_env = parse_endpoint(model)
+        self.api_key = api_key or os.environ.get(key_env, "")
+        if not self.api_key and self.base_url == DEFAULT_BASE_URL:
+            raise RuntimeError(f"missing {key_env} for {self.base_url}")
+        # cache tags stay backward-compatible for the default host; other
+        # hosts are namespaced so same-named models never share caches
+        if self.base_url == DEFAULT_BASE_URL:
+            self._tag = self.model
+        else:
+            host = self.base_url.split("//", 1)[-1]
+            self._tag = f"{host}|{self.model}"
         self.cache = DiskCache(cache_dir) if cache_dir else None
         self.n_calls = 0
         self.n_cached = 0
@@ -75,7 +107,7 @@ class OpenAIBackend(LLMBackend):
 
     def complete(self, system: str, user: str, max_tokens: int = 64) -> str:
         if self.cache:
-            key = self.cache.key(self.model, system, user)
+            key = self.cache.key(self._tag, system, user)
             hit = self.cache.get(key)
             if hit is not None:
                 self.n_cached += 1
@@ -87,10 +119,12 @@ class OpenAIBackend(LLMBackend):
             "messages": [{"role": "system", "content": system},
                          {"role": "user", "content": user}],
         }).encode()
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
         req = urllib.request.Request(
-            "https://api.openai.com/v1/chat/completions", data=body,
-            headers={"Authorization": f"Bearer {self.api_key}",
-                     "Content-Type": "application/json"})
+            f"{self.base_url}/chat/completions", data=body,
+            headers=headers)
         last_err = None
         for attempt in range(4):
             try:
@@ -102,7 +136,7 @@ class OpenAIBackend(LLMBackend):
                 self.completion_tokens += usage.get("completion_tokens", 0)
                 self.n_calls += 1
                 if self.cache:
-                    self.cache.put(key, self.model, out)
+                    self.cache.put(key, self._tag, out)
                 return out
             except urllib.error.HTTPError as e:
                 last_err = e
@@ -116,7 +150,7 @@ class OpenAIBackend(LLMBackend):
         raise RuntimeError(f"backend failed after retries: {last_err}")
 
     def stats(self) -> dict:
-        return {"model": self.model, "api_calls": self.n_calls,
+        return {"model": self._tag, "api_calls": self.n_calls,
                 "cache_hits": self.n_cached,
                 "prompt_tokens": self.prompt_tokens,
                 "completion_tokens": self.completion_tokens}

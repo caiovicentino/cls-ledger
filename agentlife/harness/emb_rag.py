@@ -21,25 +21,34 @@ EMB_MODEL = "text-embedding-3-small"
 
 
 class EmbeddingClient:
-    def __init__(self, cache_dir: Optional[str] = None):
-        self.api_key = os.environ["OPENAI_API_KEY"]
+    """Embedding endpoint spec: 'model[@base_url][#KEY_ENV]' (same grammar
+    as chat backends); default text-embedding-3-small on OpenAI."""
+
+    def __init__(self, cache_dir: Optional[str] = None,
+                 spec: str = EMB_MODEL):
+        from .backends import parse_endpoint
+        self.model, self.base_url, key_env = parse_endpoint(spec)
+        self.api_key = os.environ.get(key_env, "")
         self.cache = DiskCache(cache_dir) if cache_dir else None
 
     def embed(self, text: str) -> List[float]:
         if self.cache:
-            key = self.cache.key(f"emb:{EMB_MODEL}", text, "")
+            tag = (f"emb:{self.model}" if "api.openai.com" in self.base_url
+                   else f"emb:{self.base_url.split('//',1)[-1]}|{self.model}")
+            key = self.cache.key(tag, text, "")
             hit = self.cache.get(key)
             if hit is not None:
                 return json.loads(hit)
-        body = json.dumps({"model": EMB_MODEL, "input": text}).encode()
+        body = json.dumps({"model": self.model, "input": text}).encode()
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
         req = urllib.request.Request(
-            "https://api.openai.com/v1/embeddings", data=body,
-            headers={"Authorization": f"Bearer {self.api_key}",
-                     "Content-Type": "application/json"})
+            f"{self.base_url}/embeddings", data=body, headers=headers)
         with urllib.request.urlopen(req, timeout=60) as r:
             vec = json.load(r)["data"][0]["embedding"]
         if self.cache:
-            self.cache.put(key, EMB_MODEL, json.dumps(vec))
+            self.cache.put(key, self.model, json.dumps(vec))
         return vec
 
 

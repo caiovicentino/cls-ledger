@@ -52,6 +52,27 @@ its answer key wrong and an LLM judge accepting ~63% of wrong answers):
 | `absent` | facts never stated — measures hallucination/abstention |
 | `online` | mid-life queries; builds the hot/cold usage log |
 
+### Backends: any model, any endpoint
+
+Chat backends accept `provider:model[@base_url][#KEY_ENV]`:
+
+```bash
+# default: OpenAI (OPENAI_API_KEY; OPENAI_BASE_URL overrides globally)
+--extractor "openai:gpt-4.1-mini"
+# GLM via z.ai (or any OpenAI-compatible provider)
+--extractor "openai:glm-5.2@https://api.z.ai/api/paas/v4#ZAI_API_KEY"
+# Ollama / vLLM / LM Studio (no key needed)
+--extractor "openai:qwen2.5:3b@http://localhost:11434/v1"
+# fully local: extraction+parsing on the same MLX model as the reader
+--extractor "mlx:mlx-community/Qwen2.5-3B-Instruct-4bit"
+```
+
+Caveat measured on 8 episodes: a 3B local extractor agrees with
+gpt-4.1-mini on only 1/11 cards (extracts noise as facts) — extraction
+quality is a real dependency, not a formality. The reader/consolidation
+side is MLX (Apple Silicon); porting slot training + routed activation to
+CUDA (PEFT) is future work.
+
 ### Usage
 
 ```bash

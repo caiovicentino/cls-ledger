@@ -22,7 +22,7 @@ import subprocess
 import sys
 from typing import List, Optional
 
-from .backends import LLMBackend, MLXBackend, OpenAIBackend
+from .backends import LLMBackend, MLXBackend, OpenAIBackend, make_backend
 from .systems import MemorySystem
 
 PARAMETRIC_SYSTEM_PROMPT = (
@@ -133,9 +133,10 @@ class SEALLiteSystem(LoRANaiveSystem):
 
     def __init__(self, model_id: str, workdir: str, iters: int = 600,
                  cache_dir: Optional[str] = None,
-                 editor_model: str = "gpt-4.1-mini", qa_per_episode: int = 3):
+                 editor_model: str = "openai:gpt-4.1-mini",
+                 qa_per_episode: int = 3):
         super().__init__(model_id, workdir, iters, cache_dir)
-        self.editor = OpenAIBackend(editor_model, cache_dir=cache_dir)
+        self.editor = make_backend(editor_model, cache_dir)
         self.qa_per_episode = qa_per_episode
 
     def _gen_qas(self, episode: dict) -> List[dict]:
