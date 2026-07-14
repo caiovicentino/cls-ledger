@@ -186,7 +186,7 @@ Aurora"). Mid-life **online queries** probe current values (building a
 per-fact usage log); a **final exam** covers eight query types:
 current-stable, current-updated (freshness after k updates, superseded
 values explicitly *rejected*), current-volatile, point-in-time ("as of day
-D"), 2- and 3-hop composition across episodes ≥5 days apart, revocations,
+D"), 2- and 3-hop composition across episodes >=5 days apart, revocations,
 and absent facts (never stated; measures hallucination/abstention).
 
 **Correct by construction.** Answers derive from the world state, never
@@ -235,7 +235,7 @@ milliseconds). The router asks the ledger: is the most relevant *current*
 fact for this question one that was consolidated, and is its entity the
 question's subject? If yes → that entity's slot answers with no context.
 If the fact is volatile, or was updated after the last sleep (new card
-identity ∉ consolidated set) → episodic route. Temporal questions and
+identity not in consolidated set) → episodic route. Temporal questions and
 relation chains bypass both: a semantic parser (LLM, schema-constrained)
 extracts *(anchor, relation chain, target, as-of day)* and the ledger
 resolves the chain and the time slice in code; the reader never performs
@@ -256,7 +256,7 @@ episodically.
 
 **Setup.** Reader/consolidation model: Qwen2.5-3B-Instruct (4-bit, MLX) on
 a single Apple M4; extraction/parsing: gpt-4.1-mini (disk-cached; total API
-cost for all experiments ≈ US$1). Baselines, all with the *same local
+cost for all experiments ~ US$1). Baselines, all with the *same local
 reader*: naive continual LoRA on raw episode text; SEAL-lite (episode-level
 synthetic-QA self-edits, simplified from SEAL); BM25 top-8 RAG; embeddings
 RAG (text-embedding-3-small, cosine top-8); plus gpt-4.1-mini full-context
@@ -306,7 +306,7 @@ training): base 93.8%; naive-LoRA/SEAL adapters 87.5% (with
 memory-bleeding errors — a benchmark company name answered for "currency of
 the UK"); monolithic CLS adapter 68.8→81.2% (replay helps, doesn't solve);
 **slots-routed: 93.8% with slots at rest and 93.8% with a slot active —
-0.0% degradation**, meeting the pre-registered ≤1% criterion.
+0.0% degradation**, meeting the pre-registered <=1% criterion.
 
 **Unlearning.** Deleting one entity (7 cards): target queries flip to
 "unknown"; **0 of 40 other answers changed** (pre-registered <1%
@@ -360,7 +360,7 @@ architecture moves exactly those steps into code.
 AgentLife is synthetic and template-verbalized; extraction is far easier
 than on real dialogue, and facts are atomic. The attribute schema is
 prescribed (as in deployed systems, but it bounds generality); the semantic
-parser inherits the schema. All experiments use one 3B reader and ≤26
+parser inherits the schema. All experiments use one 3B reader and <=26
 entities per life; per-entity slots do not capture cross-entity or
 procedural knowledge, and the base model never learns — the system becomes
 better *informed*, not more capable. Multi-seed replication covers the
