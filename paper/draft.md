@@ -1,8 +1,9 @@
 # The Ledger Knows What the Weights Know: Entity-Level Parametric Memory with Provenance Guarantees for LLM Agents
 
-**Caio Vicentino**
+**Caio Vicentino** (OpenInterpretability; ORCID 0009-0003-4331-6259)
 
-*Preprint, July 2026. Code and benchmark: https://github.com/caiovicentino/cls-ledger*
+*Working paper, July 2026. License: CC-BY-4.0. Code and benchmark:
+https://github.com/caiovicentino/cls-ledger*
 
 ---
 
@@ -284,6 +285,11 @@ mean ± sd over seeds; paired by seed):
 | M (90 days, 3 seeds) | 72.2% ± 2.3 | 42.8% ± 2.6 | 2/2 wins, +28.3pp |
 | L (365 days, 1 seed) | 80.5% | 33.9% | +46.6pp |
 
+CLS-Ledger wins every paired seed: 6/6 pooled across scales (two-sided
+sign test p = 0.031; per-scale counts are individually too small for
+significance — a caveat we state rather than hide, and the reason the
+multi-seed protocol ships with the benchmark).
+
 The scale trend is the headline: CLS accuracy is flat from 90 to 365 days
 while retrieval degrades monotonically; facts with 2+ updates score 92.3%
 at 365 days (supersedence compounds with life length). Online (mid-life)
@@ -300,6 +306,11 @@ profile (37–45% of queries answered with zero context tokens), and the
 robustness signature (§5.6).
 
 ### 5.4 Guarantees, measured
+
+Success criteria for G1 and G2 were pre-registered before the slot
+architecture was built (<=1% probe degradation; <1% unlearning
+collateral); everything in this subsection is a test of those
+pre-registered criteria.
 
 **Forgetting.** General-capability probe (16 items, disjoint from all
 training): base 93.8%; naive-LoRA/SEAL adapters 87.5% (with
@@ -343,7 +354,12 @@ paraphrase). Consolidated knowledge is semantically robust; symbolic
 machinery was template-brittle. Replacing the lexical parser with a
 schema-constrained LLM parse (resolution still in the ledger) recovered
 paraphrased accuracy to 75.0% and *improved* template accuracy to 93.2% on
-S-1 (72.1% on the unseen seed). Retrieval baselines, for calibration, are
+S-1 (72.1% on the unseen seed). Epistemic status, stated plainly: the
+paraphrase protocol was designed *after* the lexical failures were
+observed, and the semantic parser is a post-hoc fix validated on two
+seeds; the pre-registered claims of this paper are the guarantees of
+S5.4, not the parser recovery, which awaits pre-registered replication on
+fresh seeds. Retrieval baselines, for calibration, are
 paraphrase-invariant (BM25: 52.3% both ways).
 
 ### 5.7 Reader-model ceiling
