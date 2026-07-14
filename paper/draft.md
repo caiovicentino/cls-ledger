@@ -46,7 +46,7 @@ interference, selection-policy ablations) that support this framing.
 An agent that works with the same user for a year cannot keep its life in a
 context window. The dominant engineering answer is retrieval: store
 episodes or extracted facts externally and inject the relevant ones per
-query (MemGPT/Letta, Mem0, Zep). The emerging research answer is
+query (MemGPT/Letta [1], Mem0 [2], Zep [3]). The emerging research answer is
 parametric: write experience into weights, via adapters, test-time
 training, or learned caches. Both families have a missing-guarantees
 problem, and it is the stated reason parametric memory has not shipped in
@@ -54,7 +54,7 @@ production systems.
 
 Retrieval-based memory offers no *structural* guarantee that a superseded
 fact stays retired (stale-fact rates of 15–40% have been reported for
-RAG-based memory), and recent auditing work shows that after deletion,
+RAG-based memory [4]), and recent auditing work [21] shows that after deletion,
 "forgotten" information survives almost entirely through the retrieval
 graph rather than the model parameters — the unlearning boundary is drawn
 by the database administrator, not the model. Parametric memory has the
@@ -70,7 +70,7 @@ at the center of the architecture, and makes every parametric operation
 *governed by the ledger*:
 
 - **Consolidation** distills only *current* (non-superseded) facts,
-  selected by a policy over usage and stability, into small per-entity LoRA
+  selected by a policy over usage and stability, into small per-entity LoRA [25]
   slots (rank 4), each trained with an anchoring recipe that preserves
   general capability and calibrated abstention.
 - **Routing** activates at most one slot per query — the slot of the
@@ -94,7 +94,7 @@ Evaluating such a system fairly required a benchmark whose answer key we
 could trust. Public agent-memory benchmarks have documented reliability
 problems (a recent audit found 6.4% of one popular benchmark's answer key
 incorrect, with an LLM judge accepting up to 63% of deliberately wrong
-answers). We built **AgentLife**: generated agent "lives" (dated episode
+answers [16]). We built **AgentLife**: generated agent "lives" (dated episode
 streams with facts that are stated, updated, revoked, and interleaved with
 noise) whose answers derive from a programmatic temporal world state.
 Correctness is enforced, not hoped for: a privileged oracle must score
@@ -124,19 +124,19 @@ experiments, and generation is deterministic per seed across processes.
 
 ## 2. Related Work
 
-**Retrieval-based agent memory.** MemGPT/Letta, Mem0, Zep/Graphiti and
+**Retrieval-based agent memory.** MemGPT/Letta [1], Mem0 [2], Zep/Graphiti [3] and
 successors store conversation-derived memories externally and retrieve per
-query; recent product systems add background consolidation ("sleep-time
-compute"). These systems dominate practice but provide no supersedence or
-deletion guarantees; temporal knowledge graphs (Zep) and bi-temporal
-validity rules (MemStrata) add deterministic staleness control *for
+query; recent product systems add background consolidation ("sleep-time compute" [22]). These systems dominate practice but provide no supersedence or
+deletion guarantees; temporal knowledge graphs [3] and bi-temporal
+validity rules (MemStrata [4]) add deterministic staleness control *for
 retrieval*. We adopt the same deterministic-supersedence philosophy and
 extend it to govern weight activation.
 
 **Parametric memory.** Knowledge can be packed into adapters (OPPU's
-adapter-per-user; document LoRAs; learned KV caches — Cartridges, the basis
-of the Engram system), written by test-time training, or consolidated
-selectively from an agent's stream (EVAF's "memory depth"). Closest to our
+adapter-per-user [5]; document LoRAs; learned KV caches — Cartridges [6],
+the basis of the Engram system), written by test-time training [23], or
+consolidated selectively from an agent's stream (EVAF's "memory depth"
+[7]). Closest to our
 selection stage, EVAF gates consolidation by surprise and goal-valence into
 a *single shared* LoRA and explicitly leaves deletion and staleness
 unresolved. We differ in granularity (per-entity slots), governance (a
@@ -144,33 +144,35 @@ symbolic ledger decides what the weights know), and guarantees.
 
 **Modular unlearning and deletable personalization.** SISA-style exact
 unlearning, adapter-partition methods, and recent systems make deletion a
-module operation: SEA (Microsoft) keeps per-user "proxy" artifacts
-(steering vectors + rank-4 LoRA) deletable by construction; TrustErase
+module operation: SEA (Microsoft) [8] keeps per-user "proxy" artifacts
+(steering vectors + rank-4 LoRA) deletable by construction; TrustErase [9]
 embeds cryptographic "passports" in LoRA updates for auditable instant
-unlearning; RRDA routes between edit/suppress adapters per prompt. A
-position paper signed by much of the continual-learning community argues
+unlearning; RRDA [10] routes between edit/suppress adapters per prompt. A
+position paper signed by much of the continual-learning community [11] argues
 modular memory is the path to continual agents. Our contribution to this
 line is granularity and governance: deletion at the *entity* level, routed
 by a *fact ledger with provenance*, evaluated inside a long-lived agent
 loop with collateral measured at 0/40 (versus 19/40 for re-distillation).
 
-**Neuro-symbolic memory.** NeuSymMS builds an agent memory of
+**Neuro-symbolic memory.** NeuSymMS [12] builds an agent memory of
 subject–relation–value triples with rule-based truth maintenance,
 provenance, and soft deletion — and explicitly contains *no learned
 weights*. Aeon and MOSS manage symbolic/episodic stores with auditability.
 We supply the missing half: a ledger of this kind *acting on* parametric
 memory.
 
-**Adapter routing.** LoraHub, mixtures of LoRA experts, retrieval-augmented
-adapter selection, and zero-shot parametric-memory routing (PMDRouter)
+**Adapter routing.** LoraHub [13], mixtures of LoRA experts,
+retrieval-augmented adapter selection, and zero-shot parametric-memory
+routing (PMDRouter [14])
 select adapters for *tasks* or *documents*. Our router is comparatively
 trivial (the ledger names the entity), which is the point: routing by
 symbolic bookkeeping removes the need to learn what the memory contains.
 
-**Benchmarks.** LoCoMo, LongMemEval, MemoryAgentBench, BEAM and successors
-evaluate conversational memory at increasing scale; audits have documented
-answer-key and judge reliability problems, and preference-following
-studies (PrefEval) show sub-10% adherence within tens of turns. AgentLife
+**Benchmarks.** LoCoMo [15], LongMemEval [17], MemoryAgentBench [18],
+BEAM [24] and successors evaluate conversational memory at increasing
+scale; audits have documented answer-key and judge reliability problems
+[16], and preference-following studies (PrefEval [19]) show sub-10%
+adherence within tens of turns. AgentLife
 differs in being *self-validating* (oracle-100% and stale-oracle-fails as
 CI tests), in exact typed scoring, and in shipping a paraphrase protocol
 that measures benchmark–system co-adaptation directly.
@@ -255,11 +257,12 @@ episodically.
 
 ## 5. Experiments
 
-**Setup.** Reader/consolidation model: Qwen2.5-3B-Instruct (4-bit, MLX) on
+**Setup.** Reader/consolidation model: Qwen2.5-3B-Instruct [26] (4-bit,
+MLX) on
 a single Apple M4; extraction/parsing: gpt-4.1-mini (disk-cached; total API
 cost for all experiments ~ US$1). Baselines, all with the *same local
 reader*: naive continual LoRA on raw episode text; SEAL-lite (episode-level
-synthetic-QA self-edits, simplified from SEAL); BM25 top-8 RAG; embeddings
+synthetic-QA self-edits, simplified from SEAL [20]); BM25 top-8 RAG; embeddings
 RAG (text-embedding-3-small, cosine top-8); plus gpt-4.1-mini full-context
 and RAG as reader-upper-bound references. All response caches are
 content-addressed; all runs are seeded.
@@ -407,6 +410,36 @@ measurements show the price in accuracy against strong retrieval is small
 to nil while the benefits are absolute. The bookkeeping of memory belongs
 in code; the knowledge can live in weights; and the system should always
 know which is which.
+
+
+## References
+
+[1] C. Packer et al. MemGPT: Towards LLMs as Operating Systems. arXiv:2310.08560, 2023.
+[2] Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory. arXiv:2504.19413, 2025.
+[3] Zep: A Temporal Knowledge Graph Architecture for Agent Memory. arXiv:2501.13956, 2025.
+[4] MemStrata: Temporal Validity in Retrieval Memory — Eliminating Stale-Fact Errors. arXiv:2606.26511, 2026.
+[5] Z. Tan et al. Democratizing Large Language Models via Personalized Parameter-Efficient Fine-tuning (OPPU). EMNLP 2024; arXiv:2402.04401.
+[6] S. Eyuboglu et al. Cartridges: Lightweight and General-Purpose Long-Context Representations via Self-Study. arXiv:2506.06266, 2025.
+[7] H. Han. Memory Depth, Not Memory Access: Selective Parametric Consolidation for Long-Running Language Agents. arXiv:2606.26806, 2026.
+[8] C. Schneider, P. Schoenegger, B. Bariach. Separable Expert Architecture: Toward Privacy-Preserving LLM Personalization via Composable Adapters and Deletable User Proxies. arXiv:2604.21571, 2026.
+[9] R. Hendrix et al. TrustErase: Auditable Instant Machine Unlearning with Passport-Embedded Representations. arXiv:2606.17122, 2026.
+[10] B. Zhang, Y. Huang. When to Write and When to Suppress: Route-Specialized Dual Adapters. arXiv:2606.14668, 2026.
+[11] Position: Modular Memory is the Key to Continual Learning Agents. arXiv:2603.01761, 2026.
+[12] M. Sultan, N. Thuraisamy, V. Rajaratnam. NeuSymMS: a neuro-symbolic agent memory with rule-based truth maintenance and provenance. arXiv:2605.17596, 2026.
+[13] C. Huang et al. LoraHub: Efficient Cross-Task Generalization via Dynamic LoRA Composition. COLM 2024; arXiv:2307.13269.
+[14] F. Ji et al. Parametric Memory Decoding for Zero-Shot Routing in LoRA-Based External Parametric Memory. arXiv:2607.04118, 2026.
+[15] A. Maharana et al. Evaluating Very Long-Term Conversational Memory of LLM Agents (LoCoMo). arXiv:2402.17753, 2024.
+[16] Penfield Labs. We Audited LoCoMo: 6.4% of the Answer Key Is Wrong and the Judge Accepts up to 63% of Intentionally Wrong Answers. 2026. github.com/dial481/locomo-audit.
+[17] D. Wu et al. LongMemEval: Benchmarking Chat Assistants on Long-Term Interactive Memory. ICLR 2025; arXiv:2410.10813.
+[18] Y. Hu et al. MemoryAgentBench: Evaluating Memory Agents. ICLR 2026; arXiv:2507.05257.
+[19] S. Zhao et al. Do LLMs Recognize Your Preferences? Evaluating Personalized Preference Following in LLMs (PrefEval). ICLR 2025; arXiv:2502.09597.
+[20] A. Zweiger et al. Self-Adapting Language Models (SEAL). NeurIPS 2025; arXiv:2506.10943.
+[21] A. Raeesi, H. Roed. Auditing Forgetting in Limited Memory Language Models. arXiv:2607.00605, 2026.
+[22] K. Lin et al. Sleep-Time Compute: Beyond Inference Scaling at Test-Time. arXiv:2504.13171, 2025.
+[23] Y. Sun et al. Learning to (Learn at Test Time): RNNs with Expressive Hidden States. arXiv:2407.04620, 2024.
+[24] M. Tavakoli et al. BEAM: Beyond a Million Tokens. ICLR 2026. github.com/mohammadtavakoli78/BEAM.
+[25] E. Hu et al. LoRA: Low-Rank Adaptation of Large Language Models. ICLR 2022; arXiv:2106.09685.
+[26] Qwen Team. Qwen2.5 Technical Report. arXiv:2412.15115, 2024.
 
 ---
 
