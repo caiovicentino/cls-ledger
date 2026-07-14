@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "title": "The Ledger Knows What the Weights Know: Entity-Level Parametric Memory with Provenance Guarantees for LLM Agents",
+    "upload_type": "publication",
+    "publication_type": "workingpaper",
+    "description": "<p>Long-lived LLM agents need memory, and the field's two answers both lack guarantees: retrieval-based memory cannot promise that superseded facts stay retired or that deleted facts stop influencing answers, while parametric memory cannot promise bounded forgetting or auditable deletion. We present CLS-Ledger, an agent memory architecture in which a symbolic ledger of extracted facts — with per-fact provenance and deterministic supersedence — governs a bank of entity-level LoRA slots attached to a frozen base model. The construction yields three empirically verified guarantees: zero catastrophic forgetting (general-capability probe identical to the base model, at rest and with a slot active), physical surgical unlearning (deleting an entity's slot changed 0 of 40 unrelated answers, versus 19/40 for re-distillation), and structural staleness protection. We also release AgentLife, a self-validating benchmark for long-lived agent memory whose answer key is correct by construction, with typed error taxonomy and an adversarial paraphrase protocol. Across unseen seeds, CLS-Ledger beats same-reader BM25 retrieval by +14.6pp (30-day lives, 4/4 paired) and +28.3pp (90-day lives, 2/2); against a strong embeddings baseline under paraphrased questions accuracy is comparable — we argue the value of parametric agent memory lies in its guarantees and context-cost profile, and we report the negative and null results that support this framing.</p>",
+    "creators": [
+      {
+        "name": "Vicentino, Caio",
+        "affiliation": "OpenInterpretability",
+        "orcid": "0009-0003-4331-6259"
+      }
+    ],
+    "keywords": [
+      "LLM agents",
+      "agent memory",
+      "parametric memory",
+      "LoRA",
+      "machine unlearning",
+      "continual learning",
+      "neuro-symbolic",
+      "benchmark",
+      "provenance"
+    ],
+    "license": "cc-by-4.0",
+    "access_right": "open",
+    "related_identifiers": [
+      {
+        "identifier": "https://github.com/caiovicentino/cls-ledger",
+        "relation": "isSupplementTo",
+        "resource_type": "software"
+      }
+    ]
+  }
+}
