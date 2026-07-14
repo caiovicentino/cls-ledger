@@ -457,31 +457,57 @@ know which is which.
 
 ## References
 
+
 [1] C. Packer et al. MemGPT: Towards LLMs as Operating Systems. arXiv:2310.08560, 2023.
+
 [2] Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory. arXiv:2504.19413, 2025.
+
 [3] Zep: A Temporal Knowledge Graph Architecture for Agent Memory. arXiv:2501.13956, 2025.
+
 [4] MemStrata: Temporal Validity in Retrieval Memory — Eliminating Stale-Fact Errors. arXiv:2606.26511, 2026.
+
 [5] Z. Tan et al. Democratizing Large Language Models via Personalized Parameter-Efficient Fine-tuning (OPPU). EMNLP 2024; arXiv:2402.04401.
+
 [6] S. Eyuboglu et al. Cartridges: Lightweight and General-Purpose Long-Context Representations via Self-Study. arXiv:2506.06266, 2025.
+
 [7] H. Han. Memory Depth, Not Memory Access: Selective Parametric Consolidation for Long-Running Language Agents. arXiv:2606.26806, 2026.
+
 [8] C. Schneider, P. Schoenegger, B. Bariach. Separable Expert Architecture: Toward Privacy-Preserving LLM Personalization via Composable Adapters and Deletable User Proxies. arXiv:2604.21571, 2026.
+
 [9] R. Hendrix et al. TrustErase: Auditable Instant Machine Unlearning with Passport-Embedded Representations. arXiv:2606.17122, 2026.
+
 [10] B. Zhang, Y. Huang. When to Write and When to Suppress: Route-Specialized Dual Adapters. arXiv:2606.14668, 2026.
+
 [11] Position: Modular Memory is the Key to Continual Learning Agents. arXiv:2603.01761, 2026.
+
 [12] M. Sultan, N. Thuraisamy, V. Rajaratnam. NeuSymMS: a neuro-symbolic agent memory with rule-based truth maintenance and provenance. arXiv:2605.17596, 2026.
+
 [13] C. Huang et al. LoraHub: Efficient Cross-Task Generalization via Dynamic LoRA Composition. COLM 2024; arXiv:2307.13269.
+
 [14] F. Ji et al. Parametric Memory Decoding for Zero-Shot Routing in LoRA-Based External Parametric Memory. arXiv:2607.04118, 2026.
+
 [15] A. Maharana et al. Evaluating Very Long-Term Conversational Memory of LLM Agents (LoCoMo). arXiv:2402.17753, 2024.
+
 [16] Penfield Labs. We Audited LoCoMo: 6.4% of the Answer Key Is Wrong and the Judge Accepts up to 63% of Intentionally Wrong Answers. 2026. github.com/dial481/locomo-audit.
+
 [17] D. Wu et al. LongMemEval: Benchmarking Chat Assistants on Long-Term Interactive Memory. ICLR 2025; arXiv:2410.10813.
+
 [18] Y. Hu et al. MemoryAgentBench: Evaluating Memory Agents. ICLR 2026; arXiv:2507.05257.
+
 [19] S. Zhao et al. Do LLMs Recognize Your Preferences? Evaluating Personalized Preference Following in LLMs (PrefEval). ICLR 2025; arXiv:2502.09597.
+
 [20] A. Zweiger et al. Self-Adapting Language Models (SEAL). NeurIPS 2025; arXiv:2506.10943.
+
 [21] A. Raeesi, H. Roed. Auditing Forgetting in Limited Memory Language Models. arXiv:2607.00605, 2026.
+
 [22] K. Lin et al. Sleep-Time Compute: Beyond Inference Scaling at Test-Time. arXiv:2504.13171, 2025.
+
 [23] Y. Sun et al. Learning to (Learn at Test Time): RNNs with Expressive Hidden States. arXiv:2407.04620, 2024.
+
 [24] M. Tavakoli et al. BEAM: Beyond a Million Tokens. ICLR 2026. github.com/mohammadtavakoli78/BEAM.
+
 [25] E. Hu et al. LoRA: Low-Rank Adaptation of Large Language Models. ICLR 2022; arXiv:2106.09685.
+
 [26] Qwen Team. Qwen2.5 Technical Report. arXiv:2412.15115, 2024.
 
 ---
