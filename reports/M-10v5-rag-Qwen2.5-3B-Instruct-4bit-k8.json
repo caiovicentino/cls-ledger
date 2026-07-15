@@ -1,0 +1,1835 @@
+{
+  "n_final": 96,
+  "disposition_adherence": {
+    "date_first": {
+      "n": 5,
+      "adherent": 0,
+      "rate": 0.0
+    },
+    "city_upper": {
+      "n": 8,
+      "adherent": 0,
+      "rate": 0.0
+    }
+  },
+  "n_online": 58,
+  "accuracy_final": 0.3645833333333333,
+  "accuracy_online": 0.5172413793103449,
+  "by_qtype": {
+    "absent": {
+      "n": 8,
+      "acc": 1.0
+    },
+    "current_stable": {
+      "n": 16,
+      "acc": 0.5625
+    },
+    "current_updated": {
+      "n": 16,
+      "acc": 0.375
+    },
+    "current_volatile": {
+      "n": 2,
+      "acc": 0.0
+    },
+    "induction_count": {
+      "n": 8,
+      "acc": 0.25
+    },
+    "induction_habit": {
+      "n": 2,
+      "acc": 0.0
+    },
+    "induction_trend": {
+      "n": 2,
+      "acc": 1.0
+    },
+    "multihop_2": {
+      "n": 12,
+      "acc": 0.08333333333333333
+    },
+    "multihop_3": {
+      "n": 6,
+      "acc": 0.0
+    },
+    "point_in_time": {
+      "n": 20,
+      "acc": 0.25
+    },
+    "revoked": {
+      "n": 4,
+      "acc": 0.5
+    }
+  },
+  "by_heat": {
+    "cold": {
+      "n": 82,
+      "acc": 0.3780487804878049
+    },
+    "hot": {
+      "n": 14,
+      "acc": 0.2857142857142857
+    }
+  },
+  "by_n_updates": {
+    "0": {
+      "n": 64,
+      "acc": 0.390625
+    },
+    "1": {
+      "n": 22,
+      "acc": 0.4090909090909091
+    },
+    "2+": {
+      "n": 10,
+      "acc": 0.1
+    }
+  },
+  "error_classes": {
+    "abstain": 48,
+    "correct": 65,
+    "stale": 25,
+    "miss": 5,
+    "wrong_value": 11
+  },
+  "rows": [
+    {
+      "query_id": "q0000",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "October 27"
+    },
+    {
+      "query_id": "q0001",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Valencia",
+      "answer_display": "Valencia"
+    },
+    {
+      "query_id": "q0002",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "vegetarian"
+    },
+    {
+      "query_id": "q0003",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Valencia",
+      "answer_display": "Valencia"
+    },
+    {
+      "query_id": "q0004",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Helioform",
+      "answer_display": "Helioform"
+    },
+    {
+      "query_id": "q0005",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "E83",
+      "answer_display": "D91"
+    },
+    {
+      "query_id": "q0006",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "October 27"
+    },
+    {
+      "query_id": "q0007",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Havana",
+      "answer_display": "Havana"
+    },
+    {
+      "query_id": "q0008",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "active",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0009",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Havana",
+      "answer_display": "Havana"
+    },
+    {
+      "query_id": "q0010",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Valencia",
+      "answer_display": "Valencia"
+    },
+    {
+      "query_id": "q0011",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "vegetarian"
+    },
+    {
+      "query_id": "q0012",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "E83",
+      "answer_display": "F29"
+    },
+    {
+      "query_id": "q0013",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "correct",
+      "correct": 1,
+      "response": "Desk 60",
+      "answer_display": "Desk 60"
+    },
+    {
+      "query_id": "q0014",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Helioform",
+      "answer_display": "Helioform"
+    },
+    {
+      "query_id": "q0015",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Helioform",
+      "answer_display": "Helioform"
+    },
+    {
+      "query_id": "q0016",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Windrose Media",
+      "answer_display": "Windrose Media"
+    },
+    {
+      "query_id": "q0017",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "correct",
+      "correct": 1,
+      "response": "Desk 10",
+      "answer_display": "Desk 10"
+    },
+    {
+      "query_id": "q0018",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Havana",
+      "answer_display": "Havana"
+    },
+    {
+      "query_id": "q0019",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "active",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0020",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "correct",
+      "correct": 1,
+      "response": "Desk 10",
+      "answer_display": "Desk 10"
+    },
+    {
+      "query_id": "q0021",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "VALLECASDFGH",
+      "answer_display": "Valencia"
+    },
+    {
+      "query_id": "q0022",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "VALencia",
+      "answer_display": "Valencia"
+    },
+    {
+      "query_id": "q0023",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "April 17",
+      "answer_display": "April 17"
+    },
+    {
+      "query_id": "q0024",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Petit Four"
+    },
+    {
+      "query_id": "q0025",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Ravi Kumar",
+      "answer_display": "Ravi Kumar"
+    },
+    {
+      "query_id": "q0026",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Helioform",
+      "answer_display": "Helioform"
+    },
+    {
+      "query_id": "q0027",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "active",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0028",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Cobalt Harbor",
+      "answer_display": "Cobalt Harbor"
+    },
+    {
+      "query_id": "q0029",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "April 17",
+      "answer_display": "April 17"
+    },
+    {
+      "query_id": "q0030",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "E83",
+      "answer_display": "E93"
+    },
+    {
+      "query_id": "q0031",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "active",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0032",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "stale",
+      "correct": 0,
+      "response": "Windrose Media",
+      "answer_display": "Halcyon Grid"
+    },
+    {
+      "query_id": "q0033",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "VALLEDAISUpperCase",
+      "answer_display": "Valencia"
+    },
+    {
+      "query_id": "q0034",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "Mistral Forge",
+      "answer_display": "Solvantic"
+    },
+    {
+      "query_id": "q0035",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Bergen",
+      "answer_display": "Bergen"
+    },
+    {
+      "query_id": "q0036",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Solvantic"
+    },
+    {
+      "query_id": "q0037",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Petit Four"
+    },
+    {
+      "query_id": "q0038",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "B76",
+      "answer_display": "A52"
+    },
+    {
+      "query_id": "q0039",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Petit Four"
+    },
+    {
+      "query_id": "q0040",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "April 17",
+      "answer_display": "April 17"
+    },
+    {
+      "query_id": "q0041",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Ravi Kumar"
+    },
+    {
+      "query_id": "q0042",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "VALLEDAISUpperCase",
+      "answer_display": "Valencia"
+    },
+    {
+      "query_id": "q0043",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "Desk 67",
+      "answer_display": "Desk 54"
+    },
+    {
+      "query_id": "q0044",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Elena Petrova"
+    },
+    {
+      "query_id": "q0045",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "April 17",
+      "answer_display": "April 17"
+    },
+    {
+      "query_id": "q0046",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Cobalt Harbor",
+      "answer_display": "Cobalt Harbor"
+    },
+    {
+      "query_id": "q0047",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "B76",
+      "answer_display": "C21"
+    },
+    {
+      "query_id": "q0048",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "April 17",
+      "answer_display": "April 17"
+    },
+    {
+      "query_id": "q0049",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "April 17",
+      "answer_display": "April 17"
+    },
+    {
+      "query_id": "q0050",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "October 27"
+    },
+    {
+      "query_id": "q0051",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Solvantic"
+    },
+    {
+      "query_id": "q0052",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Havana",
+      "answer_display": "Havana"
+    },
+    {
+      "query_id": "q0053",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Helioform"
+    },
+    {
+      "query_id": "q0054",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "B76",
+      "answer_display": "C21"
+    },
+    {
+      "query_id": "q0055",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "stale",
+      "correct": 0,
+      "response": "Helioform",
+      "answer_display": "Halcyon Grid"
+    },
+    {
+      "query_id": "q0056",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Petit Four"
+    },
+    {
+      "query_id": "q0057",
+      "qtype": "online",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "October 27"
+    },
+    {
+      "query_id": "q0072",
+      "qtype": "current_stable",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "April 17",
+      "answer_display": "April 17",
+      "disposition_checks": {
+        "date_first": false
+      }
+    },
+    {
+      "query_id": "q0079",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "September 27"
+    },
+    {
+      "query_id": "q0078",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Trondheim",
+      "answer_display": "Trondheim",
+      "disposition_checks": {
+        "city_upper": false
+      }
+    },
+    {
+      "query_id": "q0070",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Tbilisi",
+      "answer_display": "Tbilisi",
+      "disposition_checks": {
+        "city_upper": false
+      }
+    },
+    {
+      "query_id": "q0074",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "November 13",
+      "answer_display": "November 13",
+      "disposition_checks": {
+        "date_first": false
+      }
+    },
+    {
+      "query_id": "q0059",
+      "qtype": "current_stable",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Helioform"
+    },
+    {
+      "query_id": "q0063",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Zephyr Logic"
+    },
+    {
+      "query_id": "q0077",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Osaka",
+      "answer_display": "Osaka",
+      "disposition_checks": {
+        "city_upper": false
+      }
+    },
+    {
+      "query_id": "q0066",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Auckland"
+    },
+    {
+      "query_id": "q0075",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Bristol",
+      "answer_display": "Bristol",
+      "disposition_checks": {
+        "city_upper": false
+      }
+    },
+    {
+      "query_id": "q0058",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Kernelworks",
+      "answer_display": "Kernelworks"
+    },
+    {
+      "query_id": "q0064",
+      "qtype": "current_stable",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "October 27"
+    },
+    {
+      "query_id": "q0065",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "September 8"
+    },
+    {
+      "query_id": "q0069",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "March 27",
+      "answer_display": "March 27",
+      "disposition_checks": {
+        "date_first": false
+      }
+    },
+    {
+      "query_id": "q0068",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "February 13",
+      "answer_display": "February 13",
+      "disposition_checks": {
+        "date_first": false
+      }
+    },
+    {
+      "query_id": "q0061",
+      "qtype": "current_stable",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "wrong_value",
+      "correct": 0,
+      "response": "Kernelworks",
+      "answer_display": "Optiline"
+    },
+    {
+      "query_id": "q0101",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Project Basil",
+      "answer_display": "Project Basil"
+    },
+    {
+      "query_id": "q0116",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "stale",
+      "correct": 0,
+      "response": "oat latte",
+      "answer_display": "matcha latte"
+    },
+    {
+      "query_id": "q0099",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Auckland",
+      "answer_display": "Auckland",
+      "disposition_checks": {
+        "city_upper": false
+      }
+    },
+    {
+      "query_id": "q0090",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "stale",
+      "correct": 0,
+      "response": "Miso Garden",
+      "answer_display": "Juniper Table"
+    },
+    {
+      "query_id": "q0086",
+      "qtype": "current_updated",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "stale",
+      "correct": 0,
+      "response": "Helioform",
+      "answer_display": "Halcyon Grid"
+    },
+    {
+      "query_id": "q0102",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "stale",
+      "correct": 0,
+      "response": "Tesserac Analytics",
+      "answer_display": "Mistral Forge"
+    },
+    {
+      "query_id": "q0089",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "Cedarline Group",
+      "answer_display": "Helioform"
+    },
+    {
+      "query_id": "q0095",
+      "qtype": "current_updated",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Solvantic"
+    },
+    {
+      "query_id": "q0114",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "Antwerp",
+      "answer_display": "Matera"
+    },
+    {
+      "query_id": "q0107",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "Peregrine Data",
+      "answer_display": "Brightmesh"
+    },
+    {
+      "query_id": "q0084",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "$245k",
+      "answer_display": "$245k"
+    },
+    {
+      "query_id": "q0113",
+      "qtype": "current_updated",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "stale",
+      "correct": 0,
+      "response": "Windrose Media",
+      "answer_display": "Halcyon Grid"
+    },
+    {
+      "query_id": "q0082",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "miss",
+      "correct": 0,
+      "response": "June 5",
+      "answer_display": "March 5"
+    },
+    {
+      "query_id": "q0105",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Project Auriga",
+      "answer_display": "Project Auriga"
+    },
+    {
+      "query_id": "q0091",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Adelaide",
+      "answer_display": "Adelaide",
+      "disposition_checks": {
+        "city_upper": false
+      }
+    },
+    {
+      "query_id": "q0106",
+      "qtype": "current_updated",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "Project Basil",
+      "answer_display": "Project Basil"
+    },
+    {
+      "query_id": "q0118",
+      "qtype": "current_volatile",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "B76",
+      "answer_display": "C24"
+    },
+    {
+      "query_id": "q0117",
+      "qtype": "current_volatile",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "stale",
+      "correct": 0,
+      "response": "Desk 75",
+      "answer_display": "Desk 71"
+    },
+    {
+      "query_id": "q0130",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "stale",
+      "correct": 0,
+      "response": "paused",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0185",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "stale",
+      "correct": 0,
+      "response": "Project Auriga",
+      "answer_display": "Project Aurora"
+    },
+    {
+      "query_id": "q0121",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "$295k"
+    },
+    {
+      "query_id": "q0181",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Project Falcon",
+      "answer_display": "Project Falcon"
+    },
+    {
+      "query_id": "q0148",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "stale",
+      "correct": 0,
+      "response": "Adelaide",
+      "answer_display": "Leipzig"
+    },
+    {
+      "query_id": "q0168",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "The Copper Pot",
+      "answer_display": "The Copper Pot"
+    },
+    {
+      "query_id": "q0134",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "August 14"
+    },
+    {
+      "query_id": "q0124",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "May 5"
+    },
+    {
+      "query_id": "q0169",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Kyoto",
+      "answer_display": "Kyoto",
+      "disposition_checks": {
+        "city_upper": false
+      }
+    },
+    {
+      "query_id": "q0138",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "paused"
+    },
+    {
+      "query_id": "q0150",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "stale",
+      "correct": 0,
+      "response": "Project Auriga",
+      "answer_display": "Project Cinder"
+    },
+    {
+      "query_id": "q0151",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "stale",
+      "correct": 0,
+      "response": "Blue Heron Bistro",
+      "answer_display": "Golden Fern"
+    },
+    {
+      "query_id": "q0166",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Tesserac Analytics"
+    },
+    {
+      "query_id": "q0179",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Ferrowind"
+    },
+    {
+      "query_id": "q0180",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Tesserac Analytics"
+    },
+    {
+      "query_id": "q0173",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Kernelworks"
+    },
+    {
+      "query_id": "q0133",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Tom Eriksen"
+    },
+    {
+      "query_id": "q0183",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "Osaka",
+      "answer_display": "Osaka",
+      "disposition_checks": {
+        "city_upper": false
+      }
+    },
+    {
+      "query_id": "q0137",
+      "qtype": "point_in_time",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "active"
+    },
+    {
+      "query_id": "q0128",
+      "qtype": "point_in_time",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "paused",
+      "answer_display": "paused"
+    },
+    {
+      "query_id": "q0215",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "August 9"
+    },
+    {
+      "query_id": "q0209",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "March 5",
+      "answer_display": "March 5",
+      "disposition_checks": {
+        "date_first": false
+      }
+    },
+    {
+      "query_id": "q0196",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Valencia"
+    },
+    {
+      "query_id": "q0214",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "wrong_value",
+      "correct": 0,
+      "response": "October 5",
+      "answer_display": "December 22"
+    },
+    {
+      "query_id": "q0219",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "March 5"
+    },
+    {
+      "query_id": "q0217",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "wrong_value",
+      "correct": 0,
+      "response": "May 5",
+      "answer_display": "March 5"
+    },
+    {
+      "query_id": "q0218",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "March 5"
+    },
+    {
+      "query_id": "q0213",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "December 22"
+    },
+    {
+      "query_id": "q0216",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "wrong_value",
+      "correct": 0,
+      "response": "October 5",
+      "answer_display": "August 9"
+    },
+    {
+      "query_id": "q0211",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "March 5"
+    },
+    {
+      "query_id": "q0202",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Salta"
+    },
+    {
+      "query_id": "q0212",
+      "qtype": "multihop_2",
+      "heat": "cold",
+      "hops": 2,
+      "n_updates": "0",
+      "class": "miss",
+      "correct": 0,
+      "response": "March 5",
+      "answer_display": "December 22"
+    },
+    {
+      "query_id": "q0197",
+      "qtype": "multihop_3",
+      "heat": "cold",
+      "hops": 3,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Tbilisi"
+    },
+    {
+      "query_id": "q0198",
+      "qtype": "multihop_3",
+      "heat": "cold",
+      "hops": 3,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Tbilisi"
+    },
+    {
+      "query_id": "q0203",
+      "qtype": "multihop_3",
+      "heat": "cold",
+      "hops": 3,
+      "n_updates": "0",
+      "class": "wrong_value",
+      "correct": 0,
+      "response": "Osaka",
+      "answer_display": "Windhoek"
+    },
+    {
+      "query_id": "q0204",
+      "qtype": "multihop_3",
+      "heat": "cold",
+      "hops": 3,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Windhoek"
+    },
+    {
+      "query_id": "q0201",
+      "qtype": "multihop_3",
+      "heat": "cold",
+      "hops": 3,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Tbilisi"
+    },
+    {
+      "query_id": "q0207",
+      "qtype": "multihop_3",
+      "heat": "cold",
+      "hops": 3,
+      "n_updates": "0",
+      "class": "wrong_value",
+      "correct": 0,
+      "response": "Tbilisi",
+      "answer_display": "Auckland"
+    },
+    {
+      "query_id": "q0222",
+      "qtype": "revoked",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "none"
+    },
+    {
+      "query_id": "q0221",
+      "qtype": "revoked",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "cancelled",
+      "answer_display": "cancelled"
+    },
+    {
+      "query_id": "q0220",
+      "qtype": "revoked",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "cancelled",
+      "answer_display": "cancelled"
+    },
+    {
+      "query_id": "q0223",
+      "qtype": "revoked",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "no"
+    },
+    {
+      "query_id": "q0227",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0228",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0226",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0225",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0230",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0224",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0231",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0229",
+      "qtype": "absent",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
+      "answer_display": "unknown"
+    },
+    {
+      "query_id": "q0265",
+      "qtype": "induction_count",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "wrong_value",
+      "correct": 0,
+      "response": "2",
+      "answer_display": "3"
+    },
+    {
+      "query_id": "q0235",
+      "qtype": "induction_count",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "4"
+    },
+    {
+      "query_id": "q0272",
+      "qtype": "induction_count",
+      "heat": "hot",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "wrong_value",
+      "correct": 0,
+      "response": "2",
+      "answer_display": "1"
+    },
+    {
+      "query_id": "q0239",
+      "qtype": "induction_count",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "wrong_value",
+      "correct": 0,
+      "response": "2",
+      "answer_display": "1"
+    },
+    {
+      "query_id": "q0271",
+      "qtype": "induction_count",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "correct",
+      "correct": 1,
+      "response": "1",
+      "answer_display": "1"
+    },
+    {
+      "query_id": "q0267",
+      "qtype": "induction_count",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "2+",
+      "class": "correct",
+      "correct": 1,
+      "response": "2",
+      "answer_display": "2"
+    },
+    {
+      "query_id": "q0256",
+      "qtype": "induction_count",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "wrong_value",
+      "correct": 0,
+      "response": "2",
+      "answer_display": "1"
+    },
+    {
+      "query_id": "q0257",
+      "qtype": "induction_count",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "1",
+      "class": "wrong_value",
+      "correct": 0,
+      "response": "2",
+      "answer_display": "1"
+    },
+    {
+      "query_id": "q0276",
+      "qtype": "induction_habit",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Saturday"
+    },
+    {
+      "query_id": "q0277",
+      "qtype": "induction_habit",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
+      "answer_display": "Friday"
+    },
+    {
+      "query_id": "q0279",
+      "qtype": "induction_trend",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "increased",
+      "answer_display": "increased"
+    },
+    {
+      "query_id": "q0278",
+      "qtype": "induction_trend",
+      "heat": "cold",
+      "hops": 1,
+      "n_updates": "0",
+      "class": "correct",
+      "correct": 1,
+      "response": "increased",
+      "answer_display": "increased"
+    }
+  ],
+  "backend_stats": {
+    "model": "mlx:mlx-community/Qwen2.5-3B-Instruct-4bit|adapter:none",
+    "generations": 152,
+    "cache_hits": 2
+  }
+}
