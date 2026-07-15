@@ -2,35 +2,35 @@
   "n_final": 97,
   "disposition_adherence": {
     "city_upper": {
-      "n": 18,
-      "adherent": 0,
-      "rate": 0.0
+      "n": 24,
+      "adherent": 21,
+      "rate": 0.875
     },
     "date_first": {
-      "n": 14,
-      "adherent": 0,
-      "rate": 0.0
+      "n": 15,
+      "adherent": 15,
+      "rate": 1.0
     }
   },
   "n_online": 69,
-  "accuracy_final": 0.6907216494845361,
+  "accuracy_final": 0.8247422680412371,
   "accuracy_online": 0.7971014492753623,
   "by_qtype": {
     "absent": {
       "n": 8,
-      "acc": 0.375
+      "acc": 0.5
     },
     "current_stable": {
       "n": 16,
-      "acc": 0.8125
+      "acc": 0.875
     },
     "current_updated": {
       "n": 16,
-      "acc": 0.75
+      "acc": 0.875
     },
     "current_volatile": {
       "n": 2,
-      "acc": 0.5
+      "acc": 1.0
     },
     "induction_count": {
       "n": 8,
@@ -38,7 +38,7 @@
     },
     "induction_habit": {
       "n": 2,
-      "acc": 0.0
+      "acc": 1.0
     },
     "induction_trend": {
       "n": 3,
@@ -46,52 +46,51 @@
     },
     "multihop_2": {
       "n": 12,
-      "acc": 0.8333333333333334
+      "acc": 1.0
     },
     "multihop_3": {
       "n": 6,
-      "acc": 0.3333333333333333
+      "acc": 1.0
     },
     "point_in_time": {
       "n": 20,
-      "acc": 0.75
+      "acc": 0.7
     },
     "revoked": {
       "n": 4,
-      "acc": 0.75
+      "acc": 1.0
     }
   },
   "by_heat": {
     "cold": {
       "n": 78,
-      "acc": 0.6794871794871795
+      "acc": 0.8205128205128205
     },
     "hot": {
       "n": 19,
-      "acc": 0.7368421052631579
+      "acc": 0.8421052631578947
     }
   },
   "by_n_updates": {
     "0": {
       "n": 64,
-      "acc": 0.671875
+      "acc": 0.828125
     },
     "1": {
       "n": 20,
-      "acc": 0.8
+      "acc": 0.75
     },
     "2+": {
       "n": 13,
-      "acc": 0.6153846153846154
+      "acc": 0.9230769230769231
     }
   },
   "error_classes": {
-    "correct": 122,
-    "miss": 25,
-    "abstain": 8,
-    "stale": 3,
-    "wrong_value": 7,
-    "hallucination": 1
+    "correct": 135,
+    "miss": 16,
+    "abstain": 7,
+    "stale": 5,
+    "wrong_value": 3
   },
   "rows": [
     {
@@ -287,9 +286,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "0",
-      "class": "miss",
+      "class": "abstain",
       "correct": 0,
-      "response": "June 13",
+      "response": "unknown",
       "answer_display": "October 13"
     },
     {
@@ -309,9 +308,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "0",
-      "class": "miss",
+      "class": "abstain",
       "correct": 0,
-      "response": "June 13",
+      "response": "unknown",
       "answer_display": "October 13"
     },
     {
@@ -366,7 +365,7 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "May 17",
+      "response": "17 May",
       "answer_display": "May 17"
     },
     {
@@ -375,9 +374,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "2+",
-      "class": "correct",
-      "correct": 1,
-      "response": "Desk 69",
+      "class": "stale",
+      "correct": 0,
+      "response": "Desk 56",
       "answer_display": "Desk 69"
     },
     {
@@ -397,9 +396,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "2+",
-      "class": "correct",
-      "correct": 1,
-      "response": "Desk 69",
+      "class": "stale",
+      "correct": 0,
+      "response": "Desk 56",
       "answer_display": "Desk 69"
     },
     {
@@ -443,7 +442,7 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "Cusco",
+      "response": "CUSCO",
       "answer_display": "Cusco"
     },
     {
@@ -463,9 +462,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "2+",
-      "class": "miss",
-      "correct": 0,
-      "response": "B47",
+      "class": "correct",
+      "correct": 1,
+      "response": "D21",
       "answer_display": "D21"
     },
     {
@@ -496,9 +495,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "2+",
-      "class": "correct",
-      "correct": 1,
-      "response": "Desk 33",
+      "class": "stale",
+      "correct": 0,
+      "response": "Desk 70",
       "answer_display": "Desk 33"
     },
     {
@@ -507,9 +506,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "0",
-      "class": "correct",
-      "correct": 1,
-      "response": "May 17",
+      "class": "miss",
+      "correct": 0,
+      "response": "21 June",
       "answer_display": "May 17"
     },
     {
@@ -639,9 +638,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "1",
-      "class": "correct",
-      "correct": 1,
-      "response": "Lisbon",
+      "class": "miss",
+      "correct": 0,
+      "response": "LISBOA",
       "answer_display": "Lisbon"
     },
     {
@@ -663,7 +662,7 @@
       "n_updates": "1",
       "class": "correct",
       "correct": 1,
-      "response": "Denver",
+      "response": "DENVER",
       "answer_display": "Denver"
     },
     {
@@ -694,9 +693,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "2+",
-      "class": "miss",
-      "correct": 0,
-      "response": "B47",
+      "class": "correct",
+      "correct": 1,
+      "response": "A49",
       "answer_display": "A49"
     },
     {
@@ -729,7 +728,7 @@
       "n_updates": "2+",
       "class": "correct",
       "correct": 1,
-      "response": "Kanazawa",
+      "response": "KANAZAWA",
       "answer_display": "Kanazawa"
     },
     {
@@ -749,9 +748,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "2+",
-      "class": "miss",
-      "correct": 0,
-      "response": "B47",
+      "class": "correct",
+      "correct": 1,
+      "response": "A49",
       "answer_display": "A49"
     },
     {
@@ -771,9 +770,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "2+",
-      "class": "miss",
-      "correct": 0,
-      "response": "none",
+      "class": "correct",
+      "correct": 1,
+      "response": "Nina Kowalski",
       "answer_display": "Nina Kowalski"
     },
     {
@@ -784,7 +783,7 @@
       "n_updates": "2+",
       "class": "correct",
       "correct": 1,
-      "response": "Kanazawa",
+      "response": "KANAZAWA",
       "answer_display": "Kanazawa"
     },
     {
@@ -817,7 +816,7 @@
       "n_updates": "0",
       "class": "miss",
       "correct": 0,
-      "response": "June 5",
+      "response": "21 June",
       "answer_display": "May 17"
     },
     {
@@ -839,7 +838,7 @@
       "n_updates": "2+",
       "class": "correct",
       "correct": 1,
-      "response": "Kanazawa",
+      "response": "KANAZAWA",
       "answer_display": "Kanazawa"
     },
     {
@@ -848,9 +847,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "2+",
-      "class": "miss",
-      "correct": 0,
-      "response": "B47",
+      "class": "correct",
+      "correct": 1,
+      "response": "E11",
       "answer_display": "E11"
     },
     {
@@ -861,10 +860,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "Marseille",
+      "response": "MARSEILLE",
       "answer_display": "Marseille",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -875,10 +874,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "Windhoek",
+      "response": "WINDHOEK",
       "answer_display": "Windhoek",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -900,10 +899,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "May 21",
+      "response": "21 May",
       "answer_display": "May 21",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -914,10 +913,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "Boulder",
+      "response": "BOULDER",
       "answer_display": "Boulder",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -939,10 +938,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "May 17",
+      "response": "17 May",
       "answer_display": "May 17",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -953,10 +952,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "Toronto",
+      "response": "TORONTO",
       "answer_display": "Toronto",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -967,7 +966,7 @@
       "n_updates": "0",
       "class": "miss",
       "correct": 0,
-      "response": "Amara Okafor",
+      "response": "Amara Océ",
       "answer_display": "Ionflow"
     },
     {
@@ -976,10 +975,13 @@
       "heat": "cold",
       "hops": 1,
       "n_updates": "0",
-      "class": "miss",
-      "correct": 0,
-      "response": "June 15",
-      "answer_display": "June 21"
+      "class": "correct",
+      "correct": 1,
+      "response": "21 June",
+      "answer_display": "June 21",
+      "disposition_checks": {
+        "date_first": true
+      }
     },
     {
       "query_id": "q0089",
@@ -989,10 +991,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "July 17",
+      "response": "17 July",
       "answer_display": "July 17",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1003,10 +1005,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "Denver",
+      "response": "DENVER",
       "answer_display": "Denver",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -1017,10 +1019,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "Tallinn",
+      "response": "TALLINN",
       "answer_display": "Tallinn",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -1031,10 +1033,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "Valencia",
+      "response": "VALENCIA",
       "answer_display": "Valencia",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -1076,10 +1078,13 @@
       "heat": "cold",
       "hops": 1,
       "n_updates": "2+",
-      "class": "stale",
-      "correct": 0,
-      "response": "Oslo",
-      "answer_display": "Havana"
+      "class": "correct",
+      "correct": 1,
+      "response": "HAVANA",
+      "answer_display": "Havana",
+      "disposition_checks": {
+        "city_upper": true
+      }
     },
     {
       "query_id": "q0107",
@@ -1089,10 +1094,10 @@
       "n_updates": "1",
       "class": "correct",
       "correct": 1,
-      "response": "Oslo",
+      "response": "OSLO",
       "answer_display": "Oslo",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -1101,9 +1106,9 @@
       "heat": "cold",
       "hops": 1,
       "n_updates": "2+",
-      "class": "miss",
-      "correct": 0,
-      "response": "none",
+      "class": "correct",
+      "correct": 1,
+      "response": "Nina Kowalski",
       "answer_display": "Nina Kowalski"
     },
     {
@@ -1114,10 +1119,10 @@
       "n_updates": "1",
       "class": "correct",
       "correct": 1,
-      "response": "Gdansk",
+      "response": "GDANSK",
       "answer_display": "Gdansk",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -1128,10 +1133,10 @@
       "n_updates": "1",
       "class": "correct",
       "correct": 1,
-      "response": "August 14",
+      "response": "14 August",
       "answer_display": "August 14",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1175,10 +1180,10 @@
       "n_updates": "1",
       "class": "correct",
       "correct": 1,
-      "response": "Bristol",
+      "response": "BRISTOL",
       "answer_display": "Bristol",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -1189,10 +1194,10 @@
       "n_updates": "2+",
       "class": "correct",
       "correct": 1,
-      "response": "Bergen",
+      "response": "BERGEN",
       "answer_display": "Bergen",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -1201,13 +1206,10 @@
       "heat": "cold",
       "hops": 1,
       "n_updates": "1",
-      "class": "correct",
-      "correct": 1,
-      "response": "Boulder",
-      "answer_display": "Boulder",
-      "disposition_checks": {
-        "city_upper": false
-      }
+      "class": "stale",
+      "correct": 0,
+      "response": "ZURICH",
+      "answer_display": "Boulder"
     },
     {
       "query_id": "q0124",
@@ -1248,9 +1250,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "2+",
-      "class": "miss",
-      "correct": 0,
-      "response": "none",
+      "class": "correct",
+      "correct": 1,
+      "response": "Nina Kowalski",
       "answer_display": "Nina Kowalski"
     },
     {
@@ -1270,9 +1272,9 @@
       "heat": "hot",
       "hops": 1,
       "n_updates": "2+",
-      "class": "miss",
-      "correct": 0,
-      "response": "B47",
+      "class": "correct",
+      "correct": 1,
+      "response": "E11",
       "answer_display": "E11"
     },
     {
@@ -1372,9 +1374,9 @@
       "heat": "cold",
       "hops": 1,
       "n_updates": "0",
-      "class": "correct",
-      "correct": 1,
-      "response": "Sofia Duarte",
+      "class": "abstain",
+      "correct": 0,
+      "response": "unknown",
       "answer_display": "Sofia Duarte"
     },
     {
@@ -1410,7 +1412,7 @@
       "n_updates": "0",
       "class": "miss",
       "correct": 0,
-      "response": "June 26",
+      "response": "9 June",
       "answer_display": "September 9"
     },
     {
@@ -1432,10 +1434,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "Kyoto",
+      "response": "KYOTO",
       "answer_display": "Kyoto",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -1512,10 +1514,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "April 5",
+      "response": "5 April",
       "answer_display": "April 5",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1526,10 +1528,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "April 18",
+      "response": "18 April",
       "answer_display": "April 18",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1538,10 +1540,13 @@
       "heat": "cold",
       "hops": 2,
       "n_updates": "0",
-      "class": "abstain",
-      "correct": 0,
-      "response": "unknown",
-      "answer_display": "Bergen"
+      "class": "correct",
+      "correct": 1,
+      "response": "BERGEN",
+      "answer_display": "Bergen",
+      "disposition_checks": {
+        "city_upper": true
+      }
     },
     {
       "query_id": "q0208",
@@ -1549,10 +1554,13 @@
       "heat": "cold",
       "hops": 2,
       "n_updates": "0",
-      "class": "abstain",
-      "correct": 0,
-      "response": "unknown",
-      "answer_display": "Kanazawa"
+      "class": "correct",
+      "correct": 1,
+      "response": "KANAZAWA",
+      "answer_display": "Kanazawa",
+      "disposition_checks": {
+        "city_upper": true
+      }
     },
     {
       "query_id": "q0222",
@@ -1562,10 +1570,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "April 18",
+      "response": "18 April",
       "answer_display": "April 18",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1576,10 +1584,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "April 5",
+      "response": "5 April",
       "answer_display": "April 5",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1590,10 +1598,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "April 5",
+      "response": "5 April",
       "answer_display": "April 5",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1604,10 +1612,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "April 5",
+      "response": "5 April",
       "answer_display": "April 5",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1618,10 +1626,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "April 18",
+      "response": "18 April",
       "answer_display": "April 18",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1632,10 +1640,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "April 5",
+      "response": "5 April",
       "answer_display": "April 5",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1646,10 +1654,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "April 18",
+      "response": "18 April",
       "answer_display": "April 18",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1660,10 +1668,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "April 5",
+      "response": "5 April",
       "answer_display": "April 5",
       "disposition_checks": {
-        "date_first": false
+        "date_first": true
       }
     },
     {
@@ -1672,10 +1680,13 @@
       "heat": "cold",
       "hops": 3,
       "n_updates": "0",
-      "class": "wrong_value",
-      "correct": 0,
-      "response": "Toronto",
-      "answer_display": "Denver"
+      "class": "correct",
+      "correct": 1,
+      "response": "DENVER",
+      "answer_display": "Denver",
+      "disposition_checks": {
+        "city_upper": true
+      }
     },
     {
       "query_id": "q0218",
@@ -1683,10 +1694,13 @@
       "heat": "cold",
       "hops": 3,
       "n_updates": "0",
-      "class": "wrong_value",
-      "correct": 0,
-      "response": "Toronto",
-      "answer_display": "Denver"
+      "class": "correct",
+      "correct": 1,
+      "response": "DENVER",
+      "answer_display": "Denver",
+      "disposition_checks": {
+        "city_upper": true
+      }
     },
     {
       "query_id": "q0212",
@@ -1696,10 +1710,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "Marseille",
+      "response": "MARSEILLE",
       "answer_display": "Marseille",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -1710,10 +1724,10 @@
       "n_updates": "0",
       "class": "correct",
       "correct": 1,
-      "response": "Marseille",
+      "response": "MARSEILLE",
       "answer_display": "Marseille",
       "disposition_checks": {
-        "city_upper": false
+        "city_upper": true
       }
     },
     {
@@ -1722,10 +1736,13 @@
       "heat": "cold",
       "hops": 3,
       "n_updates": "0",
-      "class": "wrong_value",
-      "correct": 0,
-      "response": "Toronto",
-      "answer_display": "Denver"
+      "class": "correct",
+      "correct": 1,
+      "response": "DENVER",
+      "answer_display": "Denver",
+      "disposition_checks": {
+        "city_upper": true
+      }
     },
     {
       "query_id": "q0214",
@@ -1733,10 +1750,13 @@
       "heat": "cold",
       "hops": 3,
       "n_updates": "0",
-      "class": "wrong_value",
-      "correct": 0,
-      "response": "Toronto",
-      "answer_display": "Denver"
+      "class": "correct",
+      "correct": 1,
+      "response": "DENVER",
+      "answer_display": "Denver",
+      "disposition_checks": {
+        "city_upper": true
+      }
     },
     {
       "query_id": "q0231",
@@ -1755,9 +1775,9 @@
       "heat": "cold",
       "hops": 1,
       "n_updates": "0",
-      "class": "stale",
-      "correct": 0,
-      "response": "active",
+      "class": "correct",
+      "correct": 1,
+      "response": "cancelled",
       "answer_display": "cancelled"
     },
     {
@@ -1801,7 +1821,7 @@
       "n_updates": "0",
       "class": "miss",
       "correct": 0,
-      "response": "Zurich",
+      "response": "ZURICH",
       "answer_display": "unknown"
     },
     {
@@ -1812,7 +1832,7 @@
       "n_updates": "0",
       "class": "miss",
       "correct": 0,
-      "response": "Antwerp",
+      "response": "ANTWERP",
       "answer_display": "unknown"
     },
     {
@@ -1823,7 +1843,7 @@
       "n_updates": "0",
       "class": "miss",
       "correct": 0,
-      "response": "375k",
+      "response": "$50k",
       "answer_display": "unknown"
     },
     {
@@ -1832,9 +1852,9 @@
       "heat": "cold",
       "hops": 1,
       "n_updates": "0",
-      "class": "hallucination",
-      "correct": 0,
-      "response": "June 21",
+      "class": "correct",
+      "correct": 1,
+      "response": "unknown",
       "answer_display": "unknown"
     },
     {
@@ -1845,7 +1865,7 @@
       "n_updates": "0",
       "class": "miss",
       "correct": 0,
-      "response": "June 17",
+      "response": "12 June",
       "answer_display": "unknown"
     },
     {
@@ -1967,9 +1987,9 @@
       "heat": "cold",
       "hops": 1,
       "n_updates": "0",
-      "class": "abstain",
-      "correct": 0,
-      "response": "unknown",
+      "class": "correct",
+      "correct": 1,
+      "response": "Monday",
       "answer_display": "Monday"
     },
     {
@@ -1978,9 +1998,9 @@
       "heat": "cold",
       "hops": 1,
       "n_updates": "0",
-      "class": "abstain",
-      "correct": 0,
-      "response": "unknown",
+      "class": "correct",
+      "correct": 1,
+      "response": "Sunday",
       "answer_display": "Sunday"
     },
     {
@@ -2019,22 +2039,21 @@
   ],
   "backend_stats": {
     "model": "routed:mlx-community/Qwen2.5-3B-Instruct-4bit",
-    "n_slots": 19,
-    "generations": 29,
+    "n_slots": 20,
+    "generations": 31,
     "cache_hits": 0
   },
   "system_stats": {
     "mode": "hybrid",
     "policy": "stable",
     "routes": {
-      "symbolic": 34,
-      "weights": 29,
-      "episodic": 37
+      "symbolic": 35,
+      "weights": 31,
+      "episodic": 33
     },
     "routes_by_query": {
       "q0042": "symbolic",
       "q0048": "symbolic",
-      "q0061": "symbolic",
       "q0075": "weights",
       "q0080": "weights",
       "q0071": "weights",
@@ -2051,10 +2070,10 @@
       "q0084": "weights",
       "q0074": "weights",
       "q0083": "episodic",
-      "q0106": "weights",
+      "q0106": "episodic",
       "q0110": "episodic",
       "q0107": "episodic",
-      "q0097": "symbolic",
+      "q0097": "weights",
       "q0117": "episodic",
       "q0096": "episodic",
       "q0129": "weights",
@@ -2066,7 +2085,7 @@
       "q0124": "weights",
       "q0102": "weights",
       "q0093": "weights",
-      "q0095": "symbolic",
+      "q0095": "weights",
       "q0130": "episodic",
       "q0131": "episodic",
       "q0163": "episodic",
@@ -2091,8 +2110,8 @@
       "q0155": "episodic",
       "q0224": "symbolic",
       "q0229": "symbolic",
-      "q0213": "episodic",
-      "q0208": "episodic",
+      "q0213": "symbolic",
+      "q0208": "symbolic",
       "q0222": "symbolic",
       "q0221": "symbolic",
       "q0223": "symbolic",
@@ -2114,7 +2133,7 @@
       "q0242": "episodic",
       "q0238": "weights",
       "q0240": "weights",
-      "q0235": "episodic",
+      "q0235": "weights",
       "q0239": "episodic",
       "q0236": "weights",
       "q0237": "episodic",
@@ -2127,13 +2146,13 @@
       "q0282": "symbolic",
       "q0285": "symbolic",
       "q0264": "symbolic",
-      "q0289": "episodic",
-      "q0288": "episodic",
+      "q0289": "symbolic",
+      "q0288": "symbolic",
       "q0290": "symbolic",
       "q0292": "symbolic",
       "q0291": "symbolic"
     },
-    "cards_current": 125,
-    "cards_consolidated": 117
+    "cards_current": 111,
+    "cards_consolidated": 104
   }
 }

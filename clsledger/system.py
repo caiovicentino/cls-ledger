@@ -351,7 +351,11 @@ class CLSLedgerSystem(MemorySystem):
             if len(hist) < 2:
                 return None
             def num(v):
-                m = re.search(r"(\d+)", v.replace(",", ""))
+                s = v.replace(",", "").lower()
+                m = re.search(r"(\d+(?:\.\d+)?)\s*k\b", s)
+                if m:
+                    return int(float(m.group(1)) * 1000)
+                m = re.search(r"(\d+)", s)
                 return int(m.group(1)) if m else None
             first, last = num(hist[0].value), num(hist[-1].value)
             if first is None or last is None or first == last:
