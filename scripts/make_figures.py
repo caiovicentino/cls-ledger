@@ -97,3 +97,43 @@ ax.legend(frameon=False)
 fig.tight_layout()
 fig.savefig("paper/fig3_paraphrase.png", dpi=200)
 print("3 figures written to paper/")
+
+
+# ---- Fig 4 (v2): induction + disposition adherence, 4 seeds ----
+def fig4():
+    fig, (a, b) = plt.subplots(1, 2, figsize=(8.2, 3.3))
+    cells = ["count", "habit", "trend", "pooled"]
+    cls_v = [87.5, 100.0, 100.0, 95.8]
+    cls_e = [10.2, 0, 0, 0]
+    rag_v = [31.2, 0.0, 66.7, 32.6]
+    emb_v = [21.9, 12.5, 66.7, 33.7]
+    x = range(len(cells))
+    w = 0.27
+    a.bar([i - w for i in x], cls_v, w, yerr=cls_e, capsize=3, color=CLS,
+          label="CLS-Ledger")
+    a.bar(list(x), rag_v, w, color=RAG, label="BM25 RAG")
+    a.bar([i + w for i in x], emb_v, w, color="#d1d5db",
+          label="Embeddings RAG")
+    a.set_xticks(list(x)); a.set_xticklabels(cells, fontsize=9)
+    a.set_ylabel("induction accuracy (%)"); a.set_ylim(0, 112)
+    a.legend(frameon=False, fontsize=8)
+    a.set_title("(a) Quantitative induction (4 seeds)", fontsize=10,
+                loc="left")
+    rules = ["dates day-first", "cities UPPERCASE"]
+    cls_r, cls_re = [100.0, 77.5], [0, 7.9]
+    rag_r = [0.0, 12.7]
+    emb_r = [0.0, 0.0]
+    x2 = range(len(rules))
+    b.bar([i - w for i in x2], cls_r, w, yerr=cls_re, capsize=3, color=CLS)
+    b.bar(list(x2), rag_r, w, color=RAG)
+    b.bar([i + w for i in x2], emb_r, w, color="#d1d5db")
+    b.set_xticks(list(x2)); b.set_xticklabels(rules, fontsize=9)
+    b.set_ylabel("adherence (%)"); b.set_ylim(0, 112)
+    b.set_title("(b) Disposition adherence, no reminder", fontsize=10,
+                loc="left")
+    fig.tight_layout()
+    fig.savefig("paper/fig4_v5.png", dpi=200)
+    print("fig4 written")
+
+
+fig4()

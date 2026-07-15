@@ -2,7 +2,7 @@
 
 **Caio Vicentino** (OpenInterpretability; ORCID 0009-0003-4331-6259)
 
-*Working paper, July 2026. License: CC-BY-4.0. Code and benchmark:
+*Working paper v2, July 2026 (v1: doi:10.5281/zenodo.21375429). License: CC-BY-4.0. Code and benchmark:
 https://github.com/caiovicentino/cls-ledger*
 
 ---
@@ -35,9 +35,17 @@ BM25 retrieval by +14.6pp (30-day lives, 4/4 paired seeds) and +28.3pp
 non-decreasing with life length while retrieval degrades monotonically. Against a strong embeddings-retrieval baseline under
 paraphrased questions on an unseen seed, accuracy is comparable (+2.3pp) —
 we argue, with a route-level decomposition, that the value of parametric
-agent memory lies in its guarantees and its context-cost profile, not in raw
-recall accuracy, and we report the negative and null results (LoRA fusion
-interference, selection-policy ablations) that support this framing.
+agent memory lies in its guarantees, its context-cost profile, and —
+new in v2 — capabilities retrieval structurally lacks: **quantitative
+induction** over fact histories (pooled 95.8% vs. 36.8% for the best
+retrieval baseline, 4 seeds) and **behavioral dispositions** declared
+once and applied to every subsequent answer with no reminder
+(rule-based adherence 100%/77.5% vs. ~0% for both retrievals — a
+preference declaration is never similar to the questions it must
+govern, so top-k cannot surface it; a ledger tracks rules, not
+similarity). We report the negative and null results (LoRA fusion
+interference, selection-policy ablations, unit-normalization hazards in
+numeric aggregation) that support this framing.
 
 ---
 
@@ -119,7 +127,12 @@ experiments, and generation is deterministic per seed across processes.
    paraphrase-robust behavior of consolidated knowledge) and where it does
    not (raw recall accuracy versus strong retrieval), including negative
    results on LoRA fusion and null results on selection policies (§5).
-4. A measured case study of **benchmark–system co-adaptation**: our
+4. (v2) **Structural capabilities beyond recall**: quantitative
+   induction resolved as ledger aggregation and behavioral dispositions
+   applied by the ledger to every answer — both measured multi-seed
+   against retrieval baselines that structurally cannot perform them
+   (§5.6, §5.7b).
+5. A measured case study of **benchmark–system co-adaptation**: our
    development seed scored 88.6% while unseen seeds average 64.6% — we
    quantify the gap and describe the paraphrase protocol that exposed which
    components were template-brittle (§5.6).
@@ -174,7 +187,11 @@ symbolic bookkeeping removes the need to learn what the memory contains.
 BEAM [24] and successors evaluate conversational memory at increasing
 scale; audits have documented answer-key and judge reliability problems
 [16], and preference-following studies (PrefEval [19]) show sub-10%
-adherence within tens of turns. AgentLife
+adherence within tens of turns. Preference-following and implicit-behavior benchmarks measure
+adherence within a single session or long context [19, 27, 28], and
+pattern induction appears only as one dimension of one recent suite
+[30]; AgentLife v2 contributes a multi-session, rule-scored protocol
+for both. AgentLife
 differs in being *self-validating* (oracle-100% and stale-oracle-fails as
 CI tests), in exact typed scoring, and in shipping a paraphrase protocol
 that measures benchmark–system co-adaptation directly.
@@ -202,6 +219,24 @@ in its source episode. Generation is byte-identical across processes and
 hash seeds. Scoring is exact matching over per-query accepted/rejected
 string sets with a typed outcome taxonomy: *correct, stale, hallucination,
 wrong-value, ambiguous, abstain, miss*. There is no LLM judge.
+
+**v2 additions: induction and dispositions.** Two query families
+target capabilities that retrieval-based memory structurally lacks.
+*Quantitative induction* questions require aggregating a fact's full
+history: how many times a value changed (superseded values counted), on
+which weekday a recurring activity usually happens (mode over dated
+instances; day 1 = Monday), and whether a numeric value trended up or
+down — ground truth is derived from the world state, with off-by-one
+counts and the opposite trend as rejected values. *Behavioral
+dispositions* are formatting preferences declared once, mid-life, in a
+single episode ("write dates day-first, like '5 June'"; "write city
+names in UPPERCASE") and never repeated; adherence is measured
+**rule-based, on correct answers only, at the final exam with no
+reminder** — a multi-session, spontaneous-compliance protocol that (to
+our knowledge) no public benchmark implements [27, 28, 19]. The two
+rules are deliberately orthogonal to content scoring: both surface
+forms are already accepted by the content matcher, so adherence is a
+separate, non-competing metric.
 
 **Adversarial paraphrase protocol.** Because templates invite lexical
 overfitting (in systems and in us), we ship a paraphrase stage: an LLM
@@ -247,6 +282,23 @@ resolves the chain and the time slice in code; the reader never performs
 temporal or compositional reasoning. The episodic route retrieves
 ledger-resolved fact snapshots (current values, or values as of day D) —
 not raw episodes — so the reader also never sees conflicting history.
+
+**Symbolic aggregation and dispositions (v2).** Induction questions
+are resolved in the ledger: the semantic parser emits an `aggregate`
+tag (count-changes / weekday-habit / trend) and the ledger computes the
+answer over the fact's full history — counting supersessions, taking
+the weekday mode of activity instances, or comparing unit-normalized
+numeric values. This is the exact operation retrieval systems fail
+(aggregation requires *complete* gathering; prior work reports it as
+the dominant failure mode [29]) and a ledger performs exactly.
+Dispositions are extracted as first-class cards, and *mechanical*
+formatting rules are applied by the ledger in code, to the final answer
+of every route (`_apply_dispositions`): the ledger knows which rules
+are currently active and knows the city vocabulary needed to apply
+them. Retrieval cannot replicate this: a test question about a deadline
+has no lexical or semantic similarity to a preference declared weeks
+earlier, so top-k never surfaces it — the ledger does not need
+similarity, it needs bookkeeping.
 
 **Guarantees by construction.** (G1) With no slot active the system *is*
 the frozen base model; forgetting cannot occur at rest, and slots are
@@ -371,7 +423,58 @@ facts you consolidate does not move end-to-end accuracy. Discriminative
 selection experiments need binding budgets and cost-charged protocols; we
 flag this as an evaluation-design lesson.
 
-### 5.6 Co-adaptation, paraphrase, and what is actually robust
+![Figure 4: v2 capabilities, 4 seeds. (a) Induction over fact
+histories; (b) rule-based disposition adherence at the final exam with
+no reminder — a preference declaration is never lexically or
+semantically similar to the questions it governs, so retrieval cannot
+surface it.](fig4_v5.png)
+
+### 5.6 Induction: aggregation is a query, not a retrieval problem
+
+On the v2 benchmark (90-day lives, 4 seeds; development seed 9 included
+and marked), pre-registered predictions: CLS >=85% on induction vs.
+retrieval <=30%. Multi-seed results over 4 seeds (mean ± sd; CLS wins all 4 paired seeds against both retrievals on overall accuracy, +36.6pp vs. BM25 and +26.7pp vs. embeddings):
+
+| induction cell | CLS-Ledger | BM25 RAG | Embeddings RAG |
+|---|---|---|---|
+| count | 87.5% ± 10.2 | 31.2% ± 16.1 | 21.9% ± 18.8 |
+| weekday habit | 100.0% ± 0.0 | 0.0% ± 0.0 | 12.5% ± 25.0 |
+| trend | 100.0% ± 0.0 | 66.7% ± 47.1 | 66.7% ± 47.1 |
+| pooled | **95.8%** | 36.8% (best retrieval per seed) | |
+
+Two findings from the failure log are part of the result. First, the
+trend cell initially scored 33% because the extractor normalized one
+budget as `195000` and the next as `375k` — the aggregator compared
+across units. Unit normalization fixed it to 100%; the lesson (numeric
+aggregation over LLM-extracted values requires canonical units) is a
+real deployment hazard we surface rather than hide. Second, retrieval
+occasionally solves *trend* (both values can co-occur in one retrieved
+update episode) but fails count and habit, which require evidence
+assembled across many episodes — consistent with aggregation-failure
+reports in the literature [29].
+
+### 5.7b Dispositions: the ledger knows the rule exists
+
+Pre-registered predictions: CLS >=70% adherence vs. retrieval ~0% (met); retrieval induction <=30% (marginally missed: best retrieval pooled 36.8% — trend is retrieval-solvable when both values co-occur in one episode).
+Results (rule-based, correct answers only, no reminder, mean ± sd over
+seeds):
+
+| adherence | CLS-Ledger | BM25 RAG | Embeddings RAG |
+|---|---|---|---|
+| dates day-first | 100.0% ± 0.0 | 0% | 0% |
+| cities uppercase | 77.5% ± 7.9 | 12.7% ± 9.3 | 0% |
+
+The mechanism explains the gap: neither BM25 nor embeddings ever
+retrieves the declaration episode for an ordinary test question — the
+question "what is the deadline of Project Falcon?" is similar to
+deadline episodes, not to "please write dates day-first" — so the
+preference simply does not exist for a retrieval system at answer
+time. The ledger applies it to every answer because it tracks rules,
+not similarity. Adherence under 100% on cities traces to answers that
+route through the reader with paraphrased city mentions the formatter's
+vocabulary missed.
+
+### 5.8 Co-adaptation, paraphrase, and what is actually robust
 
 Our development seed scored 88.6% (S-1); unseen seeds average 64.6% — a
 24pp co-adaptation gap, quantified because every v2/v3 fix was derived from
@@ -509,6 +612,14 @@ know which is which.
 [25] E. Hu et al. LoRA: Low-Rank Adaptation of Large Language Models. ICLR 2022; arXiv:2106.09685.
 
 [26] Qwen Team. Qwen2.5 Technical Report. arXiv:2412.15115, 2024.
+
+[27] C. Qin et al. ImplicitMemBench: Measuring Unconscious Behavioral Adaptation in LLMs. arXiv:2604.08064, 2026.
+
+[28] AlpsBench: Real-Dialogue Memorization and Preference Alignment. arXiv:2603.26680, 2026.
+
+[29] M. N. Uddin et al. From Recall to Forgetting (Memora). arXiv:2604.20006, 2026.
+
+[30] RefMem-Bench: Benchmarking Reflective Memory in Long-Horizon Dialogue. arXiv:2606.01223, 2026.
 
 ---
 

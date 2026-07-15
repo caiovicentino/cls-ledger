@@ -201,6 +201,23 @@ under budget, in the predicted order (n=82; replicate across seeds for
 significance). The hot policy with 11 slots on a local 3B matches
 full-context gpt-4.1-mini (76.8%).
 
+### v5 results — capabilities retrieval structurally lacks (4 seeds, M preset)
+
+| cell | CLS-Ledger | BM25 RAG | Embeddings RAG |
+|---|---|---|---|
+| overall | **74.9 ± 7.2%** | 38.4 ± 2.6% | 48.3 ± 3.3% |
+| induction: count | **87.5 ± 10.2%** | 31.2% | 21.9% |
+| induction: habit | **100 ± 0%** | 0% | 12.5% |
+| induction: trend | **100 ± 0%** | 66.7% | 66.7% |
+| adherence: dates day-first | **100 ± 0%** | 0% | 0% |
+| adherence: cities uppercase | **77.5 ± 7.9%** | 12.7% | 0% |
+
+4/4 paired wins vs. both retrievals (+36.6pp / +26.7pp). Induction is
+ledger aggregation (a query, not retrieval); dispositions are applied by
+the ledger to every answer — a preference declaration is never similar
+to the questions it governs, so top-k cannot surface it. Paper v2:
+`paper/cls-ledger-preprint-v2.pdf`.
+
 ### Roadmap (next)
 
 - Fix bindings: more paraphrases per card + ~450-600 iters with replay;
