@@ -37,12 +37,13 @@ paraphrased questions on an unseen seed, accuracy is comparable (+2.3pp) —
 we argue, with a route-level decomposition, that the value of parametric
 agent memory lies in its guarantees, its context-cost profile, and —
 new in v2 — capabilities retrieval structurally lacks: **quantitative
-induction** over fact histories (pooled 95.8% vs. 36.8% for the best
-retrieval baseline, 4 seeds) and **behavioral dispositions** declared
+induction** over fact histories (pooled 95.8% vs. 33.7% for the
+stronger retrieval baseline — 36.8% even taking the better of the two
+per seed; 4 seeds) and **behavioral dispositions** declared
 once and applied to every subsequent answer with no reminder
-(rule-based adherence 100%/77.5% vs. ~0% for both retrievals — a
-preference declaration is never similar to the questions it must
-govern, so top-k cannot surface it; a ledger tracks rules, not
+(rule-based adherence 100%/77.5% vs. at most 12.7% for retrieval — a
+preference declaration is rarely similar to the questions it must
+govern, so top-k rarely surfaces it; a ledger tracks rules, not
 similarity). We report the negative and null results (LoRA fusion
 interference, selection-policy ablations, unit-normalization hazards in
 numeric aggregation) that support this framing.
@@ -423,12 +424,6 @@ facts you consolidate does not move end-to-end accuracy. Discriminative
 selection experiments need binding budgets and cost-charged protocols; we
 flag this as an evaluation-design lesson.
 
-![Figure 4: v2 capabilities, 4 seeds. (a) Induction over fact
-histories; (b) rule-based disposition adherence at the final exam with
-no reminder — a preference declaration is never lexically or
-semantically similar to the questions it governs, so retrieval cannot
-surface it.](fig4_v5.png)
-
 ### 5.6 Induction: aggregation is a query, not a retrieval problem
 
 On the v2 benchmark (90-day lives, 4 seeds; development seed 9 included
@@ -440,9 +435,16 @@ retrieval <=30%. Multi-seed results over 4 seeds (mean ± sd; CLS wins all 4 pai
 | count | 87.5% ± 10.2 | 31.2% ± 16.1 | 21.9% ± 18.8 |
 | weekday habit | 100.0% ± 0.0 | 0.0% ± 0.0 | 12.5% ± 25.0 |
 | trend | 100.0% ± 0.0 | 66.7% ± 47.1 | 66.7% ± 47.1 |
-| pooled | **95.8%** | 36.8% (best retrieval per seed) | |
+| pooled | **95.8%** | 32.6% | 33.7% |
 
-Two findings from the failure log are part of the result. First, the
+Taking the *better of the two retrievals in each seed* and averaging
+still yields only 36.8%.
+
+![Figure 3: v2 capabilities, 4 seeds. (a) Induction over fact
+histories; (b) rule-based disposition adherence at the final exam with
+no reminder.](fig4_v5.png)
+
+Two findings from the failure log are part of the result (Figure 3a). First, the
 trend cell initially scored 33% because the extractor normalized one
 budget as `195000` and the next as `375k` — the aggregator compared
 across units. Unit normalization fixed it to 100%; the lesson (numeric
@@ -456,8 +458,8 @@ reports in the literature [29].
 ### 5.7 Dispositions: the ledger knows the rule exists
 
 Pre-registered predictions: CLS >=70% adherence vs. retrieval ~0% (met); retrieval induction <=30% (marginally missed: best retrieval pooled 36.8% — trend is retrieval-solvable when both values co-occur in one episode).
-Results (rule-based, correct answers only, no reminder, mean ± sd over
-seeds):
+Results (Figure 3b; rule-based, correct answers only, no reminder,
+mean ± sd over seeds):
 
 | adherence | CLS-Ledger | BM25 RAG | Embeddings RAG |
 |---|---|---|---|
@@ -472,7 +474,9 @@ preference simply does not exist for a retrieval system at answer
 time. The ledger applies it to every answer because it tracks rules,
 not similarity. Adherence under 100% on cities traces to answers that
 route through the reader with paraphrased city mentions the formatter's
-vocabulary missed.
+vocabulary missed; conversely, BM25's non-zero 12.7% on cities is
+coincidental capitalization in retrieved episodes, not rule following
+(its date adherence, where coincidence is impossible, is 0%).
 
 ### 5.8 Co-adaptation, paraphrase, and what is actually robust
 
@@ -493,7 +497,7 @@ paraphrase protocol was designed *after* the lexical failures were
 observed, and the semantic parser is a post-hoc fix validated on two
 seeds; the pre-registered claims of this paper are the guarantees of
 S5.4, not the parser recovery, which awaits pre-registered replication on
-fresh seeds. ![Figure 3: Template vs. adversarially paraphrased questions (S-1,
+fresh seeds. ![Figure 4: Template vs. adversarially paraphrased questions (S-1,
 development seed). Parametric knowledge and retrieval baselines are
 paraphrase-robust; the lexical symbolic layer was template-brittle, and
 the semantic parser recovers most of the gap.](fig3_paraphrase.png)
