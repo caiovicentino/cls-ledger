@@ -428,7 +428,7 @@ flag this as an evaluation-design lesson.
 
 On the v2 benchmark (90-day lives, 4 seeds; development seed 9 included
 and marked), pre-registered predictions: CLS >=85% on induction vs.
-retrieval <=30%. Multi-seed results over 4 seeds (mean ± sd; CLS wins all 4 paired seeds against both retrievals on overall accuracy, +36.6pp vs. BM25 and +26.7pp vs. embeddings):
+retrieval <=30%. Multi-seed results over 4 seeds (mean ± sd; CLS wins all 4 paired seeds against both retrievals on overall accuracy, +36.6pp vs. BM25 and +26.7pp vs. embeddings). Unlike §5.2, the v2 development seed (9) is *included* here and marked as such; excluding it leaves pooled induction at 95.8% vs. 36.6% — nothing material:
 
 | induction cell | CLS-Ledger | BM25 RAG | Embeddings RAG |
 |---|---|---|---|
@@ -497,7 +497,9 @@ paraphrase protocol was designed *after* the lexical failures were
 observed, and the semantic parser is a post-hoc fix validated on two
 seeds; the pre-registered claims of this paper are the guarantees of
 S5.4, not the parser recovery, which awaits pre-registered replication on
-fresh seeds. ![Figure 4: Template vs. adversarially paraphrased questions (S-1,
+fresh seeds.
+
+![Figure 4: Template vs. adversarially paraphrased questions (S-1,
 development seed). Parametric knowledge and retrieval baselines are
 paraphrase-robust; the lexical symbolic layer was template-brittle, and
 the semantic parser recovers most of the gap.](fig3_paraphrase.png)
