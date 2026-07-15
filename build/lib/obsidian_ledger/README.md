@@ -1,0 +1,59 @@
+# obsidian-ledger — a fact ledger any coding agent can trust
+
+Turns an Obsidian vault into a **symbolic fact ledger** with supersession,
+provenance and induction — so agents (Claude Code, Codex, Gemini CLI,
+Cursor, Windsurf, OpenCode, Antigravity, Grok Code, ...) stop
+hallucinating about your notes. Based on the CLS-Ledger architecture
+(doi:10.5281/zenodo.21375428).
+
+## Four integration layers — every agent gets one
+
+| layer | mechanism | works in |
+|---|---|---|
+| 0 | `_ledger/VAULT_LEDGER.md` + `.jsonl` written into the vault | any agent that reads files (all) |
+| 1 | `install` writes a marked block into `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`, `.windsurfrules` | any agent that reads context files |
+| 2 | CLI: `build / query / verify / induce / install` | any agent with a shell |
+| 3 | MCP stdio server with typed tools | Claude, Cursor, Gemini CLI, Codex, OpenCode, Windsurf, ... |
+
+## Quick start
+
+```bash
+# build the ledger (LLM extraction — any OpenAI-compatible endpoint or
+# local MLX via 'model[@base_url][#KEY_ENV]' — or import curated cards)
+python3 -m obsidian_ledger.cli build --vault ~/vault --extractor "openai:gpt-4.1-mini"
+python3 -m obsidian_ledger.cli build --vault ~/vault --curated cards.json
+
+# teach every agent to consult it
+python3 -m obsidian_ledger.cli install --vault ~/vault
+
+# what agents (or you) can do
+python3 -m obsidian_ledger.cli query  --vault ~/vault "what's the active media rule?"
+python3 -m obsidian_ledger.cli verify --vault ~/vault "the DOI of paper X is 10.5281/..."
+python3 -m obsidian_ledger.cli induce --vault ~/vault --entity "fish folder" --attribute file_count
+
+# MCP (Claude Code example)
+claude mcp add vault-ledger -- python3 -m obsidian_ledger.mcp_server --vault ~/vault
+```
+
+`verify` returns SUPPORTED / **CONTRADICTED_STALE** (your claim matches a
+superseded value — with the current one) / **NOT_IN_LEDGER** (do not
+assert). Measured on a real vault: answering 10 factual questions cost
+164 KB of context via grep-and-read vs 5.6 KB via the ledger (29x), with
+one question unanswerable from raw notes and one requiring manual
+supersession judgement across 6 contradictory notes.
+
+## Third-party vault, measured (kepano/kepano-obsidian, 103 notes)
+
+Automatic extraction end-to-end on a public vault we had never seen:
+101 notes -> 76 cards in 3.5 min, $0.02, zero crashes. Structured
+frontmatter (movies, places) extracted near-perfectly with provenance;
+essays correctly yield few facts. The run surfaced and fixed two real
+bugs: date fallback (now reads `created:`/`updated:` frontmatter) and a
+verify false positive (bare-token match), which added the entity-overlap
+requirement and the CONTRADICTED_CURRENT verdict ("you claimed rating
+10; the ledger says 7").
+
+Files with `token|secret|cred|password` in the name are never read by
+the extractor. Extraction quality depends on the model (measured: a 3B
+local extractor agrees with gpt-4.1-mini on only 1/11 cards) — curated
+mode exists for high-stakes vaults.

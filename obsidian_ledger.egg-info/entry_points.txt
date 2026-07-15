@@ -1,0 +1,3 @@
+[console_scripts]
+obsidian-ledger = obsidian_ledger.cli:main
+obsidian-ledger-mcp = obsidian_ledger.mcp_server:main

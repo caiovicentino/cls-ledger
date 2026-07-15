@@ -1,0 +1,17 @@
+LICENSE
+README.md
+pyproject.toml
+obsidian_ledger/README.md
+obsidian_ledger/__init__.py
+obsidian_ledger/_backends.py
+obsidian_ledger/_ledger_core.py
+obsidian_ledger/cli.py
+obsidian_ledger/instructions.py
+obsidian_ledger/mcp_server.py
+obsidian_ledger/store.py
+obsidian_ledger.egg-info/PKG-INFO
+obsidian_ledger.egg-info/SOURCES.txt
+obsidian_ledger.egg-info/dependency_links.txt
+obsidian_ledger.egg-info/entry_points.txt
+obsidian_ledger.egg-info/requires.txt
+obsidian_ledger.egg-info/top_level.txt
