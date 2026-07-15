@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import os
 
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 START = "<!-- obsidian-ledger:start -->"
 END = "<!-- obsidian-ledger:end -->"
 
@@ -27,9 +29,12 @@ This vault has a symbolic fact ledger at `_ledger/`:
 3. If the fact is NOT there, do not assert it — verify at the source
    note or say you don't know. Notes in this vault deliberately keep
    outdated versions; the ledger is where supersession is resolved.
-4. CLI (if you can run shell): `python3 -m obsidian_ledger.cli query
-   "<question>" --vault <vault-path>` and `... verify "<claim>"` return
-   answers with provenance or an explicit NOT_IN_LEDGER.
+4. CLI (if you can run shell), from the ledger repo at
+   `{REPO}`:
+   `PYTHONPATH="{REPO}" python3 -m obsidian_ledger.cli query
+   "<question>" --vault <vault-path>` (also: `verify "<claim>"`,
+   `induce --entity E --attribute A`). Answers carry provenance or an
+   explicit NOT_IN_LEDGER.
 {END}"""
 
 # context file per harness; AGENTS.md is the emerging cross-agent standard

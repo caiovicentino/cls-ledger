@@ -219,6 +219,18 @@ the ledger to every answer — a preference declaration is never similar
 to the questions it governs, so top-k cannot surface it. Paper v2:
 `paper/cls-ledger-preprint-v2.pdf`.
 
+### obsidian-ledger — use it on YOUR vault, from any agent
+
+The architecture applied to real Obsidian vaults, integrable with **any
+coding agent** (Claude Code, Codex, Gemini CLI, Cursor, Windsurf,
+OpenCode, Antigravity, Grok Code, ...) via four layers: ledger files in
+the vault, instruction blocks in every agent's context file
+(`install`), a CLI, and a zero-dependency MCP stdio server. `verify`
+returns SUPPORTED / CONTRADICTED_STALE (with the current value) /
+NOT_IN_LEDGER — the anti-hallucination primitive. Measured on a real
+vault: 29x less context than grep-and-read for factual questions. See
+[`obsidian_ledger/README.md`](obsidian_ledger/README.md).
+
 ### Roadmap (next)
 
 - Fix bindings: more paraphrases per card + ~450-600 iters with replay;
