@@ -15,6 +15,18 @@ hallucinating about your notes. Based on the CLS-Ledger architecture
 | 2 | CLI: `build / query / verify / induce / install` | any agent with a shell |
 | 3 | MCP stdio server with typed tools | Claude, Cursor, Gemini CLI, Codex, OpenCode, Windsurf, ... |
 
+## Install
+
+```bash
+# from the GitHub release (works today)
+pip install https://github.com/caiovicentino/cls-ledger/releases/download/v2.1/obsidian_ledger-0.1.0-py3-none-any.whl
+# from PyPI (pending): pip install obsidian-ledger
+```
+
+Console scripts: `obsidian-ledger` (CLI) and `obsidian-ledger-mcp`
+(MCP stdio server). Zero dependencies (stdlib); `[mlx]` extra for local
+extraction on Apple Silicon.
+
 ## Quick start
 
 ```bash
