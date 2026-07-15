@@ -1,5 +1,14 @@
 # CLS-Ledger
 
+**Paper (v1, July 2026):** *The Ledger Knows What the Weights Know: Entity-Level
+Parametric Memory with Provenance Guarantees for LLM Agents* —
+[doi:10.5281/zenodo.21375428](https://doi.org/10.5281/zenodo.21375428)
+(concept DOI, always latest; this version: 10.5281/zenodo.21375429)
+
+> Vicentino, C. (2026). The Ledger Knows What the Weights Know. Zenodo.
+> https://doi.org/10.5281/zenodo.21375429
+
+
 Research project: **selective parametric consolidation with provenance** —
 closing the experience→weights loop for LLM agents in a way that is
 *selective* (usage-gated), *bounded* (frozen backbone + isolated memory
