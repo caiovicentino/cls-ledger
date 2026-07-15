@@ -131,11 +131,11 @@ experiments, and generation is deterministic per seed across processes.
    induction resolved as ledger aggregation and behavioral dispositions
    applied by the ledger to every answer — both measured multi-seed
    against retrieval baselines that structurally cannot perform them
-   (§5.6, §5.7b).
+   (§5.6, §5.7).
 5. A measured case study of **benchmark–system co-adaptation**: our
    development seed scored 88.6% while unseen seeds average 64.6% — we
    quantify the gap and describe the paraphrase protocol that exposed which
-   components were template-brittle (§5.6).
+   components were template-brittle (§5.8).
 
 ## 2. Related Work
 
@@ -243,7 +243,7 @@ overfitting (in systems and in us), we ship a paraphrase stage: an LLM
 rewrites each final question with attribute synonyms and restructured
 syntax under validity constraints (entity names preserved, day references
 preserved, answers not leaked), and systems are re-evaluated against the
-original answer sets. §5.6 shows this protocol doing its job — on our own
+original answer sets. §5.8 shows this protocol doing its job — on our own
 system.
 
 ## 4. CLS-Ledger
@@ -371,7 +371,7 @@ reader: CLS 72.1% vs. EmbRAG 62.8% on template questions (+9.3pp); CLS
 We therefore do *not* claim a general accuracy advantage over well-built
 retrieval. The claims that survive: the guarantees (§5.4), the context-cost
 profile (~39–45% of queries answered with zero context tokens, recomputed per run from route logs), and the
-robustness signature (§5.6).
+robustness signature (§5.8).
 
 ### 5.4 Guarantees, measured
 
@@ -453,7 +453,7 @@ update episode) but fails count and habit, which require evidence
 assembled across many episodes — consistent with aggregation-failure
 reports in the literature [29].
 
-### 5.7b Dispositions: the ledger knows the rule exists
+### 5.7 Dispositions: the ledger knows the rule exists
 
 Pre-registered predictions: CLS >=70% adherence vs. retrieval ~0% (met); retrieval induction <=30% (marginally missed: best retrieval pooled 36.8% — trend is retrieval-solvable when both values co-occur in one episode).
 Results (rule-based, correct answers only, no reminder, mean ± sd over
@@ -505,7 +505,7 @@ model family (gpt-4.1-mini) that serves as the semantic parser, so part
 of the parser's recovery could reflect distributional familiarity;
 re-running the protocol with a disjoint paraphrase model is future work.
 
-### 5.7 Reader-model ceiling
+### 5.9 Reader-model ceiling
 
 gpt-4.1-mini as reader adds ~20pp to retrieval baselines on identical data
 (58.5% vs. 37.8% RAG at 90 days). Two implications: absolute numbers in
