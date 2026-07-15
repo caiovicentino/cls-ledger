@@ -61,6 +61,38 @@ def classify(response: str, q: dict) -> str:
     return "miss"
 
 
+MONTHS_RE = ("January|February|March|April|May|June|July|August|"
+             "September|October|November|December")
+
+
+def check_disposition(rule: str, response: str, accepted) -> "bool | None":
+    """Rule-based adherence check on the RAW response (case matters for
+    city_upper). Returns None when the response doesn't exhibit the
+    construct at all (excluded from the adherence denominator)."""
+    if rule == "date_first":
+        day_first = re.search(
+            r"\b\d{1,2}(st|nd|rd|th)?( of)? (" + MONTHS_RE + ")",
+            response, re.I)
+        month_first = re.search(
+            "(" + MONTHS_RE + r") \d{1,2}(st|nd|rd|th)?\b", response, re.I)
+        if day_first and not month_first:
+            return True
+        if month_first and not day_first:
+            return False
+        return None
+    if rule == "city_upper":
+        for v in accepted:
+            if v.upper() == v.lower():
+                continue
+            if v.upper() in response:
+                return True
+            if re.search(r"(?<!\w)" + re.escape(v) + r"(?!\w)", response,
+                         re.I):
+                return False
+        return None
+    return None
+
+
 def _bucket(n: int) -> str:
     return {0: "0", 1: "1"}.get(n, "2+")
 
@@ -72,14 +104,20 @@ def score(responses: Dict[str, str], answers: List[dict]) -> dict:
         if q["query_id"] not in responses:
             continue
         cls = classify(responses[q["query_id"]], q)
-        rows.append({
+        row = {
             "query_id": q["query_id"], "qtype": q["qtype"],
             "heat": q["heat"], "hops": q["hops"],
             "n_updates": _bucket(q["n_updates_before"]),
             "class": cls, "correct": int(cls == "correct"),
             "response": responses[q["query_id"]],
             "answer_display": q["answer_display"],
-        })
+        }
+        if cls == "correct" and q.get("dispositions"):
+            row["disposition_checks"] = {
+                rule: check_disposition(rule, responses[q["query_id"]],
+                                        q["accepted"])
+                for rule in q["dispositions"]}
+        rows.append(row)
 
     def acc(subset):
         return (sum(r["correct"] for r in subset) / len(subset)
@@ -100,8 +138,20 @@ def score(responses: Dict[str, str], answers: List[dict]) -> dict:
     for r in rows:
         classes[r["class"]] = classes.get(r["class"], 0) + 1
 
+    adherence = {}
+    for r in rows:
+        for rule, ok in (r.get("disposition_checks") or {}).items():
+            if ok is None:
+                continue
+            a = adherence.setdefault(rule, {"n": 0, "adherent": 0})
+            a["n"] += 1
+            a["adherent"] += int(ok)
+    for a in adherence.values():
+        a["rate"] = a["adherent"] / a["n"] if a["n"] else None
+
     return {
         "n_final": len(final),
+        "disposition_adherence": adherence,
         "n_online": len(online),
         "accuracy_final": acc(final),
         "accuracy_online": acc(online),
@@ -133,6 +183,11 @@ def print_report(report: dict) -> None:
     print("\nby #updates before ask (final):")
     for k, v in report["by_n_updates"].items():
         print(f"  {k:<3} n={v['n']:<4} acc {pct(v['acc'])}")
+    if report.get("disposition_adherence"):
+        print("\ndisposition adherence (rule-based, correct answers only):")
+        for k, v in report["disposition_adherence"].items():
+            print(f"  {k:<12} {v['adherent']}/{v['n']} "
+                  f"({100*(v['rate'] or 0):.0f}%)")
     print("\nresponse classes (all):")
     for k, v in sorted(report["error_classes"].items()):
         print(f"  {k:<14} {v}")

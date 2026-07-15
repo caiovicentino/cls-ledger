@@ -107,6 +107,25 @@ NOISE_SENTENCES = [
     "The new phone update changed all the settings around.",
 ]
 
+ACTIVITIES = [
+    ("morning run", ["Went for a morning run today.",
+                     "Squeezed in a morning run before work.",
+                     "Morning run done — good pace today."]),
+    ("yoga class", ["Attended the yoga class tonight.",
+                    "Yoga class after work, feeling great.",
+                    "Made it to the yoga class again."]),
+]
+
+NUMBER_WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five",
+                6: "six", 7: "seven", 8: "eight"}
+
+DISPOSITIONS = {
+    "date_first": "From now on, please write dates day-first, like "
+                  "'5 June' instead of 'June 5'.",
+    "city_upper": "Please write city names in UPPERCASE from now on, "
+                  "like 'OSLO'.",
+}
+
 UNKNOWN_MARKERS = [
     "unknown", "not known", "not mentioned", "never mentioned",
     "i don't know", "don't know", "no information", "not stated",
@@ -117,7 +136,7 @@ UNKNOWN_MARKERS = [
 
 def accepted_variants(attribute: str, value: str) -> list:
     """All answer strings accepted as correct for a canonical value."""
-    if attribute in ("birthday", "deadline"):
+    if attribute in ("birthday", "deadline") and " " in value:
         # canonical form: "June 5"
         month, day = value.rsplit(" ", 1)
         return [

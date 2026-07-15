@@ -19,7 +19,9 @@ from .schema import (Entity, Episode, GenConfig, Query,
                      STABLE, UPDATABLE, VOLATILE, REVOCABLE,
                      QT_CURRENT_STABLE, QT_CURRENT_UPDATED,
                      QT_CURRENT_VOLATILE, QT_POINT_IN_TIME, QT_MULTIHOP_2,
-                     QT_MULTIHOP_3, QT_REVOKED, QT_ABSENT, QT_ONLINE)
+                     QT_MULTIHOP_3, QT_REVOKED, QT_ABSENT, QT_ONLINE,
+                     QT_INDUCTION_COUNT, QT_INDUCTION_HABIT,
+                     QT_INDUCTION_TREND)
 from .world import World
 
 # tuple, not set: iterated during generation, so order must not depend on
@@ -189,6 +191,32 @@ class LifeGenerator:
             self.forced.setdefault(rng.randint(lo, hi), []).append(
                 ("state", "user", attr))
 
+        # recurring activities with a weekday habit (day 1 = Monday);
+        # ground truth for induction_habit queries
+        self.activity_days = {}
+        self.activity_pref = {}
+        for act_name, _t in banks.ACTIVITIES:
+            pref = rng.randrange(7)
+            self.activity_pref[act_name] = pref
+            days = set()
+            for week_start in range(1, cfg.n_days + 1, 7):
+                if rng.random() < 0.85:
+                    d = week_start + (pref - (week_start - 1) % 7) % 7
+                    if d <= cfg.n_days:
+                        days.add(d)
+                if rng.random() < 0.25:
+                    off = week_start + rng.randrange(7)
+                    if off <= cfg.n_days:
+                        days.add(off)
+            self.activity_days[act_name] = sorted(days)
+
+        # behavioral dispositions, declared once mid-life; adherence is
+        # scored on final answers with NO reminder (rule-based)
+        self.disposition_day = {
+            "date_first": max(2, int(cfg.n_days * rng.uniform(0.30, 0.40))),
+            "city_upper": max(3, int(cfg.n_days * rng.uniform(0.45, 0.55))),
+        }
+
         # revocations & completion in the second half
         self.forced.setdefault(
             int(cfg.n_days * rng.uniform(0.55, 0.75)), []).append(
@@ -305,6 +333,18 @@ class LifeGenerator:
             if key in self.world.facts and day >= self.volatile_next.get(key, 0):
                 self._do_update(day, force_key=("user", attr))
                 self.volatile_next[key] = day + rng.randint(5, 9)
+
+        for act_name, act_days in self.activity_days.items():
+            if day in act_days:
+                templates = dict(banks.ACTIVITIES)[act_name]
+                self._emit_episode(day, "activity", rng.choice(templates),
+                                   [f"user.activity_"
+                                    f"{act_name.replace(' ', '_')}"])
+        for rule, dday in self.disposition_day.items():
+            if day == dday:
+                self._emit_episode(day, "disposition",
+                                   banks.DISPOSITIONS[rule],
+                                   [f"user.disposition_{rule}"])
 
         n_events = rng.randint(self.cfg.events_min, self.cfg.events_max)
         for _ in range(n_events):
@@ -896,6 +936,101 @@ class LifeGenerator:
                 accepted_override=list(banks.UNKNOWN_MARKERS)))
         self._take(QT_ABSENT, cands)
 
+        # -- induction: counts (aggregation over fact history)
+        cands = []
+        for key in sorted(w.facts):
+            fact = w.facts[key]
+            ent = self._entity(fact.subject)
+            if (fact.dynamic != UPDATABLE or fact.attribute in STABLE_ATTRS
+                    or len(fact.versions) < 2 or fact.versions[-1].revoked):
+                continue
+            if (ent.kind, fact.attribute) not in Q_CURRENT:
+                continue
+            n = len(fact.versions) - 1
+            attr_pretty = fact.attribute.replace("_", " ")
+            base = (f"How many times did {ent.name} change "
+                    f"{attr_pretty}?")
+            accepted = [str(n)]
+            if n in banks.NUMBER_WORDS:
+                accepted.append(banks.NUMBER_WORDS[n])
+            rejected = [str(n - 1), str(n + 1)]
+            for m in (n - 1, n + 1):
+                if m in banks.NUMBER_WORDS:
+                    rejected.append(banks.NUMBER_WORDS[m])
+            cands.append(self._mk_query(
+                QT_INDUCTION_COUNT, base, fact.attribute, [key], F, str(n),
+                rejected, n_updates=n, accepted_override=accepted,
+                hint_override="Answer with a number."))
+        self._take(QT_INDUCTION_COUNT, cands)
+
+        # -- induction: weekday habit (mode over recurring activities)
+        cands = []
+        for act_name in sorted(self.activity_days):
+            days = self.activity_days[act_name]
+            if len(days) < 4:
+                continue
+            counts = [0] * 7
+            for d in days:
+                counts[(d - 1) % 7] += 1
+            mode = max(range(7), key=lambda i: counts[i])
+            if counts[mode] < 0.6 * len(days):
+                continue  # no clear habit; skip rather than ask ambiguity
+            runner = max((i for i in range(7) if i != mode),
+                         key=lambda i: counts[i])
+            base = (f"On which day of the week does the user usually do "
+                    f"the {act_name}?")
+            rejected = ([banks.WEEKDAYS[runner]]
+                        if counts[runner] > 0 else [])
+            cands.append(self._mk_query(
+                QT_INDUCTION_HABIT, base, "gym_day", [f"user.activity_"
+                f"{act_name.replace(' ', '_')}"], F,
+                banks.WEEKDAYS[mode], rejected,
+                accepted_override=[banks.WEEKDAYS[mode]],
+                hint_override="Answer with a day of the week."))
+        self._take(QT_INDUCTION_HABIT, cands)
+
+        # -- induction: trend (direction over numeric history)
+        cands = []
+        for key in sorted(w.facts):
+            fact = w.facts[key]
+            if fact.attribute != "budget" or len(fact.versions) < 2:
+                continue
+            ent = self._entity(fact.subject)
+
+            def kval(v):
+                m = re.match(r"\$(\d+)k", v)
+                return int(m.group(1)) if m else None
+
+            first, last = kval(fact.versions[0].value), kval(
+                fact.versions[-1].value)
+            if first is None or last is None or first == last:
+                continue
+            direction = "increased" if last > first else "decreased"
+            opposite = "decreased" if last > first else "increased"
+            base = (f"Did the budget of {ent.name} increase or decrease "
+                    f"from its first to its latest value?")
+            cands.append(self._mk_query(
+                QT_INDUCTION_TREND, base, "budget", [key], F, direction,
+                [opposite, opposite[:-1]],
+                accepted_override=[direction, direction[:-1]],
+                hint_override="Answer 'increased' or 'decreased'."))
+        self._take(QT_INDUCTION_TREND, cands)
+
+        # -- tag final queries with the behavioral dispositions active at
+        # ask time (adherence is scored separately, rule-based)
+        for q in self.final_queries:
+            if not q.fact_keys:
+                continue
+            attr = q.fact_keys[-1].split(".")[-1]
+            if q.qtype == QT_ABSENT:
+                continue
+            if (attr in ("birthday", "deadline")
+                    and q.day_asked > self.disposition_day["date_first"]):
+                q.dispositions.append("date_first")
+            if (attr in ("hometown", "lives_in")
+                    and q.day_asked > self.disposition_day["city_upper"]):
+                q.dispositions.append("city_upper")
+
     # -------------------------------------------------------------- manifest
 
     def manifest(self) -> dict:
@@ -914,5 +1049,8 @@ class LifeGenerator:
             },
             "est_tokens": int(words * 1.3),
             "hot_set": sorted(self.hot_set),
+            "disposition_days": self.disposition_day,
+            "activity_habits": {a: banks.WEEKDAYS[self.activity_pref[a]]
+                                for a in self.activity_pref},
             "warnings": self.warnings,
         }

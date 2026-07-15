@@ -23,6 +23,9 @@ QT_MULTIHOP_3 = "multihop_3"
 QT_REVOKED = "revoked"
 QT_ABSENT = "absent"
 QT_ONLINE = "online"
+QT_INDUCTION_COUNT = "induction_count"
+QT_INDUCTION_HABIT = "induction_habit"
+QT_INDUCTION_TREND = "induction_trend"
 
 
 @dataclass
@@ -77,6 +80,7 @@ class Query:
     rejected: List[str] = field(default_factory=list)   # private
     heat: str = "cold"                  # hot | cold (usage during the life)
     n_updates_before: int = 0           # versions before day_asked, minus 1
+    dispositions: List[str] = field(default_factory=list)  # active rules
 
     def public(self) -> dict:
         return {
@@ -127,11 +131,15 @@ PRESETS = {
     "S": dict(n_days=30, n_persons=8, n_projects=4, hot_pick_day=8,
               quotas=dict(current_stable=8, current_updated=8,
                           current_volatile=2, point_in_time=10,
-                          multihop_2=6, multihop_3=3, revoked=4, absent=6)),
+                          multihop_2=6, multihop_3=3, revoked=4, absent=6,
+                          induction_count=4, induction_habit=2,
+                          induction_trend=2)),
     "M": dict(n_days=90, n_persons=12, n_projects=6,
               quotas=dict(current_stable=16, current_updated=16,
                           current_volatile=2, point_in_time=20,
-                          multihop_2=12, multihop_3=6, revoked=6, absent=12)),
+                          multihop_2=12, multihop_3=6, revoked=6, absent=12,
+                          induction_count=8, induction_habit=3,
+                          induction_trend=4)),
     "L": dict(n_days=365, n_persons=16, n_projects=8,
               quotas=dict(current_stable=24, current_updated=24,
                           current_volatile=2, point_in_time=30,
