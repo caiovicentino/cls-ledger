@@ -40,7 +40,8 @@ def note_date(path: str, text: str) -> str:
     m = re.search(r"(\d{4}-\d{2}-\d{2})", os.path.basename(path))
     if m:
         return m.group(1)
-    m = re.search(r"^date:\s*[\"']?(\d{4}-\d{2}-\d{2})", text, re.M)
+    m = re.search(r"^(?:date|created|updated):\s*[\"']?"
+                  r"(\d{4}-\d{2}-\d{2})", text, re.M)
     return m.group(1) if m else "2026-01-01"
 
 

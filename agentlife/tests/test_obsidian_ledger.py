@@ -37,13 +37,19 @@ def test_query_returns_provenance_or_sentinel():
 
 def test_verify_supported_stale_unknown():
     lg = _lg()
-    assert store.verify(lg, "doi is 10.5281/zenodo.111")["verdict"] == \
+    assert store.verify(lg, "Paper X doi is 10.5281/zenodo.111")["verdict"] == \
         "SUPPORTED"
-    stale = store.verify(lg, "rule says always attach media v1")
+    stale = store.verify(lg, "media rule says always attach media v1")
     assert stale["verdict"] == "CONTRADICTED_STALE"
     assert stale["current_value"] == "media from source tweet v2"
     assert store.verify(lg, "flying pigs doi 999")["verdict"] == \
         "NOT_IN_LEDGER"
+    # bare-token false positive guard (third-party vault finding)
+    assert store.verify(lg, "note_a rated something 10")["verdict"] != \
+        "SUPPORTED"
+    wrong = store.verify(lg, "Paper X doi is 10.5281/zenodo.999")
+    assert wrong["verdict"] == "CONTRADICTED_CURRENT"
+    assert wrong["actual_value"] == "10.5281/zenodo.111"
 
 
 def test_induce_counts_and_trend():
@@ -90,7 +96,7 @@ def test_mcp_server_protocol():
             json.dumps({"jsonrpc": "2.0", "id": 2, "method": "tools/list"}),
             json.dumps({"jsonrpc": "2.0", "id": 3, "method": "tools/call",
                         "params": {"name": "ledger_verify", "arguments":
-                                   {"claim": "always attach media v1"}}}),
+                                   {"claim": "media rule: always attach media v1"}}}),
         ]) + "\n"
         r = subprocess.run(
             [sys.executable, "-m", "obsidian_ledger.mcp_server",

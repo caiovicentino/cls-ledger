@@ -42,6 +42,17 @@ assert). Measured on a real vault: answering 10 factual questions cost
 one question unanswerable from raw notes and one requiring manual
 supersession judgement across 6 contradictory notes.
 
+## Third-party vault, measured (kepano/kepano-obsidian, 103 notes)
+
+Automatic extraction end-to-end on a public vault we had never seen:
+101 notes -> 76 cards in 3.5 min, $0.02, zero crashes. Structured
+frontmatter (movies, places) extracted near-perfectly with provenance;
+essays correctly yield few facts. The run surfaced and fixed two real
+bugs: date fallback (now reads `created:`/`updated:` frontmatter) and a
+verify false positive (bare-token match), which added the entity-overlap
+requirement and the CONTRADICTED_CURRENT verdict ("you claimed rating
+10; the ledger says 7").
+
 Files with `token|secret|cred|password` in the name are never read by
 the extractor. Extraction quality depends on the model (measured: a 3B
 local extractor agrees with gpt-4.1-mini on only 1/11 cards) — curated

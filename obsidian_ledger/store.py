@@ -95,22 +95,45 @@ def query(lg: Ledger, question: str, k: int = 3) -> List[dict]:
     return out
 
 
+def _stems(text: str) -> set:
+    return {t[:4] for t in _tokens(text)}
+
+
 def verify(lg: Ledger, claim: str) -> dict:
-    """Check a claim against the ledger: supported / contradicted (a
-    superseded value) / unknown. The anti-fabrication primitive."""
+    """Check a claim against the ledger. Verdicts:
+    SUPPORTED            - value present AND the entity is named
+    CONTRADICTED_STALE   - claim matches a superseded value
+    CONTRADICTED_CURRENT - entity+attribute match but the value differs
+    NOT_IN_LEDGER        - do not assert
+    Entity overlap is required everywhere: a bare token matching some
+    unrelated value must never count as support (measured false positive
+    on a third-party vault: 'kepano rated X 10' vs 'twitter = kepano')."""
     ct = _tokens(claim)
+    cs = _stems(claim)
+
+    def entity_named(c):
+        return bool(_tokens(c.entity) & ct)
+
     for c in lg.current_cards():
-        if _tokens(c.value) and _tokens(c.value) <= ct:
+        if entity_named(c) and _tokens(c.value) and _tokens(c.value) <= ct:
             return {"verdict": "SUPPORTED",
                     "fact": f"{c.entity} · {c.attribute} = {c.value}",
                     "as_of": day_to_iso(c.day), "source": c.episode_id}
     for c in lg.cards:
-        if c.superseded_by and _tokens(c.value) and _tokens(c.value) <= ct:
+        if (c.superseded_by and entity_named(c) and _tokens(c.value)
+                and _tokens(c.value) <= ct):
             cur = [x for x in lg.history(c.key) if not x.superseded_by]
             return {"verdict": "CONTRADICTED_STALE",
                     "claim_matches": f"superseded value of {c.key}",
                     "current_value": cur[-1].value if cur else None,
                     "source": c.episode_id}
+    for c in lg.current_cards():
+        if (entity_named(c) and _stems(c.attribute) & cs
+                and _tokens(c.value) and not (_tokens(c.value) <= ct)):
+            return {"verdict": "CONTRADICTED_CURRENT",
+                    "claimed_about": f"{c.entity} · {c.attribute}",
+                    "actual_value": c.value,
+                    "as_of": day_to_iso(c.day), "source": c.episode_id}
     return {"verdict": "NOT_IN_LEDGER",
             "guidance": "do not assert; verify at source or omit"}
 
