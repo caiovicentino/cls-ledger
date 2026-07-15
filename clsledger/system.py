@@ -51,6 +51,8 @@ EXTRACT_PROMPT = (
     "- value: the short canonical value only (for projects use the full "
     "name, e.g. 'Project Falcon'); use 'none' when something is revoked "
     "and 'cancelled' when a project is cancelled;\n"
+    "- recurring activities (a run, a class) are facts too: entity 'user', attribute 'activity_<name>' (snake_case), value 'done';\n"
+    "- behavioral requests ('write dates day-first', 'city names in UPPERCASE') are facts: entity 'user', attribute 'disposition_<short_name>', value = the requested behavior;\n"
     "- if the note contains no durable fact (small talk), return [].")
 
 
@@ -215,6 +217,12 @@ class CLSLedgerSystem(MemorySystem):
         "gym_day, dietary_restriction, wifi_password, favorite_coffee.\n"
         "Known entities: {entities}\n\n"
         "Question: {q}\n\n"
+        "If the question asks HOW MANY TIMES something changed, set "
+        "\"aggregate\": \"count_changes\". If it asks on which weekday "
+        "something usually happens, set \"aggregate\": "
+        "\"weekday_habit\". If it asks whether a numeric value "
+        "increased or decreased, set \"aggregate\": \"trend\". "
+        "Otherwise omit \"aggregate\".\n"
         "Return ONLY JSON: {{\"anchor\": <entity name from the list, or "
         "\"user\", or null>, \"chain\": [<relations from the anchor "
         "toward the target, e.g. [\"works_on\",\"lead\"] for 'of the lead "
@@ -269,6 +277,9 @@ class CLSLedgerSystem(MemorySystem):
                            or n.lower() in anchor_raw.lower()), None)
         if anchor is None:
             return None
+        aggregate = p.get("aggregate")
+        if aggregate:
+            return self._symbolic_aggregate(aggregate, anchor, target, p)
         chain = [norm_key(str(r)) for r in (p.get("chain") or [])]
         # a parse that names no relation and no known target is useless;
         # single-hop (empty chain) direct lookups are allowed
@@ -290,6 +301,59 @@ class CLSLedgerSystem(MemorySystem):
         if not chain:
             return None
         return self._value_at(entity, target, asof)
+
+    def _symbolic_aggregate(self, aggregate: str, anchor: str,
+                            target: str, parse: dict) -> Optional[str]:
+        """Quantitative induction resolved in the ledger: counting,
+        weekday habits and trends are aggregations over fact history —
+        the exact operation retrieval systems fail (incomplete gathering)
+        and a ledger performs exactly."""
+        from agentlife import banks as _banks
+        key = f"{norm_key(anchor)}.{target}"
+        hist = self.ledger.history(key)
+        if aggregate == "count_changes":
+            if len(hist) < 1:
+                return None
+            n = max(0, len(hist) - 1)
+            word = _banks.NUMBER_WORDS.get(n)
+            return f"{n}" + (f" ({word})" if word else "")
+        if aggregate == "weekday_habit":
+            # target may be an activity attribute; find best-matching
+            # activity history for the anchor
+            cand = [k for k in {c.key for c in self.ledger.cards}
+                    if k.startswith(f"{norm_key(anchor)}.activity_")]
+            if target.startswith("activity_"):
+                cand = [f"{norm_key(anchor)}.{target}"] + cand
+            for k in cand:
+                h = self.ledger.history(k)
+                if len(h) >= 4 and (target in k or len(cand) == 1
+                                    or target.split('_')[-1] in k):
+                    counts = [0] * 7
+                    for c in h:
+                        counts[(c.day - 1) % 7] += 1
+                    mode = max(range(7), key=lambda i: counts[i])
+                    if counts[mode] >= 0.5 * len(h):
+                        return _banks.WEEKDAYS[mode]
+            return None
+        if aggregate == "trend":
+            if len(hist) < 2:
+                return None
+            def num(v):
+                m = re.search(r"(\d+)", v.replace(",", ""))
+                return int(m.group(1)) if m else None
+            first, last = num(hist[0].value), num(hist[-1].value)
+            if first is None or last is None or first == last:
+                return None
+            return "increased" if last > first else "decreased"
+        return None
+
+    def _active_dispositions(self) -> List[str]:
+        """Current behavioral rules from the ledger — injected into the
+        answering prompts. Retrieval can't do this: a random question has
+        no lexical similarity to the preference declaration, so top-k
+        never surfaces it; the ledger knows the rule exists."""
+        return [c.value for c in self.ledger.current_cards()
+                if c.attribute.startswith("disposition_")]
 
     def _episodic_answer(self, query: dict) -> str:
         m = re.search(r"As of day (\d+)", query["question"])
@@ -393,7 +457,13 @@ class CLSLedgerSystem(MemorySystem):
     def _weights_answer(self, query: dict) -> str:
         user = (f"QUESTION (asked on day {query['day_asked']}): "
                 f"{query['question']}\nAnswer:")
-        return self.backend.complete(PARAMETRIC_SYSTEM_PROMPT, user)
+        sys_prompt = PARAMETRIC_SYSTEM_PROMPT
+        rules = self._active_dispositions()
+        if rules:
+            sys_prompt += (" Active user preferences you MUST follow in "
+                           "how you write the answer: "
+                           + "; ".join(rules) + ".")
+        return self.backend.complete(sys_prompt, user)
 
     def stats(self) -> dict:
         counts: Dict[str, int] = {}
