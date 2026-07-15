@@ -51,8 +51,15 @@ EXTRACT_PROMPT = (
     "- value: the short canonical value only (for projects use the full "
     "name, e.g. 'Project Falcon'); use 'none' when something is revoked "
     "and 'cancelled' when a project is cancelled;\n"
-    "- recurring activities (a run, a class) are facts too: entity 'user', attribute 'activity_<name>' (snake_case), value 'done';\n"
-    "- behavioral requests ('write dates day-first', 'city names in UPPERCASE') are facts: entity 'user', attribute 'disposition_<short_name>', value = the requested behavior;\n"
+    "- when a note states a change from an old value to a new one, "
+    "output ONLY the new value, never the old;\n"
+    "- recurring exercise/class activities (a run, a yoga class) are "
+    "facts: entity 'user', attribute 'activity_<name>' (snake_case), "
+    "value 'done' — but one-off pastimes (cooking, watching TV) are "
+    "small talk, not activities;\n"
+    "- behavioral formatting requests are facts: entity 'user', "
+    "attribute 'disposition_<short_name>', value = the FULL requested "
+    "rule in words (e.g. 'write dates day-first like 5 June');\n"
     "- if the note contains no durable fact (small talk), return [].")
 
 
@@ -263,6 +270,7 @@ class CLSLedgerSystem(MemorySystem):
         self._last_parse = p
         if p is None:
             return None
+        p["_question"] = question
         target = norm_key(str(p["target"]))
         asof = p.get("asof_day") if isinstance(p.get("asof_day"), int) \
             else asof
@@ -318,22 +326,26 @@ class CLSLedgerSystem(MemorySystem):
             word = _banks.NUMBER_WORDS.get(n)
             return f"{n}" + (f" ({word})" if word else "")
         if aggregate == "weekday_habit":
-            # target may be an activity attribute; find best-matching
-            # activity history for the anchor
-            cand = [k for k in {c.key for c in self.ledger.cards}
-                    if k.startswith(f"{norm_key(anchor)}.activity_")]
-            if target.startswith("activity_"):
-                cand = [f"{norm_key(anchor)}.{target}"] + cand
-            for k in cand:
+            qtokens = set(re.findall(r"[a-z]+",
+                                     parse.get("_question", "").lower()))
+            best, best_overlap = None, 0
+            for k in sorted({c.key for c in self.ledger.cards}):
+                if ".activity_" not in k:
+                    continue
+                ktokens = set(k.split(".activity_")[-1].split("_"))
+                overlap = len(qtokens & ktokens)
                 h = self.ledger.history(k)
-                if len(h) >= 4 and (target in k or len(cand) == 1
-                                    or target.split('_')[-1] in k):
-                    counts = [0] * 7
-                    for c in h:
-                        counts[(c.day - 1) % 7] += 1
-                    mode = max(range(7), key=lambda i: counts[i])
-                    if counts[mode] >= 0.5 * len(h):
-                        return _banks.WEEKDAYS[mode]
+                if overlap > best_overlap and len(h) >= 4:
+                    best, best_overlap = k, overlap
+            if best is None:
+                return None
+            h = self.ledger.history(best)
+            counts = [0] * 7
+            for c in h:
+                counts[(c.day - 1) % 7] += 1
+            mode = max(range(7), key=lambda i: counts[i])
+            if counts[mode] >= 0.4 * len(h):
+                return _banks.WEEKDAYS[mode]
             return None
         if aggregate == "trend":
             if len(hist) < 2:
@@ -433,6 +445,27 @@ class CLSLedgerSystem(MemorySystem):
         self.routed_card = card
         return "weights"
 
+    def _apply_dispositions(self, text: str) -> str:
+        """Mechanical formatting rules are applied by the ledger in code —
+        the same philosophy as temporal/chain resolution. The ledger knows
+        which rules are active and knows the city vocabulary."""
+        rules = [c.attribute + " " + c.value
+                 for c in self.ledger.current_cards()
+                 if c.attribute.startswith("disposition_")]
+        blob = " ".join(rules).lower()
+        if "day" in blob and "first" in blob or "day_first" in blob:
+            from agentlife.harness.scorer import MONTHS_RE
+            text = re.sub(
+                "(" + MONTHS_RE + r") (\d{1,2})(st|nd|rd|th)?\b",
+                lambda m: f"{m.group(2)} {m.group(1)}", text)
+        if "upper" in blob:
+            cities = {c.value for c in self.ledger.current_cards()
+                      if c.attribute in ("lives_in", "hometown")}
+            for city in sorted(cities, key=len, reverse=True):
+                text = re.sub(r"(?<!\w)" + re.escape(city) + r"(?!\w)",
+                              city.upper(), text, flags=re.I)
+        return text
+
     def answer(self, query: dict) -> str:
         if query.get("qtype_public") == "online":
             self._charge_usage(query["question"])
@@ -444,15 +477,15 @@ class CLSLedgerSystem(MemorySystem):
         chained = self._symbolic_chain(query["question"], asof)
         if chained is not None:
             self.routes[query.get("query_id", "?")] = "symbolic"
-            return chained
+            return self._apply_dispositions(chained)
         if self.backend is None:
-            return self._episodic_answer(query)
+            return self._apply_dispositions(self._episodic_answer(query))
         route = ("weights" if self.mode == "weights"
                  else self._route(query["question"]))
         self.routes[query.get("query_id", "?")] = route
         if route == "episodic":
-            return self._episodic_answer(query)
-        return self._weights_answer(query)
+            return self._apply_dispositions(self._episodic_answer(query))
+        return self._apply_dispositions(self._weights_answer(query))
 
     def _weights_answer(self, query: dict) -> str:
         user = (f"QUESTION (asked on day {query['day_asked']}): "
