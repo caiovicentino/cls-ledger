@@ -231,6 +231,29 @@ NOT_IN_LEDGER — the anti-hallucination primitive. Measured on a real
 vault: 29x less context than grep-and-read for factual questions. See
 [`obsidian_ledger/README.md`](obsidian_ledger/README.md).
 
+### Adjacent systems — and what is different here
+
+The 2025–2026 wave converged on one of our premises: supersession must
+be deterministic, not LLM-mediated ([MemStrata](https://arxiv.org/abs/2606.26511),
+[TOKI](https://arxiv.org/abs/2606.06240),
+[STALE](https://arxiv.org/abs/2605.06527),
+[freshness](https://arxiv.org/abs/2606.01435)). We verified each
+neighbor directly; the honest map:
+
+| System | Deterministic supersession | Query-time typed `verify` | Symbolic `induce` | Governs weights | On *your* vault |
+|---|---|---|---|---|---|
+| [Zep/Graphiti](https://github.com/getzep/graphiti) | no — edge invalidation is an LLM call | no | no | no | no |
+| [Mem0](https://github.com/mem0ai/mem0) | no — LLM decides ADD/UPDATE/DELETE | no | no | no | no |
+| [MemStrata](https://arxiv.org/abs/2606.26511) | **yes** (retrieval-side) | no | no | no | no |
+| [TOKI](https://arxiv.org/abs/2606.06240) / [STALE](https://arxiv.org/abs/2605.06527) | write-time algebra / adjudication | write-side only | no | no | no |
+| [bicameral](https://github.com/yhl999/bicameral) | yes (hash-chained, Neo4j) | no (promote/quarantine) | no | no | transcripts, not vault |
+| [basic-memory](https://github.com/basicmachines-co/basic-memory) / [MCP memory](https://github.com/modelcontextprotocol/servers/tree/main/src/memory) | no | no | no | no | markdown, no facts |
+| **CLS-Ledger / obsidian-ledger** | **yes** | **yes** — 4 verdicts incl. `CONTRADICTED_STALE` → current value | **yes** — count/habit/trend | **yes** — LoRA slots | **yes** — one `install` |
+
+Every mechanism above exists somewhere in isolation; the composition —
+and the ledger *governing parametric memory* — does not, to the best of
+a four-agent adversarial search (2026-07-15).
+
 ### Roadmap (next)
 
 - Fix bindings: more paraphrases per card + ~450-600 iters with replay;

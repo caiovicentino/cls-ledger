@@ -2,7 +2,9 @@
 
 **Caio Vicentino** (OpenInterpretability; ORCID 0009-0003-4331-6259)
 
-*Working paper v2, July 2026 (v1: doi:10.5281/zenodo.21375429). License: CC-BY-4.0. Code and benchmark:
+*Working paper v2.1, July 2026 (v1: doi:10.5281/zenodo.21375429; v2:
+doi:10.5281/zenodo.21384691 — v2.1 expands Related Work with concurrent
+2025–2026 systems, no results changed). License: CC-BY-4.0. Code and benchmark:
 https://github.com/caiovicentino/cls-ledger*
 
 ---
@@ -119,7 +121,9 @@ experiments, and generation is deterministic per seed across processes.
    paraphrase protocol (§3).
 2. **CLS-Ledger**: to our knowledge the first architecture in which a
    provenance ledger *governs* entity-level deletable weight slots —
-   deletable adapters exist (SEA [8]) and symbolic ledgers exist
+   deletable adapters exist (SEA [8]), isolated edit modules exist
+   (GRACE [33], MELO [34], WISE [35]), deterministic supersedence exists
+   for retrieval (MemStrata [4], TOKI [31]), and symbolic ledgers exist
    (NeuSymMS [12]); the contribution is the coupling — with three
    construction-level guarantees verified empirically: zero forgetting,
    zero-collateral unlearning, and structural staleness protection (§4, §5.4).
@@ -143,10 +147,18 @@ experiments, and generation is deterministic per seed across processes.
 **Retrieval-based agent memory.** MemGPT/Letta [1], Mem0 [2], Zep/Graphiti [3] and
 successors store conversation-derived memories externally and retrieve per
 query; recent product systems add background consolidation ("sleep-time compute" [22]). These systems dominate practice but provide no supersedence or
-deletion guarantees; temporal knowledge graphs [3] and bi-temporal
-validity rules (MemStrata [4]) add deterministic staleness control *for
-retrieval*. We adopt the same deterministic-supersedence philosophy and
-extend it to govern weight activation.
+deletion guarantees; where temporal control exists it is often
+LLM-mediated (Zep invalidates graph edges with a per-edge LLM call [3]).
+A rapidly crystallizing 2025–2026 line makes staleness control
+*deterministic* instead: bi-temporal validity rules (MemStrata [4]),
+bitemporal operator algebras for write-time contradiction resolution
+(TOKI [31]), conflict benchmarks with write-side adjudication
+(STALE/CUPMem [32]), and deterministic freshness selection over fact
+version histories [39]. We share this philosophy — supersedence decided
+by code, not by similarity or an LLM judge — and extend it to a layer
+none of these systems touches: governing *weight activation*, so that
+the deterministic ledger also decides what parametric memory is allowed
+to answer.
 
 **Parametric memory.** Knowledge can be packed into adapters (OPPU's
 adapter-per-user [5]; document LoRAs; learned KV caches — Cartridges [6],
@@ -158,8 +170,26 @@ a *single shared* LoRA and explicitly leaves deletion and staleness
 unresolved. We differ in granularity (per-entity slots), governance (a
 symbolic ledger decides what the weights know), and guarantees.
 
+**Knowledge editing with isolated modules.** The lifelong model-editing
+literature reached the isolation argument before we did: GRACE [33]
+localizes edits in a discrete key-value adaptor codebook, MELO [34]
+activates non-overlapping dynamic LoRA blocks indexed by a vector
+database of neurons, WISE [35] shards edits into disjoint side-memory
+subspaces, and K-Adapter [36] is the earliest statement that adapters
+with no information flow between them cannot interfere. Our slots
+inherit this argument (it is why zero forgetting holds by construction),
+but differ in what indexes the module and what governs its life cycle:
+editing systems index modules by learned or vector lookups over *edit
+requests* and report edit success/locality, whereas our slots are keyed
+by a symbolic ledger with per-fact provenance and temporal supersedence,
+are consolidated from an agent's episode stream, and carry a measured
+deletion story (unlearning collateral 0/40, staleness governed by the
+ledger) that the editing literature does not evaluate.
+
 **Modular unlearning and deletable personalization.** SISA-style exact
-unlearning, adapter-partition methods, and recent systems make deletion a
+unlearning with disjoint parameter-efficient components (S3T [38]),
+reversible unlearning via independent sparse adapters (FUSED [37]), and
+recent systems make deletion a
 module operation: SEA (Microsoft) [8] keeps per-user "proxy" artifacts
 (steering vectors + rank-4 LoRA) deletable by construction; TrustErase [9]
 embeds cryptographic "passports" in LoRA updates for auditable instant
@@ -453,7 +483,10 @@ real deployment hazard we surface rather than hide. Second, retrieval
 occasionally solves *trend* (both values can co-occur in one retrieved
 update episode) but fails count and habit, which require evidence
 assembled across many episodes — consistent with aggregation-failure
-reports in the literature [29].
+reports in the literature [29]. Concurrent work reaches the same
+conclusion for the special case of freshness: replacing LLM judgment
+with deterministic aggregation over a fact's version history resolves
+conflicts that retrieval assembly systematically fails [39].
 
 ### 5.7 Dispositions: the ledger knows the rule exists
 
@@ -626,6 +659,24 @@ know which is which.
 [29] M. N. Uddin et al. From Recall to Forgetting (Memora). arXiv:2604.20006, 2026.
 
 [30] RefMem-Bench: Benchmarking Reflective Memory in Long-Horizon Dialogue. arXiv:2606.01223, 2026.
+
+[31] Z. Wang. TOKI: A Bitemporal Operator Algebra for Contradiction Resolution in LLM-Agent Persistent Memory. arXiv:2606.06240, 2026.
+
+[32] H. Chao et al. STALE: Can LLM Agents Know When Their Memories Are No Longer Valid? arXiv:2605.06527, 2026.
+
+[33] T. Hartvigsen et al. Aging with GRACE: Lifelong Model Editing with Discrete Key-Value Adaptors. NeurIPS 2023; arXiv:2211.11031.
+
+[34] L. Yu et al. MELO: Enhancing Model Editing with Neuron-Indexed Dynamic LoRA. AAAI 2024; arXiv:2312.11795.
+
+[35] P. Wang et al. WISE: Rethinking the Knowledge Memory for Lifelong Model Editing of Large Language Models. NeurIPS 2024; arXiv:2405.14768.
+
+[36] R. Wang et al. K-Adapter: Infusing Knowledge into Pre-Trained Models with Adapters. Findings of ACL 2021; arXiv:2002.01808.
+
+[37] Z. Zhong et al. Unlearning through Knowledge Overwriting: Reversible Federated Unlearning via Selective Sparse Adapter (FUSED). arXiv:2502.20709, 2025.
+
+[38] S. Basu Roy Chowdhury et al. Towards Scalable Exact Machine Unlearning Using Parameter-Efficient Fine-Tuning (S3T). arXiv:2406.16257, 2024.
+
+[39] V. Reddy, S. Challaram. Don't Ask the LLM to Track Freshness: A Deterministic Recipe for Memory Conflict Resolution. arXiv:2606.01435, 2026.
 
 ---
 
