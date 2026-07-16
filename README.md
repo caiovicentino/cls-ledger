@@ -3,8 +3,9 @@
 **Paper:** *The Ledger Knows What the Weights Know: Entity-Level
 Parametric Memory with Provenance Guarantees for LLM Agents* —
 [doi:10.5281/zenodo.21375428](https://doi.org/10.5281/zenodo.21375428)
-(concept DOI, always latest — currently **v2** with induction +
-dispositions; v2: 10.5281/zenodo.21384691, v1: 10.5281/zenodo.21375429)
+(concept DOI, always latest — currently **v2.1**, Related Work vs the
+2025–2026 wave, results unchanged; v2.1: 10.5281/zenodo.21396695,
+v2: 10.5281/zenodo.21384691, v1: 10.5281/zenodo.21375429)
 
 > Vicentino, C. (2026). The Ledger Knows What the Weights Know. Zenodo.
 > https://doi.org/10.5281/zenodo.21375428
